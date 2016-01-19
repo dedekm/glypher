@@ -4,8 +4,8 @@ paper.install(window);
 function Glyph(weight, contrast) {
   this.weight = weight;
   this.contrast = contrast;
+  this.path = undefined;
 
-  this.segments = [];
 
   // FIXME:
   var canvas = document.getElementById('myCanvas');
@@ -39,11 +39,18 @@ Glyph.prototype.generate = function(points) {
     path.reduce();
     path.closed = true;
 
-    // DEBUG
-    path.strokeColor = 'blue';
-
-    this.segments.push(path);
+    segments.push(path);
   }
+
+  result = segments[0];
+  for (i = 1; i < segments.length; i++) {
+    result = result.unite(segments[i]);
+  }
+
+  // DEBUG
+  result.strokeColor = 'black';
+
+  this.result = result;
 };
 
 function sign(x) {
