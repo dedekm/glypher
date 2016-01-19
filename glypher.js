@@ -8,6 +8,21 @@ function Alphabet() {
       [200, 100],
       [200, 150],
       [100, 150]
+    ],
+    O: [
+      [100, 200],
+      [100, 100],
+      [200, 100],
+      [200, 200],
+      [100, 200]
+    ],
+    S: [
+      [100, 200],
+      [200, 200],
+      [200, 150],
+      [100, 150],
+      [100, 100],
+      [200, 100],
     ]
   };
 }
@@ -55,16 +70,21 @@ Glyph.prototype.generate = function(points) {
     path.reduce();
     path.closed = true;
 
+    //DEBUG
+    path.strokeColor = 'blue';
+    path.dashArray = [5, 5];
+
     segments.push(path);
   }
 
-  result = segments[0];
+  result = segments[0].clone();
   for (i = 1; i < segments.length; i++) {
     result = result.unite(segments[i]);
   }
 
   // DEBUG
   result.strokeColor = 'black';
+  result.dashArray = null;
 
   this.result = result;
 };

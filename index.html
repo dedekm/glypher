@@ -11,14 +11,16 @@
 <body>
   <canvas id="myCanvas" resize width="600" height="400"></canvas>
   <script type="text/javascript">
-    var alphabet = new Alphabet();
+    window.onload = function() {
+      var alphabet = new Alphabet();
 
-    var glyph = new Glyph(20, 5);
+      var glyph = new Glyph(20, 5);
+      glyph.generate(alphabet.glyphs.S);
 
+      console.log(glyph);
 
-    glyph.generate(alphabet.glyphs.P);
-
-    // console.log(glyph);
+      paper.view.draw();
+    }
   </script>
 
 </body>
