@@ -4,10 +4,27 @@
 <head>
   <meta charset="UTF-8">
   <title>Glypher</title>
+  <script type="text/javascript" src="bower_components/paper/dist/paper-full.min.js"></script>
   <script type="text/javascript" src="glypher.js"></script>
 </head>
 
 <body>
+  <canvas id="myCanvas" resize width="600" height="400"></canvas>
+  <script type="text/javascript">
+    var glyph = new Glyph(20, 5);
+
+    var points = [
+        new Point(100, 200),
+        new Point(100, 100),
+        new Point(200, 100),
+        new Point(200, 150),
+        new Point(100, 150)
+      ];
+
+    glyph.generate(points);
+
+    console.log(glyph);
+  </script>
 
 </body>
 
