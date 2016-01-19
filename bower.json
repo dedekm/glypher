@@ -1,0 +1,19 @@
+{
+  "name": "glypher",
+  "main": "glypher.js",
+  "version": "0.0.0",
+  "authors": [
+    "Martin Dedek <martin.dedek@sinfin.cz>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "paper": "~0.9.25"
+  }
+}
