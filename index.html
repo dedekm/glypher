@@ -11,19 +11,14 @@
 <body>
   <canvas id="myCanvas" resize width="600" height="400"></canvas>
   <script type="text/javascript">
+    var alphabet = new Alphabet();
+
     var glyph = new Glyph(20, 5);
 
-    var points = [
-        new Point(100, 200),
-        new Point(100, 100),
-        new Point(200, 100),
-        new Point(200, 150),
-        new Point(100, 150)
-      ];
 
-    glyph.generate(points);
+    glyph.generate(alphabet.glyphs.P);
 
-    console.log(glyph);
+    // console.log(glyph);
   </script>
 
 </body>

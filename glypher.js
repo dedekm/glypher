@@ -1,5 +1,20 @@
 paper.install(window);
 
+function Alphabet() {
+  this.glyphs = {
+    P: [
+      [100, 200],
+      [100, 100],
+      [200, 100],
+      [200, 150],
+      [100, 150]
+    ]
+  };
+}
+
+Alphabet.prototype.availableGlyphs = function() {
+  return Object.keys(this.glyphs);
+};
 
 function Glyph(weight, contrast) {
   this.weight = weight;
@@ -20,21 +35,22 @@ Glyph.prototype.generate = function(points) {
 
     var path = new Path();
 
-    var vector = points[i + 1].subtract(points[i]);
+    var p1 = new Point(points[i]);
+    var p2 = new Point(points[i + 1]);
+
+    var vector = p2.subtract(p1);
     var x = sign(vector.x);
     var y = sign(vector.y);
 
-    var p = points[i].clone();
 
-    path.add(p.add(box.multiply([x * -1, y])));
-    path.add(p.add(box.multiply([x * -1, y * -1])));
-    path.add(p.add(box.multiply([x, y * -1])));
+    path.add(p1.add(box.multiply([x * -1, y])));
+    path.add(p1.add(box.multiply([x * -1, y * -1])));
+    path.add(p1.add(box.multiply([x, y * -1])));
 
-    p = points[i + 1].clone();
 
-    path.add(p.add(box.multiply([x, y * -1])));
-    path.add(p.add(box.multiply([x, y])));
-    path.add(p.add(box.multiply([x * -1, y])));
+    path.add(p2.add(box.multiply([x, y * -1])));
+    path.add(p2.add(box.multiply([x, y])));
+    path.add(p2.add(box.multiply([x * -1, y])));
 
     path.reduce();
     path.closed = true;
