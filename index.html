@@ -9,16 +9,18 @@
 </head>
 
 <body>
-  <canvas id="myCanvas" resize width="600" height="400"></canvas>
+  <canvas id="myCanvas" resize width="900" height="400"></canvas>
   <script type="text/javascript">
     window.onload = function() {
       var alphabet = new Alphabet();
+      var availableGlyphs = alphabet.availableGlyphs();
 
-      var glyph = new Glyph(20, 5);
-      glyph.generate(alphabet.glyphs.S);
-
-      console.log(glyph);
-
+      for (var i = 0; i < availableGlyphs.length; i++) {
+        var glyph = new Glyph(20, 5);
+        glyph.generate(alphabet.glyphs[availableGlyphs[i]]);
+        glyph.draw(100 + 210 * i, 100);
+        // console.log(glyph);
+      }
       paper.view.draw();
     }
   </script>

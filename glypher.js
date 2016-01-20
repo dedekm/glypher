@@ -1,28 +1,36 @@
 paper.install(window);
 
 function Alphabet() {
+  // FIXME:
+  var canvas = document.getElementById('myCanvas');
+  paper.setup(canvas);
+
   this.glyphs = {
+    I: [
+      [0, 0],
+      [0, 10]
+    ],
     P: [
-      [100, 200],
-      [100, 100],
-      [200, 100],
-      [200, 150],
-      [100, 150]
+      [0, 10],
+      [0, 0],
+      [10, 0],
+      [10, 5],
+      [0, 5]
     ],
     O: [
-      [100, 200],
-      [100, 100],
-      [200, 100],
-      [200, 200],
-      [100, 200]
+      [0, 10],
+      [0, 0],
+      [10, 0],
+      [10, 10],
+      [0, 10]
     ],
     S: [
-      [100, 200],
-      [200, 200],
-      [200, 150],
-      [100, 150],
-      [100, 100],
-      [200, 100],
+      [0, 10],
+      [10, 10],
+      [10, 5],
+      [0, 5],
+      [0, 0],
+      [10, 0],
     ]
   };
 }
@@ -35,11 +43,7 @@ function Glyph(weight, contrast) {
   this.weight = weight;
   this.contrast = contrast;
   this.path = undefined;
-
-
-  // FIXME:
-  var canvas = document.getElementById('myCanvas');
-  paper.setup(canvas);
+  this.size = 10;
 }
 
 Glyph.prototype.generate = function(points) {
@@ -50,8 +54,8 @@ Glyph.prototype.generate = function(points) {
 
     var path = new Path();
 
-    var p1 = new Point(points[i]);
-    var p2 = new Point(points[i + 1]);
+    var p1 = new Point(points[i]).multiply(this.size);
+    var p2 = new Point(points[i + 1]).multiply(this.size);
 
     var vector = p2.subtract(p1);
     var x = sign(vector.x);
@@ -71,8 +75,8 @@ Glyph.prototype.generate = function(points) {
     path.closed = true;
 
     //DEBUG
-    path.strokeColor = 'blue';
-    path.dashArray = [5, 5];
+    // path.strokeColor = 'blue';
+    // path.dashArray = [5, 5];
 
     segments.push(path);
   }
@@ -82,11 +86,17 @@ Glyph.prototype.generate = function(points) {
     result = result.unite(segments[i]);
   }
 
-  // DEBUG
-  result.strokeColor = 'black';
-  result.dashArray = null;
 
-  this.result = result;
+  this.path = result;
+};
+
+//DEBUG
+Glyph.prototype.draw = function(x,y) {
+
+    this.path.position = [x,y];
+
+    this.path.strokeColor = 'black';
+    console.log(this.path);
 };
 
 function sign(x) {
