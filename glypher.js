@@ -97,10 +97,10 @@ Glyph.prototype.mergeSegments = function (segments) {
 //DEBUG
 Glyph.prototype.draw = function(x,y) {
 
-    this.path.position = [x,y];
+    var path = this.path.clone();
+    path.position = [x,y];
 
-    this.path.strokeColor = 'black';
-    console.log(this.path);
+    path.strokeColor = 'black';
 };
 
 function sign(x) {
