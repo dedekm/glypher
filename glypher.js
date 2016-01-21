@@ -81,13 +81,17 @@ Glyph.prototype.generate = function(points) {
     segments.push(path);
   }
 
-  result = segments[0].clone();
+  this.path = this.mergeSegments(segments);
+};
+
+Glyph.prototype.mergeSegments = function (segments) {
+
+  var result = segments[0].clone();
   for (i = 1; i < segments.length; i++) {
     result = result.unite(segments[i]);
   }
 
-
-  this.path = result;
+  return result;
 };
 
 //DEBUG
