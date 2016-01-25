@@ -21,8 +21,8 @@ Generator.prototype.generate = function() {
   var availableGlyphs = this.alphabet.availableGlyphs();
 
   for (var i = 0; i < availableGlyphs.length; i++) {
-    var glyph = new Glyph(availableGlyphs[i], this.weight, this.contrast, this.proportion);
-    glyph.generate(this.alphabet.glyphs[availableGlyphs[i]]);
+    var glyph = this.generateGlyph(availableGlyphs[i], this.alphabet.glyphs[availableGlyphs[i]]);
+    console.log(glyph);
     this.glyphs.push(glyph);
   }
 };
@@ -75,17 +75,19 @@ function Glyph(name, weight, contrast, proportion) {
   this.width = 0;
 }
 
-Glyph.prototype.generate = function(points) {
+Generator.prototype.generateGlyph = function(name, points) {
+  var glyph = new Glyph(name, this.weight, this.contrast, this.proportion);
+
   var segments = [];
-  var box = new Point(this.weight, this.contrast);
+  var box = new Point(glyph.weight, glyph.contrast);
 
   for (var i = 0; i < points.length - 1; i++) {
 
 
     var path = new Path();
 
-    var p1 = new Point(points[i]).multiply([this.size / this.proportion, this.size]);
-    var p2 = new Point(points[i + 1]).multiply([this.size / this.proportion, this.size]);
+    var p1 = new Point(points[i]).multiply([glyph.size / glyph.proportion, glyph.size]);
+    var p2 = new Point(points[i + 1]).multiply([glyph.size / glyph.proportion, glyph.size]);
 
     var vector = p2.subtract(p1);
     var x = sign(vector.x);
@@ -111,11 +113,13 @@ Glyph.prototype.generate = function(points) {
     segments.push(path);
 
     // FIXME: add last point
-    if (p1.x + this.weight > this.width)
-      this.width = p1.x + this.weight;
+    if (p1.x + glyph.weight > glyph.width)
+      glyph.width = p1.x + glyph.weight;
   }
 
-  this.path = this.mergeSegments(segments);
+  glyph.path = glyph.mergeSegments(segments);
+
+  return glyph;
 };
 
 Glyph.prototype.mergeSegments = function(segments) {
