@@ -20,9 +20,17 @@
       generator.generate();
       console.log(generator);
 
+      var letterSpacing = 100;
+
       for (var i = 0; i < generator.glyphs.length; i++) {
-        generator.glyphs[i].draw(100 + 210 * i, 100);
+        //DEBUG
+        // console.log(generator.glyphs[i].name + " - width: " + generator.glyphs[i].width);
+        generator.glyphs[i].draw(letterSpacing, 100);
+        letterSpacing += generator.glyphs[i].width/2 + generator.glyphs[i].weight * 4;
       }
+
+
+
       paper.view.draw();
     }
   </script>

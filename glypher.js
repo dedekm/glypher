@@ -72,6 +72,7 @@ function Glyph(name, weight, contrast, proportion) {
 
   this.size = 10;
   this.path = undefined;
+  this.width = 0;
 }
 
 Glyph.prototype.generate = function(points) {
@@ -80,10 +81,11 @@ Glyph.prototype.generate = function(points) {
 
   for (var i = 0; i < points.length - 1; i++) {
 
+
     var path = new Path();
 
-    var p1 = new Point(points[i]).multiply([this.size/this.proportion, this.size]);
-    var p2 = new Point(points[i + 1]).multiply([this.size/this.proportion, this.size]);
+    var p1 = new Point(points[i]).multiply([this.size / this.proportion, this.size]);
+    var p2 = new Point(points[i + 1]).multiply([this.size / this.proportion, this.size]);
 
     var vector = p2.subtract(p1);
     var x = sign(vector.x);
@@ -107,6 +109,10 @@ Glyph.prototype.generate = function(points) {
     // path.dashArray = [5, 5];
 
     segments.push(path);
+
+    // FIXME: add last point
+    if (p1.x + this.weight > this.width)
+      this.width = p1.x + this.weight;
   }
 
   this.path = this.mergeSegments(segments);
