@@ -1,14 +1,29 @@
 paper.install(window);
 
-function Generator(options){
+function Generator(options) {
   // FIXME:
   var canvas = document.getElementById('myCanvas');
   paper.setup(canvas);
 
   console.log(options);
   options = options || {};
+  this.weight = options.weight || 20;
+  this.contrast = options.contrast || 5;
+
   this.alphabet = options.alphabet || new Alphabet(options.xheight);
+  this.glyphs = [];
 }
+
+Generator.prototype.generate = function() {
+  this.glyphs = [];
+  var availableGlyphs = this.alphabet.availableGlyphs();
+
+  for (var i = 0; i < availableGlyphs.length; i++) {
+    var glyph = new Glyph(availableGlyphs[i], this.weight, this.contrast);
+    glyph.generate(this.alphabet.glyphs[availableGlyphs[i]]);
+    this.glyphs.push(glyph);
+  }
+};
 
 function Alphabet(xheight) {
   xheight = xheight || 5;
@@ -47,7 +62,8 @@ Alphabet.prototype.availableGlyphs = function() {
   return Object.keys(this.glyphs);
 };
 
-function Glyph(weight, contrast) {
+function Glyph(name, weight, contrast) {
+  this.name = name;
   this.weight = weight;
   this.contrast = contrast;
   this.path = undefined;
@@ -92,7 +108,7 @@ Glyph.prototype.generate = function(points) {
   this.path = this.mergeSegments(segments);
 };
 
-Glyph.prototype.mergeSegments = function (segments) {
+Glyph.prototype.mergeSegments = function(segments) {
 
   var result = segments[0].clone();
   for (i = 1; i < segments.length; i++) {
@@ -103,12 +119,12 @@ Glyph.prototype.mergeSegments = function (segments) {
 };
 
 //DEBUG
-Glyph.prototype.draw = function(x,y) {
+Glyph.prototype.draw = function(x, y) {
 
-    var path = this.path.clone();
-    path.position = [x,y];
+  var path = this.path.clone();
+  path.position = [x, y];
 
-    path.strokeColor = 'black';
+  path.strokeColor = 'black';
 };
 
 function sign(x) {

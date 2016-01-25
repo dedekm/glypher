@@ -15,14 +15,11 @@
       var generator = new Generator({
         xheight: 3
       });
+      generator.generate();
       console.log(generator);
 
-      availableGlyphs = generator.alphabet.availableGlyphs();
-      for (var i = 0; i < availableGlyphs.length; i++) {
-        var glyph = new Glyph(20, 5);
-        glyph.generate(generator.alphabet.glyphs[availableGlyphs[i]]);
-        glyph.draw(100 + 210 * i, 100);
-        // console.log(glyph);
+      for (var i = 0; i < generator.glyphs.length; i++) {
+        generator.glyphs[i].draw(100 + 210 * i, 100);
       }
       paper.view.draw();
     }
