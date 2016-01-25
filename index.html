@@ -15,7 +15,7 @@
       var generator = new Generator({
         height: 10,
         width: 5,
-        xheight: 3
+        xheight: 7
       });
       generator.generate();
       console.log(generator);
@@ -25,7 +25,7 @@
       for (var i = 0; i < generator.glyphs.length; i++) {
         //DEBUG
         // console.log(generator.glyphs[i].name + " - width: " + generator.glyphs[i].width);
-        generator.glyphs[i].draw(letterSpacing, 100);
+        generator.glyphs[i].draw(letterSpacing, 200);
         letterSpacing += generator.glyphs[i].width/2 + generator.glyphs[i].weight * 4;
       }
 

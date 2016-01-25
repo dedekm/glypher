@@ -31,6 +31,17 @@ function Alphabet(xheight) {
   xheight = xheight || 5;
 
   this.glyphs = {
+    i: [
+      [0, 10 - xheight],
+      [0, 10]
+    ],
+    o: [
+      [0, 10],
+      [0, 10 - xheight],
+      [10, 10 - xheight],
+      [10, 10],
+      [0, 10]
+    ],
     I: [
       [0, 0],
       [0, 10]
@@ -39,8 +50,8 @@ function Alphabet(xheight) {
       [0, 10],
       [0, 0],
       [10, 0],
-      [10, xheight],
-      [0, xheight]
+      [10, 10 - xheight],
+      [0, 10 - xheight]
     ],
     O: [
       [0, 10],
@@ -52,8 +63,8 @@ function Alphabet(xheight) {
     S: [
       [0, 10],
       [10, 10],
-      [10, xheight],
-      [0, xheight],
+      [10, 10 - xheight],
+      [0, 10 - xheight],
       [0, 0],
       [10, 0],
     ]
@@ -106,10 +117,6 @@ Generator.prototype.generateGlyph = function(name, points) {
     path.reduce();
     path.closed = true;
 
-    //DEBUG
-    // path.strokeColor = 'blue';
-    // path.dashArray = [5, 5];
-
     segments.push(path);
 
     // FIXME: add last point
@@ -136,8 +143,7 @@ Glyph.prototype.mergeSegments = function(segments) {
 Glyph.prototype.draw = function(x, y) {
 
   var path = this.path.clone();
-  path.position = [x, y];
-
+  path.position = [x, y + path.position.y];
   path.strokeColor = 'black';
 };
 
