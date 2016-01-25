@@ -1,9 +1,17 @@
 paper.install(window);
 
-function Alphabet() {
+function Generator(options){
   // FIXME:
   var canvas = document.getElementById('myCanvas');
   paper.setup(canvas);
+
+  console.log(options);
+  options = options || {};
+  this.alphabet = options.alphabet || new Alphabet(options.xheight);
+}
+
+function Alphabet(xheight) {
+  xheight = xheight || 5;
 
   this.glyphs = {
     I: [
@@ -14,8 +22,8 @@ function Alphabet() {
       [0, 10],
       [0, 0],
       [10, 0],
-      [10, 5],
-      [0, 5]
+      [10, xheight],
+      [0, xheight]
     ],
     O: [
       [0, 10],
@@ -27,8 +35,8 @@ function Alphabet() {
     S: [
       [0, 10],
       [10, 10],
-      [10, 5],
-      [0, 5],
+      [10, xheight],
+      [0, xheight],
       [0, 0],
       [10, 0],
     ]
