@@ -126,9 +126,12 @@ Generator.prototype.generateGlyph = function(name, points) {
 
     segments.push(path);
 
-    // FIXME: add last point
     if (p1.x + glyph.weight > glyph.width)
       glyph.width = p1.x + glyph.weight;
+
+    // FIXME: add last point
+    if (p2.x + glyph.weight > glyph.width)
+      glyph.width = p2.x + glyph.weight;
   }
 
   glyph.path = glyph.mergeSegments(segments);
@@ -150,7 +153,7 @@ Glyph.prototype.mergeSegments = function(segments) {
 Glyph.prototype.draw = function(x, y) {
 
   var path = this.path.clone();
-  path.position = [x, y + path.position.y];
+  path.position = [x + path.position.x, y + path.position.y];
   path.strokeColor = 'black';
 };
 

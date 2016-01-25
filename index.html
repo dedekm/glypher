@@ -20,13 +20,14 @@
       generator.generate();
       console.log(generator);
 
-      var letterSpacing = 100;
+      var letterSpacing = 100,
+          kerning = 20;
 
       for (var i = 0; i < generator.glyphs.length; i++) {
         //DEBUG
         // console.log(generator.glyphs[i].name + " - width: " + generator.glyphs[i].width);
         generator.glyphs[i].draw(letterSpacing, 200);
-        letterSpacing += generator.glyphs[i].width/2 + generator.glyphs[i].weight * 4;
+        letterSpacing += generator.glyphs[i].width + generator.glyphs[i].weight + kerning;
       }
 
 
