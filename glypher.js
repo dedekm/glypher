@@ -42,6 +42,11 @@ function Alphabet(xheight) {
       [10, 10],
       [0, 10]
     ],
+    A: [
+      [0, 10],
+      [5, 0],
+      [10, 10]
+    ],
     I: [
       [0, 0],
       [0, 10]
@@ -104,13 +109,15 @@ Generator.prototype.generateGlyph = function(name, points) {
     var x = sign(vector.x);
     var y = sign(vector.y);
 
-
-    path.add(p1.add(box.multiply([x * -1, y])));
+    if (i !== 0 || vector.angle % 90 === 0) {
+      path.add(p1.add(box.multiply([x * -1, y])));
+    }
     path.add(p1.add(box.multiply([x * -1, y * -1])));
     path.add(p1.add(box.multiply([x, y * -1])));
 
-
-    path.add(p2.add(box.multiply([x, y * -1])));
+    if (i + 1 !== points.length - 1 || vector.angle % 90 === 0) {
+      path.add(p2.add(box.multiply([x, y * -1])));
+    }
     path.add(p2.add(box.multiply([x, y])));
     path.add(p2.add(box.multiply([x * -1, y])));
 
