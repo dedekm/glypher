@@ -22,8 +22,8 @@ function Alphabet(xheight) {
     s: [
       [0, 10],
       [10, 10],
-      [10, 10 - xheight/2],
-      [0, 10 - xheight/2],
+      [10, 10 - xheight / 2],
+      [0, 10 - xheight / 2],
       [0, 10 - xheight],
       [10, 10 - xheight],
     ],
@@ -90,6 +90,19 @@ function Alphabet(xheight) {
     ]
   };
 }
+Alphabet.prototype.maxHeight = function() {
+  var max = 0;
+  for (var key in this.glyphs) {
+    if (this.glyphs[key]) {
+      for (var i = 0; i < this.glyphs[key].length; i++) {
+        if (this.glyphs[key][i][1] > max)
+          max = this.glyphs[key][i][1];
+      }
+    }
+  }
+
+  return max;
+};
 
 Alphabet.prototype.availableGlyphs = function() {
   return Object.keys(this.glyphs);
