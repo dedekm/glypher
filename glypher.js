@@ -22,7 +22,6 @@ Generator.prototype.generate = function() {
 
   for (var i = 0; i < availableGlyphs.length; i++) {
     var glyph = this.generateGlyph(availableGlyphs[i], this.alphabet.glyphs[availableGlyphs[i]]);
-    console.log(glyph);
     this.glyphs[glyph.name] = glyph;
   }
 };
@@ -58,10 +57,13 @@ Generator.prototype.generateGlyph = function(name, points) {
 
     var p1 = new Point(points[i])
       .multiply([glyph.size / glyph.proportion, glyph.size - (glyph.contrast * 2 / glyph.size)])
-      .add(glyph.weight, glyph.size * 0.5);
+      .add(glyph.weight, glyph.size * 0.5)
+      .multiply(1,-1);
+
     var p2 = new Point(points[i + 1])
       .multiply([glyph.size / glyph.proportion, glyph.size - (glyph.contrast * 2 / glyph.size)])
-      .add(glyph.weight, glyph.size * 0.5);
+      .add(glyph.weight, glyph.size * 0.5)
+      .multiply(1,-1);
 
     var vector = p2.subtract(p1);
     var x = sign(vector.x);
@@ -121,7 +123,7 @@ Glyph.prototype.draw = function(x, y) {
   });
 
   var path = this.path.clone();
-  path.position = [x + path.position.x, y - path.position.y];
+  path.position = [x + path.position.x, y + path.position.y];
   path.strokeColor = 'black';
 };
 
