@@ -17,13 +17,22 @@ function Generator(options) {
 }
 
 Generator.prototype.generate = function() {
-  this.glyphs = [];
+  this.glyphs = {};
   var availableGlyphs = this.alphabet.availableGlyphs();
 
   for (var i = 0; i < availableGlyphs.length; i++) {
     var glyph = this.generateGlyph(availableGlyphs[i], this.alphabet.glyphs[availableGlyphs[i]]);
     console.log(glyph);
-    this.glyphs.push(glyph);
+    this.glyphs[glyph.name] = glyph;
+  }
+};
+
+Generator.prototype.getGlyph = function(name) {
+  if(this.glyphs[name]){
+    return this.glyphs[name];
+  }else {
+    console.log('glyph not defined');
+    return false;
   }
 };
 

@@ -22,16 +22,14 @@
       console.log(generator);
 
       var letterSpacing = 100,
-          kerning = 20;
+        kerning = 20,
+        text = 'cuUZ';
 
-      for (var i = 0; i < generator.glyphs.length; i++) {
-        //DEBUG
-        // console.log(generator.glyphs[i].name + " - width: " + generator.glyphs[i].width);
-        generator.glyphs[i].draw(letterSpacing, 200);
-        letterSpacing += generator.glyphs[i].width + generator.glyphs[i].weight + kerning;
+      for (var i = 0; i < text.length; i++) {
+        var glyph = generator.getGlyph(text[i]);
+        glyph.draw(letterSpacing, 100);
+        letterSpacing += glyph.width + glyph.weight + kerning;
       }
-
-
 
       paper.view.draw();
     }
