@@ -21,15 +21,28 @@
       generator.generate();
       console.log(generator);
 
-      var letterSpacing = 100,
+      var baseline = 200,
+        letterSpacing = 100,
         kerning = 20,
         text = 'cuUZ';
 
       for (var i = 0; i < text.length; i++) {
         var glyph = generator.getGlyph(text[i]);
-        glyph.draw(letterSpacing, 100);
+        glyph.draw(letterSpacing, baseline);
         letterSpacing += glyph.width + glyph.weight + kerning;
       }
+
+      //debugging
+      new Path.Line({
+        from: [0, baseline],
+        to: [900, baseline],
+        strokeColor: 'blue'
+      });
+      new Path.Line({
+        from: [0, 100],
+        to: [900, 100],
+        strokeColor: 'blue'
+      });
 
       paper.view.draw();
     }
