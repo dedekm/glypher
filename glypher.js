@@ -58,12 +58,12 @@ Generator.prototype.generateGlyph = function(name, points) {
     var p1 = new Point(points[i])
       .multiply([glyph.size / glyph.proportion, glyph.size - (glyph.contrast * 2 / glyph.size)])
       .add(glyph.weight, glyph.size * 0.5)
-      .multiply(1,-1);
+      .multiply(1, -1);
 
     var p2 = new Point(points[i + 1])
       .multiply([glyph.size / glyph.proportion, glyph.size - (glyph.contrast * 2 / glyph.size)])
       .add(glyph.weight, glyph.size * 0.5)
-      .multiply(1,-1);
+      .multiply(1, -1);
 
     var vector = p2.subtract(p1);
     var x = sign(vector.x);
@@ -75,7 +75,7 @@ Generator.prototype.generateGlyph = function(name, points) {
     path.add(p1.add(box.multiply([x * -1, y * -1])));
     path.add(p1.add(box.multiply([x, y * -1])));
 
-    if (i + 1 !== points.length - 1 || vector.angle % 90 === 0) {
+    if ( i + 1 !== points.length - 1 && points[i + 1][2] !== 'e' || vector.angle % 90 === 0) {
       path.add(p2.add(box.multiply([x, y * -1])));
     }
     path.add(p2.add(box.multiply([x, y])));
@@ -92,6 +92,10 @@ Generator.prototype.generateGlyph = function(name, points) {
     // FIXME: add last point
     if (p2.x + glyph.weight > glyph.width)
       glyph.width = p2.x + glyph.weight;
+
+    if (points[i + 1][2] == 'e') {
+      i++;
+    }
   }
   glyph.path = glyph.mergeSegments(segments);
 
@@ -112,12 +116,12 @@ Glyph.prototype.mergeSegments = function(segments) {
 Glyph.prototype.draw = function(x, y) {
   //debugging
   new Path.Circle({
-    center: [x,y],
+    center: [x, y],
     radius: 3,
     strokeColor: 'blue'
   });
   new Path.Circle({
-    center: [x + this.width,y],
+    center: [x + this.width, y],
     radius: 3,
     strokeColor: 'blue'
   });
