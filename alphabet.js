@@ -46,9 +46,58 @@ function Alphabet(xheight, descender) {
       [0, xheight],
       [10, xheight]
     ],
+    g: [
+      [0, descender],
+      [10, descender],
+      [10, xheight],
+      [0, xheight],
+      [0, 0],
+      [10, 0]
+    ],
+    h: [
+      [0, 10],
+      [0, 0, 'e'],
+      [0, xheight],
+      [10, xheight],
+      [10, 0]
+    ],
     i: [
       [0, 0],
       [0, xheight]
+    ],
+    j: [
+      [-2, descender],
+      [1, descender],
+      [1, xheight]
+    ],
+    k: [
+      [0, 10],
+      [0, 0, 'e'],
+      [0, xheight/2],
+      [5, xheight/2],
+      [10, xheight, 'e'],
+      [0, xheight/2],
+      [5, xheight/2],
+      [10, 0]
+    ],
+    l: [
+      [0, 0],
+      [0, 10]
+    ],
+    m: [
+      [0, 0],
+      [0, xheight],
+      [10, xheight],
+      [10, 0, 'e'],
+      [10, xheight],
+      [20, xheight],
+      [20, 0]
+    ],
+    n: [
+      [0, 0],
+      [0, xheight],
+      [10, xheight],
+      [10, 0]
     ],
     o: [
       [0, 0],
@@ -63,6 +112,26 @@ function Alphabet(xheight, descender) {
       [10, xheight],
       [10, 0],
       [0, 0]
+    ],
+    q: [
+      [10, descender],
+      [10, xheight],
+      [0, xheight],
+      [0, 0],
+      [10, 0]
+    ],
+    r: [
+      [0, 0],
+      [0, xheight],
+      [10, xheight]
+    ],
+    t: [
+      // FIXME: xheight + 2 ??
+      [3, xheight + 2],
+      [3, 0],
+      [10, 0, 'e'],
+      [0, xheight],
+      [10, xheight]
     ],
     s: [
       [0, 0],
