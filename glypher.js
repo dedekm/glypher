@@ -75,7 +75,7 @@ Generator.prototype.generateGlyph = function(name, points) {
     path.add(p1.add(box.multiply([x * -1, y * -1])));
     path.add(p1.add(box.multiply([x, y * -1])));
 
-    if ( i + 1 !== points.length - 1 && points[i + 1][2] !== 'e' || vector.angle % 90 === 0) {
+    if (i + 1 !== points.length - 1 && points[i + 1][2] !== 'e' || vector.angle % 90 === 0) {
       path.add(p2.add(box.multiply([x, y * -1])));
     }
     path.add(p2.add(box.multiply([x, y])));
@@ -85,6 +85,31 @@ Generator.prototype.generateGlyph = function(name, points) {
     path.closed = true;
 
     segments.push(path);
+
+    var serif;
+    if (i + 1 == points.length - 1 || points[i + 1][2] == 'e') {
+      serif = new Path.Rectangle({
+        point: p2.subtract([glyph.weight + 5, glyph.contrast]),
+        size: [glyph.weight * 2 + 10, glyph.contrast * 2]
+      });
+
+      if (vector.angle == 90 && points[i + 1][1] === 0) {
+        // serif.position.y -= glyph.contrast;
+        segments.push(serif);
+      }
+    }
+
+    if (i === 0 || points[i - 1][2] == 'e') {
+      serif = new Path.Rectangle({
+        point: p1.subtract([glyph.weight + 5, glyph.contrast]),
+        size: [glyph.weight * 2 + 10, glyph.contrast * 2]
+      });
+
+      if (vector.angle == -90 && points[i][1] === 0) {
+        // serif.position.y -= glyph.contrast;
+        segments.push(serif);
+      }
+    }
 
     if (p1.x + glyph.weight > glyph.width)
       glyph.width = p1.x + glyph.weight;
