@@ -69,7 +69,7 @@ Generator.prototype.generateGlyph = function(name, points) {
     var x = sign(vector.x);
     var y = sign(vector.y);
 
-    if (i !== 0 || vector.angle % 90 === 0) {
+    if (i !== 0 && points[i - 1][2] !== 'e' || vector.angle % 90 === 0) {
       path.add(p1.add(box.multiply([x * -1, y])));
     }
     path.add(p1.add(box.multiply([x * -1, y * -1])));
