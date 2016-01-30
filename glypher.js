@@ -12,7 +12,7 @@ function Generator(options) {
   this.weight = options.weight || 20;
   this.contrast = options.contrast || 5;
 
-  this.alphabet = options.alphabet || new Alphabet(options.xheight);
+  this.alphabet = options.alphabet || new Alphabet(options.xheight, options.descender);
   this.glyphs = [];
 }
 

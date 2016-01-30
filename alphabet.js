@@ -1,5 +1,6 @@
-function Alphabet(xheight) {
+function Alphabet(xheight, descender) {
   xheight = xheight || 5;
+  descender = descender || -3;
 
   this.glyphs = {
     a: [
@@ -56,6 +57,13 @@ function Alphabet(xheight) {
       [10, 0],
       [0, 0]
     ],
+    p: [
+      [0, descender],
+      [0, xheight],
+      [10, xheight],
+      [10, 0],
+      [0, 0]
+    ],
     s: [
       [0, 0],
       [10, 0],
@@ -72,15 +80,15 @@ function Alphabet(xheight) {
     ],
     v: [
       [0, xheight],
-      [5, 0 ],
+      [5, 0],
       [10, xheight]
 
     ],
     w: [
       [0, xheight],
-      [5, 0 ],
+      [5, 0],
       [10, xheight],
-      [15, 0 ],
+      [15, 0],
       [20, xheight],
     ],
     x: [
@@ -99,8 +107,8 @@ function Alphabet(xheight) {
       [0, 0],
       [5, 10],
       [10, 0, 'e'],
-      [3, xheight/2],
-      [7, xheight/2]
+      [3, xheight / 2],
+      [7, xheight / 2]
     ],
     C: [
       [10, 10],
@@ -149,11 +157,11 @@ function Alphabet(xheight) {
       [0, 10],
       [10, 10]
     ],
-    T:[
-      [0,10],
-      [10,10, 'e'],
-      [5,10],
-      [5,0]
+    T: [
+      [0, 10],
+      [10, 10, 'e'],
+      [5, 10],
+      [5, 0]
     ],
     U: [
       [0, 10],
@@ -163,14 +171,14 @@ function Alphabet(xheight) {
     ],
     V: [
       [0, 10],
-      [5, 0 ],
+      [5, 0],
       [10, 10]
     ],
     W: [
       [0, 10],
-      [5, 0 ],
+      [5, 0],
       [10, 10],
-      [15, 0 ],
+      [15, 0],
       [20, 10]
 
     ],
