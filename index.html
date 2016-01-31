@@ -5,13 +5,14 @@
   <meta charset="UTF-8">
   <title>Glypher</title>
   <script type="text/javascript" src="bower_components/paper/dist/paper-full.min.js"></script>
-  <script type="text/javascript" src="/bower_components/opentype.js/dist/opentype.js"></script>
+  <script type="text/javascript" src="bower_components/opentype.js/dist/opentype.js"></script>
   <script type="text/javascript" src="alphabet.js"></script>
   <script type="text/javascript" src="glypher.js"></script>
 </head>
 
 <body>
   <canvas id="myCanvas" resize width="3000" height="400"></canvas>
+  <div id='glyphs'></div>
   <script type="text/javascript">
     window.onload = function() {
       var generator = new Generator({
@@ -21,6 +22,8 @@
       });
       generator.generate();
       console.log(generator);
+
+      generator.exportOpentype();
 
       var baseline = 200,
         letterSpacing = 100,

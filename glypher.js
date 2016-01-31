@@ -5,7 +5,6 @@ function Generator(options) {
   var canvas = document.getElementById('myCanvas');
   paper.setup(canvas);
 
-  console.log(options);
   options = options || {};
   this.proportion = options.proportion || (options.height / options.width) || 1;
 
@@ -14,6 +13,7 @@ function Generator(options) {
 
   this.alphabet = options.alphabet || new Alphabet(options.xheight, options.descender);
   this.glyphs = [];
+  this.opentype = undefined;
 }
 
 Generator.prototype.generate = function() {
@@ -75,7 +75,7 @@ Generator.prototype.generateGlyph = function(name, points) {
     path.add(p1.add(box.multiply([x * -1, y * -1])));
     path.add(p1.add(box.multiply([x, y * -1])));
 
-    if ( i + 1 !== points.length - 1 && points[i + 1][2] !== 'e' || vector.angle % 90 === 0) {
+    if (i + 1 !== points.length - 1 && points[i + 1][2] !== 'e' || vector.angle % 90 === 0) {
       path.add(p2.add(box.multiply([x, y * -1])));
     }
     path.add(p2.add(box.multiply([x, y])));
@@ -100,6 +100,88 @@ Generator.prototype.generateGlyph = function(name, points) {
   glyph.path = glyph.mergeSegments(segments);
 
   return glyph;
+};
+
+Generator.prototype.exportOpentype = function() {
+  var opentypeGlyphs = [];
+
+  if (!this.glyphs.notdef) {
+    var notdefPath = new opentype.Path();
+    notdefPath.moveTo(100, 0);
+    notdefPath.lineTo(100, 700);
+    notdefPath.lineTo(600, 700);
+    notdefPath.lineTo(600, 0);
+    notdefPath.moveTo(200, 100);
+    notdefPath.lineTo(500, 100);
+    notdefPath.lineTo(500, 600);
+    notdefPath.lineTo(200, 600);
+    opentypeGlyphs.push(new opentype.Glyph({
+      name: '.notdef',
+      unicode: 0,
+      advanceWidth: 650,
+      path: notdefPath
+    }));
+  }
+
+  for (var x in this.glyphs) {
+    var glyph = this.glyphs[x];
+    var path = new opentype.Path();
+    if (glyph.path.children) {
+      // FIXME
+    } else {
+      // FIXME: y * -1, * 10
+      path.moveTo(Math.round(glyph.path.segments[0].point.x * 10), Math.round(glyph.path.segments[0].point.y * -10));
+      for (var i = 1; i < glyph.path.segments.length; i++) {
+        var p = glyph.path.segments[i].point;
+        path.lineTo(Math.round(glyph.path.segments[i].point.x) * 10, Math.round(glyph.path.segments[i].point.y * -10));
+      }
+    }
+    if (path.commands.length !== 0) {
+      opentypeGlyphs.push(new opentype.Glyph({
+        name: glyph.name,
+        unicode: glyph.name.charCodeAt(),
+        advanceWidth: 650,
+        path: path
+      }));
+    }
+  }
+  this.font = new opentype.Font({
+    familyName: 'GlypherStandart',
+    styleName: 'Medium',
+    unitsPerEm: 1000,
+    ascender: 800,
+    descender: -200,
+    glyphs: opentypeGlyphs
+  });
+
+  var buffer = this.font.toArrayBuffer();
+  var font2 = opentype.parse(buffer);
+
+  //debugging
+
+  for (var i = 0; i < font2.glyphs.length; i++) {
+    var g = font2.glyphs.get(i);
+    var ctx = createGlyphCanvas(g, 150);
+    var x = 20;
+    var y = 120;
+    var fontSize = 72;
+    g.draw(ctx, x, y, fontSize);
+    g.drawPoints(ctx, x, y, fontSize);
+    g.drawMetrics(ctx, x, y, fontSize);
+  }
+
+  function createGlyphCanvas(glyph, size) {
+    var canvasId, html, glyphsDiv, wrap, canvas, ctx;
+    canvasId = 'glyph_' + glyph.name;
+    html = '<canvas id="' + canvasId + '" width="' + size + '" height="' + size + '"></canvas>';
+    glyphsDiv = document.getElementById('glyphs');
+    wrap = document.createElement('span');
+    wrap.innerHTML = html;
+    glyphsDiv.appendChild(wrap);
+    canvas = document.getElementById(canvasId);
+    ctx = canvas.getContext('2d');
+    return ctx;
+  }
 };
 
 Glyph.prototype.mergeSegments = function(segments) {
