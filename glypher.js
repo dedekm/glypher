@@ -127,7 +127,14 @@ Generator.prototype.exportOpentype = function() {
     var glyph = this.glyphs[x];
     var path = new opentype.Path();
     if (glyph.path.children) {
-      // FIXME
+      for (var j = 0; j < glyph.path.children.length; j++) {
+        // FIXME: y * -1, * 10
+        path.moveTo(Math.round(glyph.path.children[j].segments[0].point.x * 10), Math.round(glyph.path.children[j].segments[0].point.y * -10));
+        for (var i = 1; i < glyph.path.children[j].segments.length; i++) {
+          var p = glyph.path.children[j].segments[i].point;
+          path.lineTo(Math.round(glyph.path.children[j].segments[i].point.x) * 10, Math.round(glyph.path.children[j].segments[i].point.y * -10));
+        }
+      }
     } else {
       // FIXME: y * -1, * 10
       path.moveTo(Math.round(glyph.path.segments[0].point.x * 10), Math.round(glyph.path.segments[0].point.y * -10));
