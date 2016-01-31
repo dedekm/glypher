@@ -127,13 +127,13 @@ Generator.prototype.exportOpentype = function() {
   for (var x in this.glyphs) {
     var glyph = this.glyphs[x];
     var path = new opentype.Path();
-    var i;
+    var i, p;
     if (glyph.path.children) {
       for (var j = 0; j < glyph.path.children.length; j++) {
         // FIXME: y * -1, * 10
         path.moveTo(Math.round(glyph.path.children[j].segments[0].point.x * 10), Math.round(glyph.path.children[j].segments[0].point.y * -10));
         for (i = 1; i < glyph.path.children[j].segments.length; i++) {
-          var p = glyph.path.children[j].segments[i].point;
+          p = glyph.path.children[j].segments[i].point;
           path.lineTo(Math.round(glyph.path.children[j].segments[i].point.x) * 10, Math.round(glyph.path.children[j].segments[i].point.y * -10));
         }
       }
@@ -141,7 +141,7 @@ Generator.prototype.exportOpentype = function() {
       // FIXME: y * -1, * 10
       path.moveTo(Math.round(glyph.path.segments[0].point.x * 10), Math.round(glyph.path.segments[0].point.y * -10));
       for (i = 1; i < glyph.path.segments.length; i++) {
-        var p = glyph.path.segments[i].point;
+        p = glyph.path.segments[i].point;
         path.lineTo(Math.round(glyph.path.segments[i].point.x) * 10, Math.round(glyph.path.segments[i].point.y * -10));
       }
     }
@@ -160,6 +160,14 @@ Generator.prototype.exportOpentype = function() {
       }));
     }
   }
+
+  opentypeGlyphs.push(new opentype.Glyph({
+    name: 'space',
+    unicode: 32,
+    advanceWidth: 1000,
+    path: new opentype.Path()
+  }));
+
   this.font = new opentype.Font({
     familyName: 'GlypherStandart',
     styleName: 'Medium',
