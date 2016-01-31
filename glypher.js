@@ -10,8 +10,9 @@ function Generator(options) {
 
   this.weight = options.weight || 20;
   this.contrast = options.contrast || 5;
+  this.descender = options.descender || -3;
 
-  this.alphabet = options.alphabet || new Alphabet(options.xheight, options.descender);
+  this.alphabet = options.alphabet || new Alphabet(options.xheight, this.descender);
   this.glyphs = [];
   this.opentype = undefined;
 }
@@ -164,7 +165,7 @@ Generator.prototype.exportOpentype = function() {
     styleName: 'Medium',
     unitsPerEm: 1000,
     ascender: 800,
-    descender: -200,
+    descender: this.descender * 100,
     glyphs: opentypeGlyphs
   });
 
