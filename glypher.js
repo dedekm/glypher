@@ -155,7 +155,7 @@ Generator.prototype.exportOpentype = function() {
       opentypeGlyphs.push(new opentype.Glyph({
         name: glyph.name,
         unicode: unicode,
-        advanceWidth: glyph.width * 10,
+        advanceWidth: glyph.width * 10 + 100,
         path: path
       }));
     }
