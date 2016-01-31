@@ -3,6 +3,13 @@ function Alphabet(xheight, descender) {
   descender = descender || -3;
 
   this.glyphs = {
+    '.notdef': [
+      [0, 0],
+      [0, 10],
+      [10, 10],
+      [10, 0],
+      [0, 0]
+    ],
     a: [
       [0, xheight],
       [10, xheight],
@@ -73,11 +80,11 @@ function Alphabet(xheight, descender) {
     k: [
       [0, 10],
       [0, 0, 'e'],
-      [0, xheight/2],
-      [5, xheight/2],
+      [0, xheight / 2],
+      [5, xheight / 2],
       [10, xheight, 'e'],
-      [0, xheight/2],
-      [5, xheight/2],
+      [0, xheight / 2],
+      [5, xheight / 2],
       [10, 0]
     ],
     l: [

@@ -105,7 +105,7 @@ Generator.prototype.generateGlyph = function(name, points) {
 Generator.prototype.exportOpentype = function() {
   var opentypeGlyphs = [];
 
-  if (!this.glyphs.notdef) {
+  if (!this.glyphs['.notdef']) {
     var notdefPath = new opentype.Path();
     notdefPath.moveTo(100, 0);
     notdefPath.lineTo(100, 700);
@@ -126,11 +126,12 @@ Generator.prototype.exportOpentype = function() {
   for (var x in this.glyphs) {
     var glyph = this.glyphs[x];
     var path = new opentype.Path();
+    var i;
     if (glyph.path.children) {
       for (var j = 0; j < glyph.path.children.length; j++) {
         // FIXME: y * -1, * 10
         path.moveTo(Math.round(glyph.path.children[j].segments[0].point.x * 10), Math.round(glyph.path.children[j].segments[0].point.y * -10));
-        for (var i = 1; i < glyph.path.children[j].segments.length; i++) {
+        for (i = 1; i < glyph.path.children[j].segments.length; i++) {
           var p = glyph.path.children[j].segments[i].point;
           path.lineTo(Math.round(glyph.path.children[j].segments[i].point.x) * 10, Math.round(glyph.path.children[j].segments[i].point.y * -10));
         }
@@ -138,16 +139,22 @@ Generator.prototype.exportOpentype = function() {
     } else {
       // FIXME: y * -1, * 10
       path.moveTo(Math.round(glyph.path.segments[0].point.x * 10), Math.round(glyph.path.segments[0].point.y * -10));
-      for (var i = 1; i < glyph.path.segments.length; i++) {
+      for (i = 1; i < glyph.path.segments.length; i++) {
         var p = glyph.path.segments[i].point;
         path.lineTo(Math.round(glyph.path.segments[i].point.x) * 10, Math.round(glyph.path.segments[i].point.y * -10));
       }
     }
     if (path.commands.length !== 0) {
+      var unicode;
+      if (glyph.name == '.notdef') {
+        unicode = 0;
+      } else {
+        unicode = glyph.name.charCodeAt();
+      }
       opentypeGlyphs.push(new opentype.Glyph({
         name: glyph.name,
-        unicode: glyph.name.charCodeAt(),
-        advanceWidth: 650,
+        unicode: unicode,
+        advanceWidth: glyph.width * 10,
         path: path
       }));
     }
