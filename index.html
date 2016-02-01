@@ -24,6 +24,8 @@
       generator.generate();
       console.log(generator);
 
+      generator.mergeGlyphsWith(new Path.Circle([30,-30], 40),'abc');
+
       generator.exportOpentype();
 
       var baseline = 200,
