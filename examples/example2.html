@@ -30,6 +30,7 @@
         }
         var newGlyphs = {};
         var availableGlyphs = this.alphabet.availableGlyphs();
+        // FIXME: because of different weight, glyph is drawn at different position
         this.weight = options.weight || this.weight;
         this.contrast = options.contrast || this.contrast;
         this.xshift = options.xshift || 0;
