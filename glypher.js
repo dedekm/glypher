@@ -98,6 +98,24 @@ Generator.prototype.generateGlyph = function(name, points) {
     path.add(p2.add(box.multiply([x, y])));
     path.add(p2.add(box.multiply([x * -1, y])));
 
+
+    // FIXME: round edges
+    // var c = new Path.Circle({
+    //   center: [0, 0],
+    //   radius: this.weight
+    // });
+    //
+    // c.rotate(vector.angle);
+    // c.position = p1;
+    // path.add(c.segments[3]);
+    // path.add(c.segments[0]);
+    // path.add(c.segments[1]);
+    //
+    // c.position = p2;
+    // path.add(c.segments[1]);
+    // path.add(c.segments[2]);
+    // path.add(c.segments[3]);
+
     path.reduce();
     path.closed = true;
 
