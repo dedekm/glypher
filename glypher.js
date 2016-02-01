@@ -115,6 +115,30 @@ Generator.prototype.generateGlyph = function(name, points) {
   return glyph;
 };
 
+function drawOpentypePath(path) {
+  var resultPath = new opentype.Path();
+
+  // FIXME: y * -1, * 10
+  resultPath.moveTo(Math.round(path.segments[0].point.x * 10), Math.round(path.segments[0].point.y * -10));
+  for (i = 0; i < path.curves.length; i++) {
+    var x1 = Math.round(path.curves[i].point1.x) * 10;
+    var y1 = Math.round(path.curves[i].point1.y * -10);
+    var x2 = Math.round(path.curves[i].point2.x) * 10;
+    var y2 = Math.round(path.curves[i].point2.y * -10);
+    var hx1 = path.curves[i].handle1.x * 11;
+    var hy1 = path.curves[i].handle1.y * -11;
+    var hx2 = path.curves[i].handle2.x * 11;
+    var hy2 = path.curves[i].handle2.y * -11;
+
+    if (hx1 + hy1 + hx2 + hy2 === 0)
+      resultPath.lineTo(x2, y2);
+    else
+      resultPath.curveTo(x1 + hx1, y1 + hy1, x2 + hx2, y2 + hy2, x2, y2);
+  }
+
+  return resultPath;
+}
+
 Generator.prototype.exportOpentype = function() {
   var opentypeGlyphs = [];
 
@@ -140,6 +164,7 @@ Generator.prototype.exportOpentype = function() {
     var glyph = this.glyphs[x];
     var path = new opentype.Path();
     var i, p;
+
     if (glyph.path.children) {
       for (var j = 0; j < glyph.path.children.length; j++) {
         // FIXME: y * -1, * 10
@@ -150,12 +175,7 @@ Generator.prototype.exportOpentype = function() {
         }
       }
     } else {
-      // FIXME: y * -1, * 10
-      path.moveTo(Math.round(glyph.path.segments[0].point.x * 10), Math.round(glyph.path.segments[0].point.y * -10));
-      for (i = 1; i < glyph.path.segments.length; i++) {
-        p = glyph.path.segments[i].point;
-        path.lineTo(Math.round(glyph.path.segments[i].point.x) * 10, Math.round(glyph.path.segments[i].point.y * -10));
-      }
+      path = drawOpentypePath(glyph.path);
     }
     if (path.commands.length !== 0) {
       var unicode;
