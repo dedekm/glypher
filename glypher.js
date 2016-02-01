@@ -172,8 +172,8 @@ Generator.prototype.exportOpentype = function() {
     familyName: 'GlypherStandart',
     styleName: 'Medium',
     unitsPerEm: 1000,
-    ascender: 800,
-    descender: this.descender * 100,
+    ascender: 1000,
+    descender: this.descender * 150,
     glyphs: opentypeGlyphs
   });
 
