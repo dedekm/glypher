@@ -111,29 +111,35 @@ Generator.prototype.generateGlyph = function(name, points) {
     }
   }
   glyph.path = glyph.mergeSegments(segments);
-
+  glyph.path.reduce();
+  
   return glyph;
 };
 
 function drawOpentypePath(path) {
-  var resultPath = new opentype.Path();
+  var resultPath = new opentype.Path(),
+    paths = path.children || [path];
 
-  // FIXME: y * -1, * 10
-  resultPath.moveTo(Math.round(path.segments[0].point.x * 10), Math.round(path.segments[0].point.y * -10));
-  for (i = 0; i < path.curves.length; i++) {
-    var x1 = Math.round(path.curves[i].point1.x) * 10;
-    var y1 = Math.round(path.curves[i].point1.y * -10);
-    var x2 = Math.round(path.curves[i].point2.x) * 10;
-    var y2 = Math.round(path.curves[i].point2.y * -10);
-    var hx1 = path.curves[i].handle1.x * 11;
-    var hy1 = path.curves[i].handle1.y * -11;
-    var hx2 = path.curves[i].handle2.x * 11;
-    var hy2 = path.curves[i].handle2.y * -11;
+  for (var j = 0; j < paths.length; j++) {
+    // FIXME: y * -1, * 10
+    resultPath.moveTo(Math.round(paths[j].curves[0].point1.x * 10), Math.round(paths[j].curves[0].point1.y * -10));
+    for (i = 0; i < paths[j].curves.length; i++) {
+      var curve = paths[j].curves[i];
 
-    if (hx1 + hy1 + hx2 + hy2 === 0)
-      resultPath.lineTo(x2, y2);
-    else
-      resultPath.curveTo(x1 + hx1, y1 + hy1, x2 + hx2, y2 + hy2, x2, y2);
+      var x1 = Math.round(curve.point1.x * 10);
+      var y1 = Math.round(curve.point1.y * -10);
+      var x2 = Math.round(curve.point2.x * 10);
+      var y2 = Math.round(curve.point2.y * -10);
+      var hx1 = curve.handle1.x * 10;
+      var hy1 = curve.handle1.y * -10;
+      var hx2 = curve.handle2.x * 10;
+      var hy2 = curve.handle2.y * -10;
+
+      if (hx1 + hy1 + hx2 + hy2 === 0)
+        resultPath.lineTo(x2, y2);
+      else
+        resultPath.curveTo(x1 + hx1, y1 + hy1, x2 + hx2, y2 + hy2, x2, y2);
+    }
   }
 
   return resultPath;
@@ -162,21 +168,9 @@ Generator.prototype.exportOpentype = function() {
 
   for (var x in this.glyphs) {
     var glyph = this.glyphs[x];
-    var path = new opentype.Path();
-    var i, p;
 
-    if (glyph.path.children) {
-      for (var j = 0; j < glyph.path.children.length; j++) {
-        // FIXME: y * -1, * 10
-        path.moveTo(Math.round(glyph.path.children[j].segments[0].point.x * 10), Math.round(glyph.path.children[j].segments[0].point.y * -10));
-        for (i = 1; i < glyph.path.children[j].segments.length; i++) {
-          p = glyph.path.children[j].segments[i].point;
-          path.lineTo(Math.round(glyph.path.children[j].segments[i].point.x) * 10, Math.round(glyph.path.children[j].segments[i].point.y * -10));
-        }
-      }
-    } else {
-      path = drawOpentypePath(glyph.path);
-    }
+    var path = drawOpentypePath(glyph.path);
+
     if (path.commands.length !== 0) {
       var unicode;
       if (glyph.name == '.notdef') {
