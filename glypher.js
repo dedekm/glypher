@@ -13,6 +13,7 @@ function Generator(options) {
   this.descender = options.descender || -3;
   this.xshift = options.xshift || 0;
   this.yshift = options.yshift || 0;
+  this.italic = options.italic || 0;
 
   this.alphabet = options.alphabet || new Alphabet(options.xheight, this.descender);
   this.glyphs = [];
@@ -86,17 +87,34 @@ Generator.prototype.generateGlyph = function(name, points) {
     var x = sign(vector.x);
     var y = sign(vector.y);
 
+    var b;
     if (i !== 0 && points[i - 1][2] !== 'e' || vector.angle % 90 === 0) {
-      path.add(p1.add(box.multiply([x * -1, y])));
+      b = p1.add(box.multiply([x * -1, y]));
+      b = b.add(b.y * -1 * this.italic, 0);
+      path.add(b);
     }
-    path.add(p1.add(box.multiply([x * -1, y * -1])));
-    path.add(p1.add(box.multiply([x, y * -1])));
+
+    b = p1.add(box.multiply([x * -1, y * -1]));
+    b = b.add(b.y * -1 * this.italic, 0);
+    path.add(b);
+
+    b = p1.add(box.multiply([x, y * -1]));
+    b = b.add(b.y * -1 * this.italic, 0);
+    path.add(b);
 
     if (i + 1 !== points.length - 1 && points[i + 1][2] !== 'e' || vector.angle % 90 === 0) {
-      path.add(p2.add(box.multiply([x, y * -1])));
+      b = p2.add(box.multiply([x, y * -1]));
+      b = b.add(b.y * -1 * this.italic, 0);
+      path.add(b);
     }
-    path.add(p2.add(box.multiply([x, y])));
-    path.add(p2.add(box.multiply([x * -1, y])));
+
+    b = p2.add(box.multiply([x, y]));
+    b = b.add(b.y * -1 * this.italic, 0);
+    path.add(b);
+
+    b = p2.add(box.multiply([x * -1, y]));
+    b = b.add(b.y * -1 * this.italic, 0);
+    path.add(b);
 
 
     // FIXME: round edges
