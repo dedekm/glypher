@@ -156,22 +156,36 @@ function Alphabet(xheight, descender) {
     ],
     v: [
       [0, xheight],
+      [0, xheight / 2],
       [5, 0],
+      [10, xheight / 2],
       [10, xheight]
 
     ],
     w: [
       [0, xheight],
+      [0, xheight / 2],
       [5, 0],
-      [10, xheight],
+      [10, xheight / 2],
+      [10, xheight, ' e'],
+      [10, xheight / 2],
       [15, 0],
-      [20, xheight],
+      [20, xheight / 2],
+      [20, xheight]
     ],
     x: [
+      // [0, 0],
+      // [10, xheight, 'e'],
+      // [0, xheight],
+      // [10, 0]
       [0, 0],
+      [0, xheight / 6],
+      [10, xheight - xheight / 6],
       [10, xheight, 'e'],
-      [0, xheight],
-      [10, 0]
+      [10, 0],
+      [10, xheight / 6],
+      [0, xheight - xheight / 6],
+      [0, xheight, 'e']
     ],
     z: [
       [10, 0],
@@ -186,7 +200,7 @@ function Alphabet(xheight, descender) {
       [3, xheight / 2],
       [7, xheight / 2]
     ],
-    B:  [
+    B: [
       [0, 0],
       [0, 10],
       [10, 10],
@@ -201,7 +215,7 @@ function Alphabet(xheight, descender) {
       [0, 0],
       [10, 0]
     ],
-    D:  [
+    D: [
       [0, 0],
       [0, 10],
       [10, 10],
@@ -223,7 +237,7 @@ function Alphabet(xheight, descender) {
       [0, xheight],
       [10, xheight]
     ],
-    G:  [
+    G: [
       [10, 10],
       [0, 10],
       [0, 0],
@@ -232,12 +246,12 @@ function Alphabet(xheight, descender) {
       // [9, xheight]
     ],
     H: [
-      [0,0],
-      [0,10, 'e'],
-      [10,0],
-      [10,10, 'e'],
-      [0,xheight],
-      [10,xheight]
+      [0, 0],
+      [0, 10, 'e'],
+      [10, 0],
+      [10, 10, 'e'],
+      [0, xheight],
+      [10, xheight]
     ],
     I: [
       [0, 10],
@@ -279,22 +293,32 @@ function Alphabet(xheight, descender) {
     ],
     V: [
       [0, 10],
+      [0, xheight / 2],
       [5, 0],
+      [10, xheight / 2],
       [10, 10]
     ],
     W: [
       [0, 10],
+      [0, xheight / 2],
       [5, 0],
-      [10, 10],
+      [10, xheight / 2],
+      [10, 10, ' e'],
+      [10, xheight / 2],
       [15, 0],
+      [20, xheight / 2],
       [20, 10]
 
     ],
     X: [
       [0, 0],
+      [0, xheight / 2 - 1],
+      [10, 10 - xheight / 2 + 1],
       [10, 10, 'e'],
-      [0, 10],
-      [10, 0]
+      [10, 0],
+      [10, xheight / 2 - 1],
+      [0, 10 - xheight / 2 + 1],
+      [0, 10, 'e']
     ],
     Z: [
       [10, 0],
