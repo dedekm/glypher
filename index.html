@@ -13,9 +13,10 @@
 <body>
   <canvas id="myCanvas" resize width="3000" height="400"></canvas>
   <div id='glyphs'></div>
+  <button onclick="generator.font.download()">Download Font</button>
   <script type="text/javascript">
     window.onload = function() {
-      var generator = new Generator({
+      window.generator = new Generator({
         height: 10,
         width: 5,
         xheight: 7
