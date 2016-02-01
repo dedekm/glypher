@@ -14,6 +14,7 @@ function Generator(options) {
   this.xshift = options.xshift || 0;
   this.yshift = options.yshift || 0;
   this.italic = options.italic || 0;
+  this.segmentReduction = options.segmentReduction;
 
   this.size = 10;
 
@@ -86,6 +87,15 @@ Generator.prototype.generateGlyph = function(name, points) {
     var vector = p2.subtract(p1);
     var x = sign(vector.x);
     var y = sign(vector.y);
+
+    // WIP
+    if(this.segmentReduction) {
+      vector.length -= this.segmentReduction * 5;
+      p2 = p1.add(vector);
+      var vector2 = p1.subtract(p2);
+      vector2.length -= this.segmentReduction * 5;
+      p1 = p2.add(vector2);
+    }
 
     var b;
     if (i !== 0 && points[i - 1][2] !== 'e' || vector.angle % 90 === 0) {
