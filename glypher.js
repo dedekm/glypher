@@ -11,6 +11,8 @@ function Generator(options) {
   this.weight = options.weight || 20;
   this.contrast = options.contrast || 5;
   this.descender = options.descender || -3;
+  this.xshift = options.xshift || 0;
+  this.yshift = options.yshift || 0;
 
   this.alphabet = options.alphabet || new Alphabet(options.xheight, this.descender);
   this.glyphs = [];
@@ -71,12 +73,14 @@ Generator.prototype.generateGlyph = function(name, points) {
     var p1 = new Point(points[i])
       .multiply([glyph.size / glyph.proportion, glyph.size - (glyph.contrast * 2 / glyph.size)])
       .add(glyph.weight, glyph.contrast)
-      .multiply(1, -1);
+      .multiply(1, -1)
+      .add(this.xshift, this.yshift);
 
     var p2 = new Point(points[i + 1])
       .multiply([glyph.size / glyph.proportion, glyph.size - (glyph.contrast * 2 / glyph.size)])
       .add(glyph.weight, glyph.contrast)
-      .multiply(1, -1);
+      .multiply(1, -1)
+      .add(this.xshift, this.yshift);
 
     var vector = p2.subtract(p1);
     var x = sign(vector.x);
@@ -112,7 +116,7 @@ Generator.prototype.generateGlyph = function(name, points) {
   }
   glyph.path = glyph.mergeSegments(segments);
   glyph.path.reduce();
-  
+
   return glyph;
 };
 
@@ -215,7 +219,7 @@ Generator.prototype.exportOpentype = function() {
     var y = 120;
     var fontSize = 72;
     g.draw(ctx, x, y, fontSize);
-    g.drawPoints(ctx, x, y, fontSize);
+    // g.drawPoints(ctx, x, y, fontSize);
     g.drawMetrics(ctx, x, y, fontSize);
   }
 

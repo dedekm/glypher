@@ -32,15 +32,17 @@
         var availableGlyphs = this.alphabet.availableGlyphs();
         this.weight = options.weight || this.weight;
         this.contrast = options.contrast || this.contrast;
+        this.xshift = options.xshift || 0;
+        this.yshift = options.yshift || 0;
 
         for (var i = 0; i < availableGlyphs.length; i++) {
           var glyph = this.generateGlyph(availableGlyphs[i], this.alphabet.glyphs[availableGlyphs[i]]);
           newGlyphs[glyph.name] = glyph;
           switch (options.type) {
-            // FIXME
-            // case 'unite':
-            //   this.glyphs[glyph.name].path = this.glyphs[glyph.name].path.unite(glyph.path);
-            //   break;
+            // FIXME: doesn't work if the paths are equal
+            case 'unite':
+              this.glyphs[glyph.name].path = this.glyphs[glyph.name].path.unite(glyph.path);
+              break;
             case 'subtract':
               this.glyphs[glyph.name].path = this.glyphs[glyph.name].path.subtract(glyph.path);
               break;
@@ -51,7 +53,9 @@
       generator.regenerate({
         type: 'subtract',
         weight: 5,
-        contrast: 5
+        contrast: 5,
+        xshift: 20,
+        yshift: 20
       });
 
       generator.exportOpentype();
