@@ -58,12 +58,12 @@ Generator.prototype.generateGlyph = function(name, points) {
 
     var p1 = new Point(points[i])
       .multiply([glyph.size / glyph.proportion, glyph.size - (glyph.contrast * 2 / glyph.size)])
-      .add(glyph.weight, glyph.size * 0.5)
+      .add(glyph.weight, glyph.contrast)
       .multiply(1, -1);
 
     var p2 = new Point(points[i + 1])
       .multiply([glyph.size / glyph.proportion, glyph.size - (glyph.contrast * 2 / glyph.size)])
-      .add(glyph.weight, glyph.size * 0.5)
+      .add(glyph.weight, glyph.contrast)
       .multiply(1, -1);
 
     var vector = p2.subtract(p1);
