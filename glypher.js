@@ -15,6 +15,8 @@ function Generator(options) {
   this.yshift = options.yshift || 0;
   this.italic = options.italic || 0;
 
+  this.size = 10;
+
   this.alphabet = options.alphabet || new Alphabet(options.xheight, this.descender);
   this.glyphs = [];
   this.opentype = undefined;
@@ -57,10 +59,17 @@ function Glyph(name, weight, contrast, proportion) {
   this.contrast = contrast;
   this.proportion = proportion;
 
-  this.size = 10;
   this.path = undefined;
   this.width = 0;
 }
+
+Generator.prototype.adjustPoint = function (point) {
+  return new Point(point)
+    .multiply([this.size / this.proportion, this.size - (this.contrast * 2 / this.size)])
+    .add(this.weight, this.contrast)
+    .multiply(1, -1)
+    .add(this.xshift, this.yshift);
+};
 
 Generator.prototype.generateGlyph = function(name, points) {
   var glyph = new Glyph(name, this.weight, this.contrast, this.proportion);
@@ -71,17 +80,8 @@ Generator.prototype.generateGlyph = function(name, points) {
   for (var i = 0; i < points.length - 1; i++) {
     var path = new Path();
 
-    var p1 = new Point(points[i])
-      .multiply([glyph.size / glyph.proportion, glyph.size - (glyph.contrast * 2 / glyph.size)])
-      .add(glyph.weight, glyph.contrast)
-      .multiply(1, -1)
-      .add(this.xshift, this.yshift);
-
-    var p2 = new Point(points[i + 1])
-      .multiply([glyph.size / glyph.proportion, glyph.size - (glyph.contrast * 2 / glyph.size)])
-      .add(glyph.weight, glyph.contrast)
-      .multiply(1, -1)
-      .add(this.xshift, this.yshift);
+    var p1 = this.adjustPoint(points[i]);
+    var p2 = this.adjustPoint(points[i + 1]);
 
     var vector = p2.subtract(p1);
     var x = sign(vector.x);
