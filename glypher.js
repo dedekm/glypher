@@ -340,22 +340,24 @@ Glyph.prototype.mergeSegments = function(segments) {
 };
 
 //DEBUG
-Glyph.prototype.draw = function(x, y) {
+Glyph.prototype.draw = function(x, y, debug) {
   //debugging
-  new Path.Circle({
-    center: [x, y],
-    radius: 3,
-    strokeColor: 'blue'
-  });
-  new Path.Circle({
-    center: [x + this.width, y],
-    radius: 3,
-    strokeColor: 'blue'
-  });
+  if (debug) {
+    new Path.Circle({
+      center: [x, y],
+      radius: 3,
+      strokeColor: 'blue'
+    });
+    new Path.Circle({
+      center: [x + this.width, y],
+      radius: 3,
+      strokeColor: 'blue'
+    });
+  }
 
   var path = this.path.clone();
   path.position = [x + path.position.x, y + path.position.y];
-  path.strokeColor = 'black';
+  path.fillColor = 'black';
 };
 
 function sign(x) {
