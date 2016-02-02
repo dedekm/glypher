@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Glypher Example 3</title>
+  <script type="text/javascript" src="../bower_components/paper/dist/paper-full.min.js"></script>
+  <script type="text/javascript" src="../bower_components/opentype.js/dist/opentype.js"></script>
+  <script type="text/javascript" src="../alphabet.js"></script>
+  <script type="text/javascript" src="../glypher.js"></script>
+</head>
+
+<body>
+  <canvas id="myCanvas" resize width="2000" height="1500"></canvas>
+  <div id='glyphs'></div>
+  <button onclick="generator.font.download()">Download Font</button>
+  <script type="text/javascript">
+    window.onload = function() {
+      window.generator = new Generator({
+        height: 10,
+        width: 5,
+        xheight: 7
+      });
+
+      for (var j = 0; j < 10; j++) {
+        generator.weight = 5 + j * 2;
+        generator.generate();
+        generator.exportOpentype();
+        var baseline = 200 + 110 * j,
+          letterSpacing = 100,
+          kerning = 20,
+          text = 'abcdefABCDEF';
+
+        for (var i = 1; i < text.length; i++) {
+          var glyph = generator.getGlyph(text[i]);
+          glyph.draw(letterSpacing, baseline);
+          letterSpacing += glyph.width + glyph.weight + kerning;
+        }
+        // generator.downloadOTF();
+      }
+      paper.view.draw();
+    }
+  </script>
+
+</body>
+
+</html>
