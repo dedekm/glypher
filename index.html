@@ -33,7 +33,7 @@
         kerning = 20,
         text = generator.alphabet.availableGlyphs();
 
-      for (var i = 1; i < text.length; i++) {
+      for (var i = 0; i < text.length; i++) {
         var glyph = generator.getGlyph(text[i]);
         glyph.draw(letterSpacing, baseline);
         letterSpacing += glyph.width + glyph.weight + kerning;

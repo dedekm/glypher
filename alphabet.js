@@ -189,7 +189,7 @@ function Alphabet(xheight, descender) {
       [0, xheight - xheight / 6],
       [0, xheight, 'e']
     ],
-    y:[
+    y: [
       [0, xheight],
       [0, 0],
       [10, 0],
@@ -331,12 +331,12 @@ function Alphabet(xheight, descender) {
       [10, xheight],
       [0, xheight]
     ],
-    Q:[
+    Q: [
       [0, 0],
       [0, 10],
       [10, 10],
       [10, 0],
-      [0, 0,'e'],
+      [0, 0, 'e'],
       [8, 0],
       // 0 - contrast ???
       [8, descender * 0.75],
@@ -391,13 +391,13 @@ function Alphabet(xheight, descender) {
       [0, 10 - xheight / 2 + 1],
       [0, 10, 'e']
     ],
-    Y:[
+    Y: [
       [0, 10],
       [0, 8],
-      [5, xheight/ 2],
+      [5, xheight / 2],
       [10, 8],
       [10, 10, 'e'],
-      [5, xheight /2],
+      [5, xheight / 2],
       [5, 0]
     ],
     Z: [
@@ -405,7 +405,44 @@ function Alphabet(xheight, descender) {
       [0, 0],
       [10, 10],
       [0, 10]
+    ],
+    '0': [
+      [0, 0],
+      [0, 10],
+      [10, 10],
+      [10, 0],
+      [0, 0]
+    ],
+    '1': [
+      [2, 0],
+      [2, 10],
+      [0, 10, 'e'],
+      [0, 0],
+      [4, 0]
+    ],
+    '2': [
+      [10, 0],
+      [0, 0],
+      [0, xheight],
+      [10, xheight],
+      [10, 10],
+      [0, 10]
+    ],
+    '3': [
+      [0, 0],
+      [10, 0],
+      [10, 10],
+      [0, 10, 'e'],
+      [10, xheight],
+      [0, xheight]
     ]
+  };
+
+  this.nameMap = {
+    '0': 'zero',
+    '1': 'one',
+    '2': 'two',
+    '3': 'three'
   };
 }
 Alphabet.prototype.maxHeight = function() {

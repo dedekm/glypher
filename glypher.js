@@ -210,9 +210,24 @@ function drawOpentypePath(path) {
 }
 
 Generator.prototype.exportOpentype = function() {
-  var opentypeGlyphs = [];
+  var opentypeGlyphs = [],
+    glyph,
+    path;
 
-  if (!this.glyphs['.notdef']) {
+  // HACK: .notdef have to be first defined
+  if (this.glyphs['.notdef']) {
+    glyph = this.glyphs['.notdef'];
+    path = drawOpentypePath(glyph.path);
+
+    if (path.commands.length !== 0) {
+      opentypeGlyphs.push(new opentype.Glyph({
+        name: '.notdef',
+        unicode: 0,
+        advanceWidth: glyph.width * 10 + 100,
+        path: path
+      }));
+    }
+  } else {
     var notdefPath = new opentype.Path();
     notdefPath.moveTo(100, 0);
     notdefPath.lineTo(100, 700);
@@ -231,20 +246,17 @@ Generator.prototype.exportOpentype = function() {
   }
 
   for (var x in this.glyphs) {
-    var glyph = this.glyphs[x];
+    // HACK: .notdef already defined
+    if (x == '.notdef')
+      continue;
 
-    var path = drawOpentypePath(glyph.path);
+    glyph = this.glyphs[x];
+    path = drawOpentypePath(glyph.path);
 
     if (path.commands.length !== 0) {
-      var unicode;
-      if (glyph.name == '.notdef') {
-        unicode = 0;
-      } else {
-        unicode = glyph.name.charCodeAt();
-      }
       opentypeGlyphs.push(new opentype.Glyph({
-        name: glyph.name,
-        unicode: unicode,
+        name: this.alphabet.nameMap[glyph.name] || glyph.name,
+        unicode: glyph.name.charCodeAt(),
         advanceWidth: glyph.width * 10 + 100,
         path: path
       }));
@@ -259,7 +271,7 @@ Generator.prototype.exportOpentype = function() {
   }));
 
   this.font = new opentype.Font({
-    familyName: 'GlypherStandart',
+    familyName: 'GlypherStandart' + Math.round(Math.random() * 1000),
     styleName: 'Medium',
     unitsPerEm: 1000,
     ascender: 1000,
