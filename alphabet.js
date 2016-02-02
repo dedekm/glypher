@@ -224,7 +224,7 @@ function Alphabet(xheight, descender, aeheight) {
       // [10, xheight],
       // [10, 0],
       // [0, 0],
-      [0, 8],
+      [0, xheight],
       [0, 10],
       [8, 10],
       [10, xheight],
