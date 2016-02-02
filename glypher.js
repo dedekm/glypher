@@ -79,7 +79,7 @@ Generator.prototype.drawDot = function(point, box) {
 };
 
 Generator.prototype.beforeGenerateGlyph = function () {
-  
+
 };
 
 Generator.prototype.generateGlyph = function(name, points) {
@@ -125,6 +125,8 @@ Generator.prototype.generateGlyph = function(name, points) {
 
     b = p1.add(box.multiply([x * -1, y * -1]));
     b = b.add(b.y * -1 * this.italic, 0);
+    // if (i === 0 || points[i - 1][2] === 'e' && vector.angle % 90 !== 0)
+    //   b = b.add(-20, 0);
     path.add(b);
 
     b = p1.add(box.multiply([x, y * -1]));
@@ -139,6 +141,11 @@ Generator.prototype.generateGlyph = function(name, points) {
 
     b = p2.add(box.multiply([x, y]));
     b = b.add(b.y * -1 * this.italic, 0);
+    // if (i + 1 !== points.length - 1 && points[i + 1][2] !== 'e' || vector.angle % 90 === 0) {
+    // }else{
+    //   var v = p1.subtract(p2);
+    //   b = b.add((this.contrast*2)/Math.tan(v.angleInRadians) * -1, 0);
+    // }
     path.add(b);
 
     b = p2.add(box.multiply([x * -1, y]));

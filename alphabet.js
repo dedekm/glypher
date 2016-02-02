@@ -435,6 +435,10 @@ function Alphabet(xheight, descender) {
       [0, 10, 'e'],
       [10, xheight],
       [0, xheight]
+    ],
+    '/': [
+      [0,0],
+      [5,10]
     ]
   };
 
@@ -442,7 +446,8 @@ function Alphabet(xheight, descender) {
     '0': 'zero',
     '1': 'one',
     '2': 'two',
-    '3': 'three'
+    '3': 'three',
+    '/': 'slash'
   };
 }
 Alphabet.prototype.maxHeight = function() {
