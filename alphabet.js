@@ -213,12 +213,22 @@ function Alphabet(xheight, descender, aeheight) {
       [7, xheight / 2]
     ],
     B: [
-      [0, xheight],
+      // [0, xheight],
+      // [0, 10],
+      // // FIXME: should depend on font weight
+      // [9, 10],
+      // [9, xheight],
+      // [0, xheight, 'e'],
+      // [0, 0],
+      // [0, xheight],
+      // [10, xheight],
+      // [10, 0],
+      // [0, 0],
+      [0, 8],
       [0, 10],
-      // FIXME: should depend on font weight
-      [9, 10],
-      [9, xheight],
-      [0, xheight, 'e'],
+      [8, 10],
+      [10, xheight],
+      [0, xheight , 'e'],
       [0, 0],
       [0, xheight],
       [10, xheight],
@@ -234,10 +244,10 @@ function Alphabet(xheight, descender, aeheight) {
     D: [
       [0, 0],
       [0, 10],
-      [5, 10],
+      [8, 10],
       [10, xheight],
       [10, 10 - xheight],
-      [5, 0],
+      [8, 0],
       [0, 0]
     ],
     E: [
