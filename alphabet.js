@@ -342,6 +342,17 @@ function Alphabet(xheight, descender) {
       [8, descender * 0.75],
       [10, descender * 0.75],
     ],
+    R:[
+      [0, 0],
+      [0, 10],
+      [10, 10],
+      [10, xheight],
+      [0, xheight, 'e'],
+      [5, xheight],
+      [10, xheight/2],
+      [10, 0]
+
+    ],
     S: [
       [0, 0],
       [10, 0],
