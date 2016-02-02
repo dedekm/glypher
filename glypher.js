@@ -221,7 +221,7 @@ function drawOpentypePath(path) {
   return resultPath;
 }
 
-Generator.prototype.exportOpentype = function(debug) {
+Generator.prototype.exportOpentype = function(options) {
   var opentypeGlyphs = [],
     glyph,
     path;
@@ -283,8 +283,8 @@ Generator.prototype.exportOpentype = function(debug) {
   }));
 
   this.font = new opentype.Font({
-    familyName: 'GlypherStandart' + Math.round(Math.random() * 1000),
-    styleName: 'Medium',
+    familyName: options.familyName || 'GlypherStandart',
+    styleName: options.styleName || 'Medium',
     unitsPerEm: 1000,
     ascender: 1000,
     descender: this.descender * 150,
@@ -295,7 +295,7 @@ Generator.prototype.exportOpentype = function(debug) {
   var font2 = opentype.parse(buffer);
 
   //debugging
-  if (debug) {
+  if (options.debug) {
     for (var i = 0; i < font2.glyphs.length; i++) {
       var g = font2.glyphs.get(i);
       var ctx = createGlyphCanvas(g, 150);
@@ -308,6 +308,7 @@ Generator.prototype.exportOpentype = function(debug) {
     }
   }
 
+  // FIXME: depends on div with id glyphs
   function createGlyphCanvas(glyph, size) {
     var canvasId, html, glyphsDiv, wrap, canvas, ctx;
     canvasId = 'glyph_' + glyph.name;

@@ -26,7 +26,11 @@
 
       // generator.mergeGlyphsWith(new Path.Circle([30,-30], 40),'abc');
 
-      generator.exportOpentype(true);
+      generator.exportOpentype({
+        familyName: 'GlypherStandart' + Math.round(Math.random() * 1000),
+        styleName: 'Medium',
+        debug: true
+      });
 
       var baseline = 200,
         letterSpacing = 100,
