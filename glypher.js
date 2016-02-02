@@ -78,7 +78,7 @@ Generator.prototype.drawDot = function(point, box) {
   return new Path.Rectangle(p1.subtract(box), p1.add(box));
 };
 
-Generator.prototype.beforeGenerateGlyph = function () {
+Generator.prototype.beforeGenerateGlyph = function() {
 
 };
 
@@ -221,7 +221,7 @@ function drawOpentypePath(path) {
   return resultPath;
 }
 
-Generator.prototype.exportOpentype = function() {
+Generator.prototype.exportOpentype = function(debug) {
   var opentypeGlyphs = [],
     glyph,
     path;
@@ -295,16 +295,17 @@ Generator.prototype.exportOpentype = function() {
   var font2 = opentype.parse(buffer);
 
   //debugging
-
-  for (var i = 0; i < font2.glyphs.length; i++) {
-    var g = font2.glyphs.get(i);
-    var ctx = createGlyphCanvas(g, 150);
-    var x = 20;
-    var y = 120;
-    var fontSize = 72;
-    g.draw(ctx, x, y, fontSize);
-    // g.drawPoints(ctx, x, y, fontSize);
-    g.drawMetrics(ctx, x, y, fontSize);
+  if (debug) {
+    for (var i = 0; i < font2.glyphs.length; i++) {
+      var g = font2.glyphs.get(i);
+      var ctx = createGlyphCanvas(g, 150);
+      x = 20;
+      var y = 120;
+      var fontSize = 72;
+      g.draw(ctx, x, y, fontSize);
+      // g.drawPoints(ctx, x, y, fontSize);
+      g.drawMetrics(ctx, x, y, fontSize);
+    }
   }
 
   function createGlyphCanvas(glyph, size) {
@@ -319,6 +320,13 @@ Generator.prototype.exportOpentype = function() {
     ctx = canvas.getContext('2d');
     return ctx;
   }
+};
+
+Generator.prototype.downloadOTF = function() {
+  if (this.font)
+    this.font.download();
+  else
+    console.log('use exportOpentype first');
 };
 
 Glyph.prototype.mergeSegments = function(segments) {

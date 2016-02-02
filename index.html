@@ -13,7 +13,7 @@
 <body>
   <canvas id="myCanvas" resize width="3000" height="400"></canvas>
   <div id='glyphs'></div>
-  <button onclick="generator.font.download()">Download Font</button>
+  <button onclick="generator.downloadOTF()">Download Font</button>
   <script type="text/javascript">
     window.onload = function() {
       window.generator = new Generator({
@@ -26,7 +26,7 @@
 
       // generator.mergeGlyphsWith(new Path.Circle([30,-30], 40),'abc');
 
-      generator.exportOpentype();
+      generator.exportOpentype(true);
 
       var baseline = 200,
         letterSpacing = 100,
