@@ -64,12 +64,17 @@ function Glyph(name, weight, contrast, proportion) {
   this.width = 0;
 }
 
-Generator.prototype.adjustPoint = function (point) {
+Generator.prototype.adjustPoint = function(point) {
   return new Point(point)
     .multiply([this.size / this.proportion, this.size - (this.contrast * 2 / this.size)])
     .add(this.weight, this.contrast)
     .multiply(1, -1)
     .add(this.xshift, this.yshift);
+};
+
+Generator.prototype.drawDot = function(point, box) {
+  var p1 = this.adjustPoint(point);
+  return new Path.Rectangle(p1.subtract(box), p1.add(box));
 };
 
 Generator.prototype.generateGlyph = function(name, points) {
@@ -78,7 +83,16 @@ Generator.prototype.generateGlyph = function(name, points) {
   var segments = [];
   var box = new Point(glyph.weight, glyph.contrast);
 
-  for (var i = 0; i < points.length - 1; i++) {
+  for (var i = 0; i < points.length; i++) {
+    //WIP
+    if (points[i][2] == 'dot') {
+      segments.push(this.drawDot(points[i], box));
+      continue;
+    }
+
+    if (i >= points.length - 1)
+      break;
+
     var path = new Path();
 
     var p1 = this.adjustPoint(points[i]);
@@ -89,7 +103,7 @@ Generator.prototype.generateGlyph = function(name, points) {
     var y = sign(vector.y);
 
     // WIP
-    if(this.segmentReduction) {
+    if (this.segmentReduction) {
       vector.length -= this.segmentReduction * 5;
       p2 = p1.add(vector);
       var vector2 = p1.subtract(p2);

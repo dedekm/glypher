@@ -70,12 +70,14 @@ function Alphabet(xheight, descender) {
     ],
     i: [
       [0, 0],
-      [0, xheight]
+      [0, xheight, 'e'],
+      [0, 10, 'dot']
     ],
     j: [
       [-2, descender],
       [1, descender],
-      [1, xheight]
+      [1, xheight, 'e'],
+      [1, 10, 'dot']
     ],
     k: [
       [0, 10],
