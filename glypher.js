@@ -50,7 +50,7 @@ Generator.prototype.getGlyph = function(name) {
   if (this.glyphs[name]) {
     return this.glyphs[name];
   } else {
-    console.log('glyph not defined');
+    console.log('glyph ' + glyph.name + ' not defined');
     return false;
   }
 };
