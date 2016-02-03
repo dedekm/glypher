@@ -28,7 +28,7 @@ Generator.prototype.generate = function() {
   var availableGlyphs = this.alphabet.availableGlyphs();
 
   for (var i = 0; i < availableGlyphs.length; i++) {
-    this.beforeGenerateGlyph();
+    this.beforeGenerateGlyph(availableGlyphs[i]);
     var glyph = this.generateGlyph(availableGlyphs[i], this.alphabet.glyphs[availableGlyphs[i]]);
     this.glyphs[glyph.name] = glyph;
   }
@@ -78,7 +78,7 @@ Generator.prototype.drawDot = function(point, box) {
   return new Path.Rectangle(p1.subtract(box), p1.add(box));
 };
 
-Generator.prototype.beforeGenerateGlyph = function() {
+Generator.prototype.beforeGenerateGlyph = function(name) {
 
 };
 
