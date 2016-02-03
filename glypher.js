@@ -216,7 +216,7 @@ function drawOpentypePath(path) {
       var hx2 = curve.handle2.x * 10;
       var hy2 = curve.handle2.y * -10;
 
-      if (hx1 + hy1 + hx2 + hy2 === 0)
+      if (hx1 + hy1 === 0 && hx2 + hy2 === 0)
         resultPath.lineTo(x2, y2);
       else
         resultPath.curveTo(x1 + hx1, y1 + hy1, x2 + hx2, y2 + hy2, x2, y2);
