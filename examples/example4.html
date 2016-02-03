@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>Glypher Example 3</title>
+  <title>Glypher Example 4</title>
   <script type="text/javascript" src="../bower_components/paper/dist/paper-full.min.js"></script>
   <script type="text/javascript" src="../bower_components/opentype.js/dist/opentype.js"></script>
   <script type="text/javascript" src="../alphabet.js"></script>
@@ -12,20 +12,22 @@
 
 <body>
   <canvas id="myCanvas" resize width="2000" height="1500"></canvas>
-  <div id='glyphs'></div>
-  <button onclick="generator.font.download()">Download Font</button>
+  <div id='buttons'></div>
   <script type="text/javascript">
     window.onload = function() {
-      window.generator = new Generator({
-        height: 10,
-        width: 5,
-        xheight: 7
-      });
-
       for (var j = 0; j < 10; j++) {
-        generator.weight = 5 + j * 2;
+        var generator = new Generator({
+          height: 10,
+          width: 5,
+          xheight: 7,
+          weight: 5 + j * 2
+        });
+
         generator.generate();
-        generator.exportOpentype();
+        generator.exportOpentype({
+          familyName: 'GlypherStandartX',
+          styleName: String(j + 1)
+        });
         var baseline = 200 + 110 * j,
           letterSpacing = 100,
           kerning = 20,
@@ -36,8 +38,23 @@
           glyph.draw(letterSpacing, baseline);
           letterSpacing += glyph.width + glyph.weight + kerning;
         }
-        // generator.downloadOTF();
+
+        var element = document.createElement("button");
+        //Assign different attributes to the element.
+        element.innerHTML = generator.font.names.fullName.en;
+        element.onclick = function () {
+          download(generator);
+        }
+
+        var div = document.getElementById("buttons");
+        div.appendChild(element);
       }
+
+      function download(generator) {
+        // generator.downloadOTF();
+        console.log(generator.font.names.fullName.en);
+      };
+
       paper.view.draw();
     }
   </script>
