@@ -30,6 +30,7 @@ Generator.prototype.generate = function() {
   for (var i = 0; i < availableGlyphs.length; i++) {
     this.beforeGenerateGlyph(availableGlyphs[i]);
     var glyph = this.generateGlyph(availableGlyphs[i], this.alphabet.glyphs[availableGlyphs[i]]);
+    this.afterGenerateGlyph(glyph);
     this.glyphs[glyph.name] = glyph;
   }
 };
@@ -79,6 +80,10 @@ Generator.prototype.drawDot = function(point, box) {
 };
 
 Generator.prototype.beforeGenerateGlyph = function(name) {
+
+};
+
+Generator.prototype.afterGenerateGlyph = function(glyph) {
 
 };
 
