@@ -35,6 +35,18 @@ Generator.prototype.generate = function() {
   }
 };
 
+Generator.prototype.generate2 = function() {
+  this.glyphs = {};
+  var availableGlyphs = this.alphabet.availableGlyphs();
+
+  for (var i = 0; i < availableGlyphs.length; i++) {
+    this.beforeGenerateGlyph(availableGlyphs[i]);
+    var glyph = this.generateGlyph2(availableGlyphs[i], this.alphabet.glyphs[availableGlyphs[i]]);
+    this.afterGenerateGlyph(glyph);
+    this.glyphs[glyph.name] = glyph;
+  }
+};
+
 Generator.prototype.mergeGlyphsWith = function(path, list) {
   if (!list) {
     list = this.alphabet.availableGlyphs();
@@ -196,6 +208,108 @@ Generator.prototype.generateGlyph = function(name, points) {
 
   return glyph;
 };
+
+//WIP
+Generator.prototype.generateGlyph2 = function(name, points) {
+  var glyph = new Glyph(name, this.weight, this.contrast, this.proportion);
+
+  var nextAngle,
+    corner,
+    segments = [];
+
+  for (var i = 0; i < points.length - 1; i++) {
+    var path = new Path();
+
+    var point1 = this.adjustPoint(points[i]);
+    var point2 = this.adjustPoint(points[i + 1]);
+
+    var previousAngle = nextAngle;
+    angle = 0;
+
+    var vector1 = point2.subtract(point1);
+    if (points[i + 2]) {
+      var vector2 = this.adjustPoint(points[i + 2]).subtract(point2);
+      nextAngle = vector1.rotate(180).getDirectedAngle(vector2);
+    }
+
+    var p1 = point1.add(5, 0).rotate(vector1.angle - 90, point1);
+    path.lineTo(p1);
+    var p2 = point1.add(5, 0).rotate(vector1.angle + 90, point1);
+    path.lineTo(p2);
+    var p3 = point2.add(5, 0).rotate(vector1.angle + 90, point2);
+    path.lineTo(p3);
+    var p4 = point2.add(5, 0).rotate(vector1.angle - 90, point2);
+    path.lineTo(p4);
+
+    var cornerPoint,
+      cornerPoint2;
+
+    if (previousAngle) {
+      if (previousAngle < 0) {
+        cornerPoint = p1;
+      } else {
+        cornerPoint = p2;
+      }
+      var previousVector = this.adjustPoint(points[i - 1]).subtract(points[i])
+      corner.lineTo(makeCorner(cornerPoint2, cornerPoint, previousVector, vector1));
+      corner.lineTo(makeCorner(cornerPoint, cornerPoint2, vector1, previousVector));
+      corner.lineTo(cornerPoint);
+      corner.lineTo(point1);
+
+      segments.push(corner);
+    }
+
+    if (nextAngle) {
+      corner = new Path();
+
+      if (nextAngle < 0) {
+        cornerPoint2 = p4;
+      } else {
+        cornerPoint2 = p3;
+      }
+      corner.lineTo(cornerPoint2);
+      corner.closed = true;
+    }
+
+
+    path.closed = true;
+
+    segments.push(path);
+
+    if (p1.x + glyph.weight > glyph.width)
+      glyph.width = p1.x + glyph.weight;
+
+    // FIXME: add last point
+    if (p2.x + glyph.weight > glyph.width)
+      glyph.width = p2.x + glyph.weight;
+
+  }
+
+  glyph.path = glyph.mergeSegments(segments);
+  glyph.path.reduce();
+
+  return glyph;
+};
+
+function makeCorner(p1, p2, vector2, vector3) {
+  var vector1 = p2.subtract(p1);
+
+  var rad1 = vector2.rotate(180).getAngleInRadians(vector1);
+  var rad2 = vector3.getAngleInRadians(vector1);
+
+  var x = (vector1.length * Math.sin(rad1)) / Math.sin(rad2 + rad1);
+
+  if (x > 30)
+    x = 30;
+
+  // if (x > 50)
+  //   x = 30;
+
+  var result = new Point(x, 0);
+  result = result.rotate(vector2.rotate(180).angle);
+  result = result.add(p1);
+  return result;
+}
 
 function drawOpentypePath(path) {
   var resultPath = new opentype.Path(),
