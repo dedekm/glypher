@@ -228,7 +228,7 @@ function Alphabet(xheight, descender, aeheight) {
       [0, 10],
       [8, 10],
       [10, xheight],
-      [0, xheight , 'e'],
+      [0, xheight, 'e'],
       [0, 0],
       [0, xheight],
       [10, xheight],
@@ -244,10 +244,10 @@ function Alphabet(xheight, descender, aeheight) {
     D: [
       [0, 0],
       [0, 10],
-      [8, 10],
+      [7, 10],
       [10, xheight],
       [10, 10 - xheight],
-      [8, 0],
+      [7, 0],
       [0, 0]
     ],
     E: [
@@ -317,7 +317,7 @@ function Alphabet(xheight, descender, aeheight) {
       [0, 0],
       [0, 10],
       [5, 10],
-      [10, 0],
+      [10, (10 - xheight) / 2],
       [15, 10],
       [20, 10],
       [20, 0]
@@ -325,6 +325,7 @@ function Alphabet(xheight, descender, aeheight) {
     N: [
       [0, 0],
       [0, 10],
+      [10, (10 - xheight) / 2],
       [10, 0],
       [10, 10]
     ],
@@ -353,14 +354,14 @@ function Alphabet(xheight, descender, aeheight) {
       [8, descender * 0.75],
       [10, descender * 0.75],
     ],
-    R:[
+    R: [
       [0, 0],
       [0, 10],
       [10, 10],
       [10, xheight],
       [0, xheight, 'e'],
       [5, xheight],
-      [10, xheight/2],
+      [10, xheight / 2],
       [10, 0]
 
     ],
@@ -487,16 +488,16 @@ function Alphabet(xheight, descender, aeheight) {
       [10, 0]
     ],
     '8': [
-        [0, xheight],
-        [0, 10],
-        [10, 10],
-        [10, xheight],
-        [0, xheight, 'e'],
-        [0, 0],
-        [0, xheight],
-        [10, xheight],
-        [10, 0],
-        [0, 0]
+      [0, xheight],
+      [0, 10],
+      [10, 10],
+      [10, xheight],
+      [0, xheight, 'e'],
+      [0, 0],
+      [0, xheight],
+      [10, xheight],
+      [10, 0],
+      [0, 0]
     ],
     '9': [
       [0, 0],
@@ -507,8 +508,8 @@ function Alphabet(xheight, descender, aeheight) {
       [10, xheight]
     ],
     '/': [
-      [0,0],
-      [5,10]
+      [0, 0],
+      [5, 10]
     ]
   };
 
