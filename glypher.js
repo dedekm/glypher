@@ -92,6 +92,7 @@ Generator.prototype.generateGlyph = function(name, points) {
 
   var segments = [];
   var box = new Point(glyph.weight, glyph.contrast);
+  var startPoint;
 
   for (var i = 0; i < points.length; i++) {
     //WIP
@@ -107,6 +108,13 @@ Generator.prototype.generateGlyph = function(name, points) {
 
     var p1 = this.adjustPoint(points[i]);
     var p2 = this.adjustPoint(points[i + 1]);
+
+    if (points[i+1][2] == 'c') {
+      p2 = startPoint;
+    } else {
+      p2 = this.adjustPoint(points[i + 1]);
+      startPoint = startPoint || p1;
+    }
 
     var vector = p2.subtract(p1);
     var x = sign(vector.x);
@@ -187,8 +195,9 @@ Generator.prototype.generateGlyph = function(name, points) {
     if (p2.x + glyph.weight > glyph.width)
       glyph.width = p2.x + glyph.weight;
 
-    if (points[i + 1][2] == 'e') {
+    if (points[i + 1][2] == 'e' || points[i + 1][2] == 'c') {
       i++;
+      startPoint = undefined;
     }
   }
   glyph.path = glyph.mergeSegments(segments);
