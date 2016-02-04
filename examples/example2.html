@@ -59,7 +59,9 @@
         yshift: 20
       });
 
-      generator.exportOpentype(true);
+      generator.exportOpentype({
+        debug:true
+      });
 
       var baseline = 200,
         letterSpacing = 100,
