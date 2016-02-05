@@ -226,14 +226,14 @@ function Alphabet(xheight, descender, aeheight) {
       // [0, 0],
       [0, xheight],
       [0, 10],
-      [8, 10],
-      [10, xheight],
+      [10, 10],
+      [8, xheight],
       [0, xheight, 'e'],
       [0, 0],
       [0, xheight],
       [10, xheight],
       [10, 0],
-      [0, 0],
+      [0, 0]
     ],
     C: [
       [10, 10],
@@ -282,8 +282,12 @@ function Alphabet(xheight, descender, aeheight) {
       [10, xheight]
     ],
     I: [
+      [2, 10],
+      [2, 0, 'e'],
+      [0, 0],
+      [4, 0, 'e'],
       [0, 10],
-      [0, 0]
+      [4, 10]
     ],
     J: [
       [10, 10],
