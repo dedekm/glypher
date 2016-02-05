@@ -16,7 +16,7 @@ function Generator(options) {
   this.italic = options.italic || 0;
   this.segmentReduction = options.segmentReduction;
 
-  this.size = 10;
+  this.size = 50;
 
   this.alphabet = options.alphabet || new Alphabet(options.xheight, this.descender);
   this.glyphs = [];
@@ -218,7 +218,9 @@ Generator.prototype.generateGlyph2 = function(name, points) {
     segments = [];
 
   for (var i = 0; i < points.length - 1; i++) {
-    var path = new Path();
+    var path = new Path({
+      strokeColor: 'black'
+    });
 
     var point1 = this.adjustPoint(points[i]);
     var point2 = this.adjustPoint(points[i + 1]);
@@ -232,13 +234,13 @@ Generator.prototype.generateGlyph2 = function(name, points) {
       nextAngle = vector1.rotate(180).getDirectedAngle(vector2);
     }
 
-    var p1 = point1.add(5, 0).rotate(vector1.angle - 90, point1);
+    var p1 = point1.add(25, 0).rotate(vector1.angle - 90, point1);
     path.lineTo(p1);
-    var p2 = point1.add(5, 0).rotate(vector1.angle + 90, point1);
+    var p2 = point1.add(25, 0).rotate(vector1.angle + 90, point1);
     path.lineTo(p2);
-    var p3 = point2.add(5, 0).rotate(vector1.angle + 90, point2);
+    var p3 = point2.add(25, 0).rotate(vector1.angle + 90, point2);
     path.lineTo(p3);
-    var p4 = point2.add(5, 0).rotate(vector1.angle - 90, point2);
+    var p4 = point2.add(25, 0).rotate(vector1.angle - 90, point2);
     path.lineTo(p4);
 
     var cornerPoint,
@@ -247,10 +249,14 @@ Generator.prototype.generateGlyph2 = function(name, points) {
     if (previousAngle) {
       if (previousAngle < 0) {
         cornerPoint = p1;
+        drawHelpPoint(p1, 'red');
+
       } else {
         cornerPoint = p2;
+        drawHelpPoint(p2, 'red');
+
       }
-      var previousVector = this.adjustPoint(points[i - 1]).subtract(points[i])
+      var previousVector = this.adjustPoint(points[i - 1]).subtract(point1);
       corner.lineTo(makeCorner(cornerPoint2, cornerPoint, previousVector, vector1));
       corner.lineTo(makeCorner(cornerPoint, cornerPoint2, vector1, previousVector));
       corner.lineTo(cornerPoint);
@@ -260,20 +266,25 @@ Generator.prototype.generateGlyph2 = function(name, points) {
     }
 
     if (nextAngle) {
-      corner = new Path();
+      corner = new Path({
+        fillColor: 'black'
+      });
+
 
       if (nextAngle < 0) {
         cornerPoint2 = p4;
+        drawHelpPoint(p4, 'red');
+
       } else {
         cornerPoint2 = p3;
+        drawHelpPoint(p3, 'red');
+
       }
       corner.lineTo(cornerPoint2);
       corner.closed = true;
     }
 
-
     path.closed = true;
-
     segments.push(path);
 
     if (p1.x + glyph.weight > glyph.width)
@@ -287,6 +298,10 @@ Generator.prototype.generateGlyph2 = function(name, points) {
 
   glyph.path = glyph.mergeSegments(segments);
   glyph.path.reduce();
+
+  var helpPath = glyph.path.clone();
+  helpPath.fillColor = 'black';
+  helpPath.position.x += 400;
 
   return glyph;
 };
@@ -483,4 +498,32 @@ Glyph.prototype.draw = function(x, y, debug) {
 function sign(x) {
   // 0 == 1
   return x >= 0 ? 1 : -1;
+}
+
+function drawGuideline(p1, p2) {
+  new paper.Path.Line({
+    from: p1,
+    to: p2,
+    strokeColor: 'blue'
+  });
+}
+
+function drawArrow(p, vector, color) {
+  var a = new Path({
+    strokeColor: color || 'blue'
+  });
+
+  a.moveTo(-15, -15);
+  a.lineTo(0, 0);
+  a.lineTo(-15, 15);
+  a.rotate(vector.angle, 0);
+  a.position = a.position.add(p);
+}
+
+function drawHelpPoint(p, color) {
+  new Path.Circle({
+    center: p,
+    radius: 3,
+    strokeColor: color || 'blue'
+  });
 }
