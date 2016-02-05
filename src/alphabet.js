@@ -548,3 +548,5 @@ Alphabet.prototype.maxHeight = function() {
 Alphabet.prototype.availableGlyphs = function() {
   return Object.keys(this.glyphs);
 };
+
+exports.Alphabet = Alphabet;
