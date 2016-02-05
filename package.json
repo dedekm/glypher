@@ -8,11 +8,15 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node ./bin/server.js"
+    "start": "node ./bin/server.js",
+    "browserify": "browserify src/glypher.js --standalone glypher > dist/glypher.js"
   },
   "keywords": [
     "fonts"
   ],
   "author": "Martin Dedek",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "browserify": "^13.0.0"
+  }
 }
