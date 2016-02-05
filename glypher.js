@@ -225,6 +225,9 @@ Generator.prototype.generateGlyph2 = function(name, points) {
     var point1 = this.adjustPoint(points[i]);
     var point2 = this.adjustPoint(points[i + 1]);
 
+    drawHelpPoint(point1);
+    drawHelpPoint(point2);
+
     var previousAngle = nextAngle;
     angle = 0;
 
@@ -233,14 +236,25 @@ Generator.prototype.generateGlyph2 = function(name, points) {
       var vector2 = this.adjustPoint(points[i + 2]).subtract(point2);
       nextAngle = vector1.rotate(180).getDirectedAngle(vector2);
     }
-
-    var p1 = point1.add(25, 0).rotate(vector1.angle - 90, point1);
+    var p1, p2, p3, p4;
+    if (i === 0) {
+      p1 = point1.add(this.weight * -1, this.weight).rotate(vector1.angle + 90, point1);
+      p2 = point1.add(this.weight, this.weight).rotate(vector1.angle + 90, point1);
+    } else {
+      p1 = point1.add(this.weight, 0).rotate(vector1.angle - 90, point1);
+      p2 = point1.add(this.weight, 0).rotate(vector1.angle + 90, point1);
+    }
     path.lineTo(p1);
-    var p2 = point1.add(25, 0).rotate(vector1.angle + 90, point1);
     path.lineTo(p2);
-    var p3 = point2.add(25, 0).rotate(vector1.angle + 90, point2);
+
+    if (i === points.length - 2) {
+      p3 = point2.add(this.weight * -1, this.weight).rotate(vector1.angle - 90, point2);
+      p4 = point2.add(this.weight, this.weight).rotate(vector1.angle - 90, point2);
+    } else {
+      p3 = point2.add(this.weight, 0).rotate(vector1.angle + 90, point2);
+      p4 = point2.add(this.weight, 0).rotate(vector1.angle - 90, point2);
+    }
     path.lineTo(p3);
-    var p4 = point2.add(25, 0).rotate(vector1.angle - 90, point2);
     path.lineTo(p4);
 
     var cornerPoint,
@@ -249,12 +263,8 @@ Generator.prototype.generateGlyph2 = function(name, points) {
     if (previousAngle) {
       if (previousAngle < 0) {
         cornerPoint = p1;
-        drawHelpPoint(p1, 'red');
-
       } else {
         cornerPoint = p2;
-        drawHelpPoint(p2, 'red');
-
       }
       var previousVector = this.adjustPoint(points[i - 1]).subtract(point1);
       corner.lineTo(makeCorner(cornerPoint2, cornerPoint, previousVector, vector1));
@@ -273,12 +283,8 @@ Generator.prototype.generateGlyph2 = function(name, points) {
 
       if (nextAngle < 0) {
         cornerPoint2 = p4;
-        drawHelpPoint(p4, 'red');
-
       } else {
         cornerPoint2 = p3;
-        drawHelpPoint(p3, 'red');
-
       }
       corner.lineTo(cornerPoint2);
       corner.closed = true;
