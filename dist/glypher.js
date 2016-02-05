@@ -610,16 +610,6 @@ Generator.prototype.getGlyph = function(name) {
   }
 };
 
-function Glyph(name, weight, contrast, proportion) {
-  this.name = name;
-  this.weight = weight;
-  this.contrast = contrast;
-  this.proportion = proportion;
-
-  this.path = undefined;
-  this.width = 0;
-}
-
 Generator.prototype.adjustPoint = function(point) {
   return new Point(point)
     .multiply([this.size / this.proportion, this.size - (this.contrast * 2 / this.size)])
@@ -642,7 +632,7 @@ Generator.prototype.afterGenerateGlyph = function(glyph) {
 };
 
 Generator.prototype.generateGlyph = function(name, points) {
-  var glyph = new Glyph(name, this.weight, this.contrast, this.proportion);
+  var glyph = new glypher.Glyph(name, this.weight, this.contrast, this.proportion);
 
   var segments = [];
   var box = new Point(glyph.weight, glyph.contrast);
@@ -898,6 +888,24 @@ Generator.prototype.downloadOTF = function() {
     console.log('use exportOpentype first');
 };
 
+function sign(x) {
+  // 0 == 1
+  return x >= 0 ? 1 : -1;
+}
+
+exports.Generator = Generator;
+
+},{}],3:[function(require,module,exports){
+function Glyph(name, weight, contrast, proportion) {
+  this.name = name;
+  this.weight = weight;
+  this.contrast = contrast;
+  this.proportion = proportion;
+
+  this.path = undefined;
+  this.width = 0;
+}
+
 Glyph.prototype.mergeSegments = function(segments) {
 
   var result = segments[0].clone();
@@ -929,23 +937,18 @@ Glyph.prototype.draw = function(x, y, debug) {
   path.fillColor = 'black';
 };
 
-function sign(x) {
-  // 0 == 1
-  return x >= 0 ? 1 : -1;
-}
-
-exports.Generator = Generator;
 exports.Glyph = Glyph;
 
-},{}],3:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 'use strict';
 
 var alphabet = require('./alphabet.js');
+var generator = require('./generator.js');
 var glyph = require('./glyph.js');
 
-exports.Generator = glyph.Generator;
-exports.Alphabet = alphabet.Alphabet;
 exports.Glyph = glyph.Glyph;
+exports.Alphabet = alphabet.Alphabet;
+exports.Generator = generator.Generator;
 
-},{"./alphabet.js":1,"./glyph.js":2}]},{},[3])(3)
+},{"./alphabet.js":1,"./generator.js":2,"./glyph.js":3}]},{},[4])(4)
 });
