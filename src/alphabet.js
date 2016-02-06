@@ -1,7 +1,7 @@
-function Alphabet(xheight, descender, aeheight) {
-  xheight = xheight || 5;
-  descender = descender || -3;
-  aeheight = aeheight || xheight / 2;
+function Alphabet(options) {
+  xheight = options.xheight || 5;
+  descender = options.descender || -3;
+  aeheight = options.aeheight || xheight / 2;
 
   this.glyphs = {
     '.notdef': [
@@ -277,7 +277,6 @@ function Alphabet(xheight, descender, aeheight) {
       [0, 0],
       [10, 0],
       [10, xheight]
-      // [9, xheight]
     ],
     H: [
       [0, 0],
@@ -439,16 +438,16 @@ function Alphabet(xheight, descender, aeheight) {
       [10, 10],
       [0, 10]
     ],
-    'ˇ':[
+    'ˇ': [
       [0, 12 + (8 - xheight)],
       [2, 12],
       [4, 12 + (8 - xheight)]
     ],
-    '´':[
+    '´': [
       [2, 12],
       [4, 12 + (8 - xheight)]
     ],
-    '˚':[
+    '˚': [
       [0, 12],
       [0, 12 + (8 - xheight)],
       [4, 12 + (8 - xheight)],
@@ -538,6 +537,9 @@ function Alphabet(xheight, descender, aeheight) {
       [5, 10]
     ]
   };
+  
+  if (options.weight < 15)
+    this.glyphs.G.push([8 - Math.round(options.weight / 10), xheight]);
 
   this.nameMap = {
     'ı': 'dotlessi',

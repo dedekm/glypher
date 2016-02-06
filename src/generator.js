@@ -17,7 +17,7 @@ function Generator(options) {
 
   this.size = 10;
 
-  this.alphabet = options.alphabet || new glypher.Alphabet(options.xheight, this.descender);
+  this.alphabet = options.alphabet || new glypher.Alphabet(options);
   this.glyphs = [];
   this.opentype = undefined;
 }
