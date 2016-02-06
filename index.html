@@ -11,7 +11,7 @@
 </head>
 
 <body>
-  <canvas id="myCanvas" resize width="1000" height="800"></canvas>
+  <canvas id="myCanvas" resize width="3000" height="400"></canvas>
   <div id='glyphs'></div>
   <button onclick="generator.downloadOTF()">Download Font</button>
   <script type="text/javascript">
@@ -35,29 +35,29 @@
         styleName: 'Medium',
         debug: true
       });
-      
-      // var baseline = 200,
-      //   letterSpacing = 100,
-      //   kerning = 20,
-      //   text = generator.alphabet.availableGlyphs();
 
-      // for (var i = 0; i < text.length; i++) {
-      //   var glyph = generator.getGlyph(text[i]);
-      //   glyph.draw(letterSpacing, baseline);
-      //   letterSpacing += glyph.width + glyph.weight + kerning;
-      // }
-      //
-      // //debugging
-      // new Path.Line({
-      //   from: [0, baseline],
-      //   to: [3000, baseline],
-      //   strokeColor: 'blue'
-      // });
-      // new Path.Line({
-      //   from: [0, 100],
-      //   to: [3000, 100],
-      //   strokeColor: 'blue'
-      // });
+      var baseline = 200,
+        letterSpacing = 100,
+        kerning = 20,
+        text = generator.alphabet.availableGlyphs();
+
+      for (var i = 0; i < text.length; i++) {
+        var glyph = generator.getGlyph(text[i]);
+        glyph.draw(letterSpacing, baseline);
+        letterSpacing += glyph.width + glyph.weight + kerning;
+      }
+
+      //debugging
+      new Path.Line({
+        from: [0, baseline],
+        to: [3000, baseline],
+        strokeColor: 'blue'
+      });
+      new Path.Line({
+        from: [0, 100],
+        to: [3000, 100],
+        strokeColor: 'blue'
+      });
 
       paper.view.draw();
     }

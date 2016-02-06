@@ -200,12 +200,12 @@ Generator.prototype.generateGlyph = function(name, points) {
 
     segments.push(path);
 
-    if (p1.x + glyph.weight > glyph.width)
-      glyph.width = p1.x + glyph.weight;
+    if (point2.x + glyph.weight > glyph.width)
+      glyph.width = point2.x + glyph.weight;
 
     // FIXME: add last point
-    if (p2.x + glyph.weight > glyph.width)
-      glyph.width = p2.x + glyph.weight;
+    if (point2.x + glyph.weight > glyph.width)
+      glyph.width = point2.x + glyph.weight;
 
     if (points[i + 1][2] == 'e' || points[i + 1][2] == 'c') {
       i++;
@@ -321,12 +321,12 @@ Generator.prototype.generateGlyph2 = function(name, points) {
       segments.push([]);
     }
 
-    if (p1.x + glyph.weight > glyph.width)
-      glyph.width = p1.x + glyph.weight;
+    if (p3.x + glyph.weight > glyph.width)
+      glyph.width = p3.x + glyph.weight;
 
     // FIXME: add last point
-    if (p2.x + glyph.weight > glyph.width)
-      glyph.width = p2.x + glyph.weight;
+    if (p3.x + glyph.weight > glyph.width)
+      glyph.width = p3.x + glyph.weight;
 
   }
 
