@@ -174,7 +174,7 @@ function Alphabet(xheight, descender, aeheight) {
       [20, xheight / 2],
       [20, xheight, 'e'],
       [10, xheight / 2],
-      [10, xheight]   
+      [10, xheight]
     ],
     x: [
       // [0, 0],
@@ -329,6 +329,8 @@ function Alphabet(xheight, descender, aeheight) {
     N: [
       [0, 0],
       [0, 10],
+      [2, 10],
+      [8, 0],
       [10, 0],
       [10, 10]
     ],
@@ -363,6 +365,7 @@ function Alphabet(xheight, descender, aeheight) {
       [10, 10],
       [10, xheight],
       [0, xheight, 'e'],
+      [0, xheight],
       [5, xheight],
       [10, xheight / 2],
       [10, 0]
