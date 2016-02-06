@@ -248,7 +248,7 @@ Generator.prototype.generateGlyph2 = function(name, points) {
       nextAngle = vector1.rotate(180).getDirectedAngle(vector2);
     }
     var p1, p2, p3, p4;
-    if (i === 0) {
+    if (points[i - 1] && points[i - 1][2] == 'e' || i === 0) {
       p1 = point1.add(this.weight * -1, this.weight).rotate(vector1.angle + 90, point1);
       p2 = point1.add(this.weight, this.weight).rotate(vector1.angle + 90, point1);
     } else {
@@ -258,7 +258,7 @@ Generator.prototype.generateGlyph2 = function(name, points) {
     path.lineTo(p1);
     path.lineTo(p2);
 
-    if (i === points.length - 2) {
+    if (points[i + 1][2] == 'e' || i === points.length - 2) {
       p3 = point2.add(this.weight * -1, this.weight).rotate(vector1.angle - 90, point2);
       p4 = point2.add(this.weight, this.weight).rotate(vector1.angle - 90, point2);
     } else {
@@ -271,7 +271,7 @@ Generator.prototype.generateGlyph2 = function(name, points) {
     var cornerPoint,
       cornerPoint2;
 
-    if (previousAngle) {
+    if (points[i - 1] && points[i][2] != 'e' && points[i - 1][2] != 'e' && previousAngle) {
       var previousVector = this.adjustPoint(points[i - 1]).subtract(point1);
       if (previousAngle < 0) {
         cornerPoint = p1;
@@ -306,14 +306,16 @@ Generator.prototype.generateGlyph2 = function(name, points) {
       corner.closed = true;
     }
 
-    if (!previousAngle) {
+    if (points[i - 1] && points[i - 1][2] == 'e' || !previousAngle) {
       segments.push(p1);
       segments.splice(0, 0, p2);
     }
 
-    if (i == points.length - 2) {
+    if (points[i + 1][2] == 'e' || i == points.length - 2) {
       segments.splice(0, 0, p3);
       segments.push(p4);
+      drawHelpPoint(p3, 'red');
+      drawHelpPoint(p4, 'red');
     }
 
     if (p1.x + glyph.weight > glyph.width)
@@ -327,8 +329,8 @@ Generator.prototype.generateGlyph2 = function(name, points) {
 
   glyph.path = new Path();
   glyph.path.addSegments(segments);
+  glyph.path.closed = true;
 
-  // glyph.path = glyph.mergeSegments(segments);
   glyph.path.reduce();
 
   var helpPath = glyph.path.clone();
