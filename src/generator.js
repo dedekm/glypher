@@ -42,9 +42,9 @@ Generator.prototype.generate = function() {
     this.afterGenerateGlyph(glyph);
     this.glyphs[glyph.name] = glyph;
   }
-  // FIXME: glyph names with caron don't work
+  // FIXME: dcaron tcaron
   accent = 'caron';
-  availableGlyphs = 'CDENRSTZ';
+  availableGlyphs = 'cenrszCDENRSTZ';
   for (i = 0; i < availableGlyphs.length; i++) {
     this.beforeGenerateGlyph(availableGlyphs[i]);
     glyph = this.generateGlyphWithAccent(availableGlyphs[i], accent);
@@ -204,12 +204,12 @@ Generator.prototype.generateGlyph = function(name, points) {
     if (p2.x + glyph.weight > glyph.width)
       glyph.width = p2.x + glyph.weight;
 
-      if (p1.y + glyph.contrast < glyph.height)
-        glyph.height = p1.y + glyph.contrast;
+    if (p1.y + glyph.contrast < glyph.height)
+      glyph.height = p1.y + glyph.contrast;
 
-      // FIXME: add last point
-      if (p2.y + glyph.contrast < glyph.height)
-        glyph.height = p2.y + glyph.contrast;
+    // FIXME: add last point
+    if (p2.y + glyph.contrast < glyph.height)
+      glyph.height = p2.y + glyph.contrast;
 
     if (points[i + 1][2] == 'e' || points[i + 1][2] == 'c') {
       i++;
@@ -223,10 +223,16 @@ Generator.prototype.generateGlyph = function(name, points) {
 };
 
 Generator.prototype.generateGlyphWithAccent = function(name, accent) {
-  if (accent.length > 1)
-    accent = decodeHtml('&' + accent);
+  var glyph;
 
-  var glyph = this.generateGlyph(name);
+  if (accent.length > 1)
+    accent = decodeHtml('&' + accent + ';');
+
+  if (name == 'i')
+    glyph = this.generateGlyph('ı');
+  else
+    glyph = this.generateGlyph(name);
+
   var accentGlyph = this.generateGlyph(accent);
 
   accentGlyph.path.position.x += (glyph.width - accentGlyph.width) / 2;
@@ -236,18 +242,12 @@ Generator.prototype.generateGlyphWithAccent = function(name, accent) {
   }
 
   glyph.path = glyph.path.unite(accentGlyph.path);
-  glyph.name = decodeHtml('&' + name + this.alphabet.nameMap[accent]);
-
+  glyph.name = decodeHtml('&' + name + this.alphabet.nameMap[accent] + ';');
   return glyph;
 };
 
 function decodeHtml(html) {
   var txt = document.createElement("textarea");
-  // HACK: can't decode caron
-  if (html == '&caron')
-  {
-    return 'ˇ';
-  }
   txt.innerHTML = html;
   return txt.value;
 }
@@ -371,7 +371,7 @@ Generator.prototype.exportOpentype = function(options) {
   // FIXME: depends on div with id glyphs
   function createGlyphCanvas(glyph, size) {
     var canvasId, html, glyphsDiv, wrap, canvas, ctx;
-    canvasId = 'glyph_' + glyph.name;
+    canvasId = 'glyph_2' + glyph.unicode;
     html = '<canvas id="' + canvasId + '" width="' + size + '" height="' + size + '"></canvas>';
     glyphsDiv = document.getElementById('glyphs');
     wrap = document.createElement('span');

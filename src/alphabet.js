@@ -75,6 +75,11 @@ function Alphabet(xheight, descender, aeheight) {
       [0, 10],
       [0, xheight + 2]
     ],
+    //dottless i is needed for accented is
+    'ı': [
+      [0, 0],
+      [0, xheight]
+    ],
     j: [
       [-2, descender],
       [1, descender],
@@ -528,6 +533,7 @@ function Alphabet(xheight, descender, aeheight) {
   };
 
   this.nameMap = {
+    'ı': 'dotlessi',
     '´': 'acute',
     'ˇ': 'caron',
     '0': 'zero',
