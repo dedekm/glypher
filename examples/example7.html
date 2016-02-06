@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Glypher Example 5</title>
+  <script type="text/javascript" src="../bower_components/paper/dist/paper-full.min.js"></script>
+  <script type="text/javascript" src="../bower_components/opentype.js/dist/opentype.js"></script>
+  <script type="text/javascript" src="../dist/glypher.js"></script>
+</head>
+
+<body>
+  <canvas id="myCanvas" resize width="3000" height="400"></canvas>
+  <div id='glyphs'></div>
+  <button onclick="generator.downloadOTF()">Download Font</button>
+  <script type="text/javascript">
+    window.onload = function() {
+      window.generator = new glypher.Generator({
+        height: 10,
+        width: 5,
+        xheight: 7,
+        contrast: 7,
+        smooth: true
+      });
+
+      generator.generate();
+
+      // generator.mergeGlyphsWith(new Path.Circle([30,-30], 40),'abc');
+
+      generator.exportOpentype({
+        familyName: 'GlypherCurvy' + Math.round(Math.random() * 1000),
+        styleName: 'Medium',
+        debug: true
+      });
+
+      var baseline = 200,
+        letterSpacing = 100,
+        kerning = 20,
+        text = "Glypher";
+
+      for (var i = 0; i < text.length; i++) {
+        var glyph = generator.getGlyph(text[i]);
+        glyph.draw(letterSpacing, baseline);
+        letterSpacing += glyph.width + glyph.weight + kerning;
+      }
+
+      //debugging
+      new Path.Line({
+        from: [0, baseline],
+        to: [3000, baseline],
+        strokeColor: 'blue'
+      });
+      new Path.Line({
+        from: [0, 100],
+        to: [3000, 100],
+        strokeColor: 'blue'
+      });
+
+      paper.view.draw();
+    }
+  </script>
+
+</body>
+
+</html>

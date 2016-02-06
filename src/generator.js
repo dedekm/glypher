@@ -14,6 +14,7 @@ function Generator(options) {
   this.yshift = options.yshift || 0;
   this.italic = options.italic || 0;
   this.segmentReduction = options.segmentReduction;
+  this.smooth = options.smooth;
 
   this.size = 10;
 
@@ -227,6 +228,9 @@ Generator.prototype.generateGlyph = function(name, points) {
   }
   glyph.path = glyph.mergeSegments(segments);
   glyph.path.reduce();
+
+  if(this.smooth)
+    glyph.path.smooth({type: 'continuous'});
 
   return glyph;
 };
