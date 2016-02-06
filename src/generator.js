@@ -42,7 +42,7 @@ Generator.prototype.generate = function() {
     this.afterGenerateGlyph(glyph);
     this.glyphs[glyph.name] = glyph;
   }
-
+  // FIXME: glyph names with caron don't work
   accent = 'caron';
   availableGlyphs = 'CDENRSTZ';
   for (i = 0; i < availableGlyphs.length; i++) {

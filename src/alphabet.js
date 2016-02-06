@@ -434,13 +434,13 @@ function Alphabet(xheight, descender, aeheight) {
       [0, 10]
     ],
     'ˇ':[
-      [0, 14],
+      [0, 12 + (8 - xheight)],
       [2, 12],
-      [4, 14]
+      [4, 12 + (8 - xheight)]
     ],
     '´':[
       [2, 12],
-      [4, 14]
+      [4, 12 + (8 - xheight)]
     ],
     '0': [
       [0, 0],
