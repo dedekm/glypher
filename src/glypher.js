@@ -326,9 +326,7 @@ Generator.prototype.generateGlyph2 = function(name, points) {
   }
 
   glyph.path = new Path();
-  for (i = 0; i < segments.length; i++) {
-    glyph.path.lineTo(segments[i]);
-  }
+  glyph.path.addSegments(segments);
 
   // glyph.path = glyph.mergeSegments(segments);
   glyph.path.reduce();
