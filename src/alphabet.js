@@ -433,6 +433,15 @@ function Alphabet(xheight, descender, aeheight) {
       [10, 10],
       [0, 10]
     ],
+    'ˇ':[
+      [0, 14],
+      [2, 12],
+      [4, 14]
+    ],
+    '´':[
+      [0, 12],
+      [2, 14]
+    ],
     '0': [
       [0, 0],
       [0, 10],
@@ -518,6 +527,8 @@ function Alphabet(xheight, descender, aeheight) {
   };
 
   this.nameMap = {
+    '´': 'acute',
+    'ˇ': 'caron',
     '0': 'zero',
     '1': 'one',
     '2': 'two',
