@@ -2,6 +2,8 @@ function Alphabet(options) {
   xheight = options.xheight || 5;
   descender = options.descender || -3;
   aeheight = options.aeheight || xheight / 2;
+  // FIXME
+  weight = options.weight || 20;
 
   this.glyphs = {
     '.notdef': [
@@ -579,11 +581,20 @@ function Alphabet(options) {
     '/': [
       [0, 0],
       [5, 10]
+    ],
+    '@': [
+      [10, 0],
+      [10, xheight],
+      [0, xheight],
+      [0, 0],
+      [15 + Math.round(weight / 4), 0],
+      [15 + Math.round(weight / 4), 10],
+      [0, 10],
     ]
   };
 
-  if (options.weight < 15)
-    this.glyphs.G.push([8 - Math.round(options.weight / 10), xheight]);
+  if (weight < 15)
+    this.glyphs.G.push([8 - Math.round(weight / 10), xheight]);
 
   this.nameMap = {
     'ı': 'dotlessi',
@@ -608,7 +619,8 @@ function Alphabet(options) {
     ',': 'comma',
     '!': 'exclam',
     '?': 'quest',
-    '/': 'slash'
+    '/': 'slash',
+    '@': 'at'
   };
 }
 Alphabet.prototype.maxHeight = function() {
