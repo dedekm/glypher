@@ -224,7 +224,9 @@ Generator.prototype.generateGlyph2 = function(name, points) {
 
   var nextAngle,
     corner,
-    segments = [],
+    segments = [
+      []
+    ],
     cornerPoint3;
 
   for (var i = 0; i < points.length - 1; i++) {
@@ -275,12 +277,12 @@ Generator.prototype.generateGlyph2 = function(name, points) {
       var previousVector = this.adjustPoint(points[i - 1]).subtract(point1);
       if (previousAngle < 0) {
         cornerPoint = p1;
-        segments.push(makeCorner(cornerPoint2, cornerPoint, previousVector, vector1));
-        segments.splice(0, 0, makeCorner(cornerPoint3, p2, previousVector, vector1));
+        segments[segments.length - 1].push(makeCorner(cornerPoint2, cornerPoint, previousVector, vector1));
+        segments[segments.length - 1].splice(0, 0, makeCorner(cornerPoint3, p2, previousVector, vector1));
       } else {
         cornerPoint = p2;
-        segments.splice(0, 0, makeCorner(cornerPoint2, cornerPoint, previousVector, vector1));
-        segments.push(makeCorner(cornerPoint3, p1, previousVector, vector1));
+        segments[segments.length - 1].splice(0, 0, makeCorner(cornerPoint2, cornerPoint, previousVector, vector1));
+        segments[segments.length - 1].push(makeCorner(cornerPoint3, p1, previousVector, vector1));
       }
 
       corner.lineTo(makeCorner(cornerPoint2, cornerPoint, previousVector, vector1));
@@ -307,15 +309,16 @@ Generator.prototype.generateGlyph2 = function(name, points) {
     }
 
     if (points[i - 1] && points[i - 1][2] == 'e' || !previousAngle) {
-      segments.push(p1);
-      segments.splice(0, 0, p2);
+      segments[segments.length - 1].push(p1);
+      segments[segments.length - 1].splice(0, 0, p2);
     }
 
     if (points[i + 1][2] == 'e' || i == points.length - 2) {
-      segments.splice(0, 0, p3);
-      segments.push(p4);
+      segments[segments.length - 1].splice(0, 0, p3);
+      segments[segments.length - 1].push(p4);
       drawHelpPoint(p3, 'red');
       drawHelpPoint(p4, 'red');
+      segments.push([]);
     }
 
     if (p1.x + glyph.weight > glyph.width)
@@ -327,11 +330,14 @@ Generator.prototype.generateGlyph2 = function(name, points) {
 
   }
 
-  glyph.path = new Path();
-  glyph.path.addSegments(segments);
-  glyph.path.closed = true;
-
-  glyph.path.reduce();
+  glyph.path = new Group();
+  for (i = 0; i < segments.length; i++) {
+    if (segments[i].length) {
+      var child = new Path(segments[i]);
+      child.closed = true;
+      glyph.path.addChild(child);
+    }
+  }
 
   var helpPath = glyph.path.clone();
   helpPath.fillColor = 'black';
