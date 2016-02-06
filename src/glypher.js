@@ -121,7 +121,7 @@ Generator.prototype.generateGlyph = function(name, points) {
     var p1 = this.adjustPoint(points[i]);
     var p2 = this.adjustPoint(points[i + 1]);
 
-    if (points[i+1][2] == 'c') {
+    if (points[i + 1][2] == 'c') {
       p2 = startPoint;
     } else {
       p2 = this.adjustPoint(points[i + 1]);
@@ -224,11 +224,13 @@ Generator.prototype.generateGlyph2 = function(name, points) {
 
   var nextAngle,
     corner,
-    segments = [];
+    segments = [],
+    cornerPoint3;
 
   for (var i = 0; i < points.length - 1; i++) {
     var path = new Path({
-      strokeColor: 'black'
+      strokeColor: 'black',
+      closed: true
     });
 
     var point1 = this.adjustPoint(points[i]);
@@ -270,18 +272,22 @@ Generator.prototype.generateGlyph2 = function(name, points) {
       cornerPoint2;
 
     if (previousAngle) {
+      var previousVector = this.adjustPoint(points[i - 1]).subtract(point1);
       if (previousAngle < 0) {
         cornerPoint = p1;
+        segments.push(makeCorner(cornerPoint2, cornerPoint, previousVector, vector1));
+        segments.splice(0, 0, makeCorner(cornerPoint3, p2, previousVector, vector1));
       } else {
         cornerPoint = p2;
+        segments.splice(0, 0, makeCorner(cornerPoint2, cornerPoint, previousVector, vector1));
+        segments.push(makeCorner(cornerPoint3, p1, previousVector, vector1));
       }
-      var previousVector = this.adjustPoint(points[i - 1]).subtract(point1);
+
       corner.lineTo(makeCorner(cornerPoint2, cornerPoint, previousVector, vector1));
       corner.lineTo(makeCorner(cornerPoint, cornerPoint2, vector1, previousVector));
       corner.lineTo(cornerPoint);
       corner.lineTo(point1);
 
-      segments.push(corner);
     }
 
     if (nextAngle) {
@@ -289,18 +295,26 @@ Generator.prototype.generateGlyph2 = function(name, points) {
         fillColor: 'black'
       });
 
-
       if (nextAngle < 0) {
         cornerPoint2 = p4;
+        cornerPoint3 = p3;
       } else {
         cornerPoint2 = p3;
+        cornerPoint3 = p4;
       }
       corner.lineTo(cornerPoint2);
       corner.closed = true;
     }
 
-    path.closed = true;
-    segments.push(path);
+    if (!previousAngle) {
+      segments.push(p1);
+      segments.splice(0, 0, p2);
+    }
+
+    if (i == points.length - 2) {
+      segments.splice(0, 0, p3);
+      segments.push(p4);
+    }
 
     if (p1.x + glyph.weight > glyph.width)
       glyph.width = p1.x + glyph.weight;
@@ -311,12 +325,18 @@ Generator.prototype.generateGlyph2 = function(name, points) {
 
   }
 
-  glyph.path = glyph.mergeSegments(segments);
+  glyph.path = new Path();
+  for (i = 0; i < segments.length; i++) {
+    glyph.path.lineTo(segments[i]);
+  }
+
+  // glyph.path = glyph.mergeSegments(segments);
   glyph.path.reduce();
 
   var helpPath = glyph.path.clone();
   helpPath.fillColor = 'black';
   helpPath.position.x += 400;
+  helpPath.selected = true;
 
   return glyph;
 };
@@ -329,8 +349,8 @@ function makeCorner(p1, p2, vector2, vector3) {
 
   var x = (vector1.length * Math.sin(rad1)) / Math.sin(rad2 + rad1);
 
-  if (x > 30)
-    x = 30;
+  // if (x > 30)
+  //   x = 30;
 
   // if (x > 50)
   //   x = 30;
