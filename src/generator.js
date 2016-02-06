@@ -51,6 +51,15 @@ Generator.prototype.generate = function() {
     this.afterGenerateGlyph(glyph);
     this.glyphs[glyph.name] = glyph;
   }
+
+  accent = 'ring';
+  availableGlyphs = 'uU';
+  for (i = 0; i < availableGlyphs.length; i++) {
+    this.beforeGenerateGlyph(availableGlyphs[i]);
+    glyph = this.generateGlyphWithAccent(availableGlyphs[i], accent);
+    this.afterGenerateGlyph(glyph);
+    this.glyphs[glyph.name] = glyph;
+  }
 };
 
 Generator.prototype.mergeGlyphsWith = function(path, list) {

@@ -448,6 +448,13 @@ function Alphabet(xheight, descender, aeheight) {
       [2, 12],
       [4, 12 + (8 - xheight)]
     ],
+    '˚':[
+      [0, 12],
+      [0, 12 + (8 - xheight)],
+      [4, 12 + (8 - xheight)],
+      [4, 12],
+      [0, 12]
+    ],
     '0': [
       [0, 0],
       [0, 10],
@@ -536,6 +543,7 @@ function Alphabet(xheight, descender, aeheight) {
     'ı': 'dotlessi',
     '´': 'acute',
     'ˇ': 'caron',
+    '˚': 'ring',
     '0': 'zero',
     '1': 'one',
     '2': 'two',
