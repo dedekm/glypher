@@ -51,11 +51,14 @@
       };
 
       generator.regenerate({
+        type: 'unite',
+        xshift: 40
+      });
+
+      generator.regenerate({
         type: 'subtract',
-        weight: 5,
-        contrast: 5,
         xshift: 20,
-        yshift: 20
+        contrast: 2
       });
 
       generator.exportOpentype({
@@ -65,9 +68,9 @@
       var baseline = 200,
         letterSpacing = 100,
         kerning = 20,
-        text = generator.alphabet.availableGlyphs();
+        text = 'Glypher';
 
-      for (var i = 1; i < text.length; i++) {
+      for (var i = 0; i < text.length; i++) {
         var glyph = generator.getGlyph(text[i]);
         glyph.draw(letterSpacing, baseline);
         letterSpacing += glyph.width + glyph.weight + kerning;
