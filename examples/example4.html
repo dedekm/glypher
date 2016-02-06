@@ -6,8 +6,7 @@
   <title>Glypher Example 4</title>
   <script type="text/javascript" src="../bower_components/paper/dist/paper-full.min.js"></script>
   <script type="text/javascript" src="../bower_components/opentype.js/dist/opentype.js"></script>
-  <script type="text/javascript" src="../src/alphabet.js"></script>
-  <script type="text/javascript" src="../src/glypher.js"></script>
+  <script type="text/javascript" src="../dist/glypher.js"></script>
 </head>
 
 <body>
@@ -16,7 +15,7 @@
   <script type="text/javascript">
     window.onload = function() {
       for (var j = 0; j < 10; j++) {
-        var generator = new Generator({
+        var generator = new glypher.Generator({
           height: 10,
           width: 5,
           xheight: 7,
