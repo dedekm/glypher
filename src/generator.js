@@ -24,11 +24,30 @@ function Generator(options) {
 
 Generator.prototype.generate = function() {
   this.glyphs = {};
-  var availableGlyphs = this.alphabet.availableGlyphs();
+  var availableGlyphs = this.alphabet.availableGlyphs(),
+    glyph;
 
   for (var i = 0; i < availableGlyphs.length; i++) {
     this.beforeGenerateGlyph(availableGlyphs[i]);
-    var glyph = this.generateGlyph(availableGlyphs[i]);
+    glyph = this.generateGlyph(availableGlyphs[i]);
+    this.afterGenerateGlyph(glyph);
+    this.glyphs[glyph.name] = glyph;
+  }
+
+  var accent = 'acute';
+  availableGlyphs = 'aeiouyAEIOUY';
+  for (i = 0; i < availableGlyphs.length; i++) {
+    this.beforeGenerateGlyph(availableGlyphs[i]);
+    glyph = this.generateGlyphWithAccent(availableGlyphs[i], accent);
+    this.afterGenerateGlyph(glyph);
+    this.glyphs[glyph.name] = glyph;
+  }
+
+  accent = 'caron';
+  availableGlyphs = 'CDENRSTZ';
+  for (i = 0; i < availableGlyphs.length; i++) {
+    this.beforeGenerateGlyph(availableGlyphs[i]);
+    glyph = this.generateGlyphWithAccent(availableGlyphs[i], accent);
     this.afterGenerateGlyph(glyph);
     this.glyphs[glyph.name] = glyph;
   }
@@ -99,7 +118,7 @@ Generator.prototype.generateGlyph = function(name, points) {
     var p1 = this.adjustPoint(points[i]);
     var p2 = this.adjustPoint(points[i + 1]);
 
-    if (points[i+1][2] == 'c') {
+    if (points[i + 1][2] == 'c') {
       p2 = startPoint;
     } else {
       p2 = this.adjustPoint(points[i + 1]);
@@ -185,6 +204,13 @@ Generator.prototype.generateGlyph = function(name, points) {
     if (p2.x + glyph.weight > glyph.width)
       glyph.width = p2.x + glyph.weight;
 
+      if (p1.y + glyph.contrast < glyph.height)
+        glyph.height = p1.y + glyph.contrast;
+
+      // FIXME: add last point
+      if (p2.y + glyph.contrast < glyph.height)
+        glyph.height = p2.y + glyph.contrast;
+
     if (points[i + 1][2] == 'e' || points[i + 1][2] == 'c') {
       i++;
       startPoint = undefined;
@@ -197,14 +223,18 @@ Generator.prototype.generateGlyph = function(name, points) {
 };
 
 Generator.prototype.generateGlyphWithAccent = function(name, accent) {
-  if(accent.length > 1)
+  if (accent.length > 1)
     accent = decodeHtml('&' + accent);
 
   var glyph = this.generateGlyph(name);
   var accentGlyph = this.generateGlyph(accent);
 
-  // FIXME: width + 10
-  accentGlyph.path.position.x += (glyph.width+10)/4;
+  accentGlyph.path.position.x += (glyph.width - accentGlyph.width) / 2;
+
+  if (name[0] === name[0].toLowerCase()) {
+    accentGlyph.path.position.y += 90 + glyph.height;
+  }
+
   glyph.path = glyph.path.unite(accentGlyph.path);
   glyph.name = decodeHtml('&' + name + this.alphabet.nameMap[accent]);
 
@@ -212,9 +242,14 @@ Generator.prototype.generateGlyphWithAccent = function(name, accent) {
 };
 
 function decodeHtml(html) {
-    var txt = document.createElement("textarea");
-    txt.innerHTML = html;
-    return txt.value;
+  var txt = document.createElement("textarea");
+  // HACK: can't decode caron
+  if (html == '&caron')
+  {
+    return 'ˇ';
+  }
+  txt.innerHTML = html;
+  return txt.value;
 }
 
 function drawOpentypePath(path) {

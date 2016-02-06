@@ -6,6 +6,7 @@ function Glyph(name, weight, contrast, proportion) {
 
   this.path = undefined;
   this.width = 0;
+  this.height = 0;
 }
 
 Glyph.prototype.mergeSegments = function(segments) {

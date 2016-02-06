@@ -439,8 +439,8 @@ function Alphabet(xheight, descender, aeheight) {
       [4, 14]
     ],
     '´':[
-      [0, 12],
-      [2, 14]
+      [2, 12],
+      [4, 14]
     ],
     '0': [
       [0, 0],
