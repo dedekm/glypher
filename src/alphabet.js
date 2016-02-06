@@ -560,23 +560,23 @@ function Alphabet(options) {
     ],
     //hyphen
     '‐': [
-      [0, xheight/2],
-      [2, xheight/2]
+      [0, xheight / 2],
+      [2, xheight / 2]
     ],
     //endash
     '–': [
-      [0, xheight/2],
-      [10, xheight/2]
+      [0, xheight / 2],
+      [10, xheight / 2]
     ],
     //emdash
     '—': [
-      [0, xheight/2],
-      [20, xheight/2]
+      [0, xheight / 2],
+      [20, xheight / 2]
     ],
     //minus
     '-': [
-      [0, xheight/2],
-      [2, xheight/2]
+      [0, xheight / 2],
+      [2, xheight / 2]
     ],
     '/': [
       [0, 0],
@@ -590,6 +590,15 @@ function Alphabet(options) {
       [15 + Math.round(weight / 4), 0],
       [15 + Math.round(weight / 4), 10],
       [0, 10],
+    ],
+    '&': [
+      [11, 10],
+      [0, 10],
+      [0, 0],
+      [11, 0],
+      [11, xheight + (10 - xheight) / 3, 'e'],
+      [0, xheight],
+      [14, xheight]
     ]
   };
 
@@ -618,9 +627,10 @@ function Alphabet(options) {
     '.': 'period',
     ',': 'comma',
     '!': 'exclam',
-    '?': 'quest',
+    '?': 'question',
     '/': 'slash',
-    '@': 'at'
+    '@': 'at',
+    '&': 'ampersand'
   };
 }
 Alphabet.prototype.maxHeight = function() {
