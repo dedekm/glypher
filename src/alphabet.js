@@ -532,12 +532,56 @@ function Alphabet(options) {
       [0, xheight],
       [10, xheight]
     ],
+    '.': [
+      [0, 0],
+      [0, 1]
+    ],
+    ',': [
+      [0, -2],
+      [0, 1]
+    ],
+    '!': [
+      [0, 0],
+      [0, 1, 'e'],
+      [0, 3],
+      [0, 10]
+    ],
+    // FIXME: xheight x 3
+    '?': [
+      [4, 0],
+      [4, 1, 'e'],
+      [4, 3],
+      [4, xheight],
+      [10, xheight],
+      [10, 10],
+      [0, 10],
+    ],
+    //hyphen
+    '‐': [
+      [0, xheight/2],
+      [2, xheight/2]
+    ],
+    //endash
+    '–': [
+      [0, xheight/2],
+      [10, xheight/2]
+    ],
+    //emdash
+    '—': [
+      [0, xheight/2],
+      [20, xheight/2]
+    ],
+    //minus
+    '-': [
+      [0, xheight/2],
+      [2, xheight/2]
+    ],
     '/': [
       [0, 0],
       [5, 10]
     ]
   };
-  
+
   if (options.weight < 15)
     this.glyphs.G.push([8 - Math.round(options.weight / 10), xheight]);
 
@@ -556,6 +600,14 @@ function Alphabet(options) {
     '7': 'seven',
     '8': 'eight',
     '9': 'nine',
+    '‐': 'hyphen',
+    '–': 'endash',
+    '—': 'emdash',
+    '-': 'minus',
+    '.': 'period',
+    ',': 'comma',
+    '!': 'exclam',
+    '?': 'quest',
     '/': 'slash'
   };
 }
