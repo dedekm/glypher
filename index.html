@@ -19,25 +19,23 @@
       window.generator = new Generator({
         height: 10,
         width: 5,
-        xheight: 7,
-        xshift: 200,
-        yshift: 600
+        xheight: 7
       });
 
-      var glyph = generator.generateGlyph2('1', generator.alphabet.glyphs['1']);
+      // var glyph = generator.generateGlyph2('1', generator.alphabet.glyphs['1']);
 
 
-      // generator.generate2();
+      generator.generate2();
       // console.log(generator);
 
       // generator.mergeGlyphsWith(new Path.Circle([30,-30], 40),'abc');
 
-      // generator.exportOpentype({
-      //   familyName: 'GlypherStandart' + Math.round(Math.random() * 1000),
-      //   styleName: 'Medium',
-      //   debug: true
-      // });
-
+      generator.exportOpentype({
+        familyName: 'GlypherStandart' + Math.round(Math.random() * 1000),
+        styleName: 'Medium',
+        debug: true
+      });
+      
       // var baseline = 200,
       //   letterSpacing = 100,
       //   kerning = 20,

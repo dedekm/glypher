@@ -8,7 +8,7 @@ function Generator(options) {
   options = options || {};
   this.proportion = options.proportion || (options.height / options.width) || 1;
 
-  this.weight = options.weight || 20;
+  this.weight = options.weight || 5;
   this.contrast = options.contrast || 5;
   this.descender = options.descender || -3;
   this.xshift = options.xshift || 0;
@@ -16,7 +16,7 @@ function Generator(options) {
   this.italic = options.italic || 0;
   this.segmentReduction = options.segmentReduction;
 
-  this.size = 50;
+  this.size = 10;
 
   this.alphabet = options.alphabet || new Alphabet(options.xheight, this.descender);
   this.glyphs = [];

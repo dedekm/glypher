@@ -170,11 +170,11 @@ function Alphabet(xheight, descender, aeheight) {
       [0, xheight / 2],
       [5, 0],
       [10, xheight / 2],
-      [10, xheight, ' e'],
-      [10, xheight / 2],
       [15, 0],
       [20, xheight / 2],
-      [20, xheight]
+      [20, xheight, 'e'],
+      [10, xheight / 2],
+      [10, xheight]   
     ],
     x: [
       // [0, 0],
@@ -329,7 +329,6 @@ function Alphabet(xheight, descender, aeheight) {
     N: [
       [0, 0],
       [0, 10],
-      [10, (10 - xheight) / 2],
       [10, 0],
       [10, 10]
     ],
@@ -352,7 +351,7 @@ function Alphabet(xheight, descender, aeheight) {
       [0, 10],
       [10, 10],
       [10, 0],
-      [0, 0, 'c'],
+      [0, 0, 'e'],
       [8, 0],
       // 0 - contrast ???
       [8, descender * 0.75],
@@ -401,12 +400,11 @@ function Alphabet(xheight, descender, aeheight) {
       [0, xheight / 2],
       [5, 0],
       [10, xheight / 2],
-      [10, 10, ' e'],
-      [10, xheight / 2],
       [15, 0],
       [20, xheight / 2],
-      [20, 10]
-
+      [20, 10, 'e'],
+      [10, xheight / 2],
+      [10, 10]
     ],
     X: [
       [0, 0],
