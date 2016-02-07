@@ -16,18 +16,16 @@
   <script type="text/javascript">
     window.onload = function() {
       window.generator = new glypher.Generator({
-        type: 'stroke',
         height: 10,
         width: 5,
-        xheight: 7,
-        weight: 10
+        xheight: 7
       });
 
       generator.generate();
       // console.log(generator);
 
       generator.exportOpentype({
-        familyName: 'GlypherStandart' + Math.round(Math.random() * 1000),
+        familyName: 'GlypherStandart',
         styleName: 'Medium',
         debug: true
       });
@@ -35,7 +33,7 @@
       var baseline = 200,
         letterSpacing = 100,
         kerning = 20,
-        text = 'Glypher5-8?';
+        text = 'GlypherNotAFont';
 
       for (var i = 0; i < text.length; i++) {
         var glyph = generator.getGlyph(text[i]);

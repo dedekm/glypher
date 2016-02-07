@@ -602,7 +602,7 @@ function Alphabet(options) {
       [14, xheight]
     ]
   };
-  if (options.type = 'stroke') {
+  if (options.type == 'stroke') {
     this.glyphs['.notdef'] = [
       [0, 5],
       [0, 10],
