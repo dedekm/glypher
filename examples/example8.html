@@ -3,38 +3,40 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>Glypher</title>
-  <script type="text/javascript" src="bower_components/paper/dist/paper-full.min.js"></script>
-  <script type="text/javascript" src="bower_components/opentype.js/dist/opentype.js"></script>
-  <script type="text/javascript" src="dist/glypher.js"></script>
+  <title>Glypher Example 8</title>
+  <script type="text/javascript" src="../bower_components/paper/dist/paper-full.min.js"></script>
+  <script type="text/javascript" src="../bower_components/opentype.js/dist/opentype.js"></script>
+  <script type="text/javascript" src="../dist/glypher.js"></script>
 </head>
 
 <body>
   <canvas id="myCanvas" resize width="3000" height="400"></canvas>
   <div id='glyphs'></div>
-  <button onclick="generator.downloadOTF()">Download Font</button>
+  <button onclick="generator.font.download()">Download Font</button>
   <script type="text/javascript">
     window.onload = function() {
       window.generator = new glypher.Generator({
         height: 10,
         width: 5,
-        xheight: 7
+        xheight: 7,
+        weight: 5
       });
-      generator.generate();
-      console.log(generator);
 
-      generator.exportOpentype({
-        familyName: 'GlypherStandart' + Math.round(Math.random() * 1000),
-        styleName: 'Medium',
-        debug: true
-      });
+      generator.afterGenerateGlyph = function (glyph) {
+        var rectangle = new Path.Rectangle([-5,5],[glyph.width + 10, glyph.height - 20])
+          glyph.path = rectangle.subtract(glyph.path);
+      }
+
+      generator.generate();
+
+      generator.exportOpentype(true);
 
       var baseline = 200,
         letterSpacing = 100,
         kerning = 20,
-        text = 'BěZíéR5-8?';
+        text = generator.alphabet.availableGlyphs();
 
-      for (var i = 0; i < text.length; i++) {
+      for (var i = 1; i < text.length; i++) {
         var glyph = generator.getGlyph(text[i]);
         glyph.draw(letterSpacing, baseline);
         letterSpacing += glyph.width + glyph.weight + kerning;

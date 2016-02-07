@@ -63,18 +63,6 @@ Generator.prototype.generate = function() {
   }
 };
 
-Generator.prototype.mergeGlyphsWith = function(path, list) {
-  if (!list) {
-    list = this.alphabet.availableGlyphs();
-  } else if (!Array.isArray(list)) {
-    list = list.split("");
-  }
-
-  for (var i = 0; i < list.length; i++) {
-    this.glyphs[list[i]].path = this.glyphs[list[i]].path.unite(path);
-  }
-};
-
 Generator.prototype.getGlyph = function(name) {
   if (this.glyphs[name]) {
     return this.glyphs[name];
