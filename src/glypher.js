@@ -244,11 +244,6 @@ Generator.prototype.generateGlyph2 = function(name, points) {
     if (i >= points.length - 1)
       break;
 
-    var path = new Path({
-      strokeColor: 'black',
-      closed: true
-    });
-
     var point1 = this.adjustPoint(points[i]);
     var point2 = this.adjustPoint(points[i + 1]);
 
@@ -258,9 +253,6 @@ Generator.prototype.generateGlyph2 = function(name, points) {
       point2 = this.adjustPoint(points[i + 1]);
       startPoint = startPoint || i;
     }
-
-    drawHelpPoint(point1);
-    drawHelpPoint(point2);
 
     var previousAngle = nextAngle;
 
@@ -277,8 +269,6 @@ Generator.prototype.generateGlyph2 = function(name, points) {
       p1 = point1.add(this.weight, 0).rotate(vector1.angle - 90, point1);
       p2 = point1.add(this.weight, 0).rotate(vector1.angle + 90, point1);
     }
-    path.lineTo(p1);
-    path.lineTo(p2);
 
     if (points[i + 1][2] == 'e' || i === points.length - 2) {
       p3 = point2.add(this.weight * -1, this.weight).rotate(vector1.angle - 90, point2);
@@ -287,8 +277,6 @@ Generator.prototype.generateGlyph2 = function(name, points) {
       p3 = point2.add(this.weight, 0).rotate(vector1.angle + 90, point2);
       p4 = point2.add(this.weight, 0).rotate(vector1.angle - 90, point2);
     }
-    path.lineTo(p3);
-    path.lineTo(p4);
 
     var cornerPoint,
       cornerPoint2;
@@ -304,18 +292,9 @@ Generator.prototype.generateGlyph2 = function(name, points) {
         segments[segments.length - 1].splice(0, 0, makeCorner(cornerPoint2, cornerPoint, previousVector, vector1));
         segments[segments.length - 1].push(makeCorner(cornerPoint3, p1, previousVector, vector1));
       }
-
-      corner.lineTo(makeCorner(cornerPoint2, cornerPoint, previousVector, vector1));
-      corner.lineTo(makeCorner(cornerPoint, cornerPoint2, vector1, previousVector));
-      corner.lineTo(cornerPoint);
-      corner.lineTo(point1);
-
     }
 
     if (nextAngle) {
-      corner = new Path({
-        fillColor: 'black'
-      });
 
       if (nextAngle < 0) {
         cornerPoint2 = p4;
@@ -324,8 +303,6 @@ Generator.prototype.generateGlyph2 = function(name, points) {
         cornerPoint2 = p3;
         cornerPoint3 = p4;
       }
-      corner.lineTo(cornerPoint2);
-      corner.closed = true;
     }
 
     if (points[i - 1] && points[i - 1][2] == 'e' || !previousAngle) {
@@ -336,8 +313,6 @@ Generator.prototype.generateGlyph2 = function(name, points) {
     if (points[i + 1][2] == 'e' || i == points.length - 2) {
       segments[segments.length - 1].splice(0, 0, p3);
       segments[segments.length - 1].push(p4);
-      drawHelpPoint(p3, 'red');
-      drawHelpPoint(p4, 'red');
       segments.push([]);
     }
 
@@ -358,11 +333,6 @@ Generator.prototype.generateGlyph2 = function(name, points) {
       glyph.path.addChild(child);
     }
   }
-
-  var helpPath = glyph.path.clone();
-  helpPath.fillColor = 'black';
-  helpPath.position.x += 400;
-  helpPath.selected = true;
 
   return glyph;
 };
