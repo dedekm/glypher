@@ -235,7 +235,7 @@ Generator.prototype.generateGlyphWithAccent = function(name, accent) {
     glyph = this.generateGlyph(name);
 
   var accentGlyph = this.generateGlyph(accent);
-
+  // FIXME: fix this for italics
   accentGlyph.path.position.x += (glyph.width - accentGlyph.width) / 2;
 
   if (name[0] === name[0].toLowerCase()) {
