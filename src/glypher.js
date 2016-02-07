@@ -229,7 +229,20 @@ Generator.prototype.generateGlyph2 = function(name, points) {
     ],
     cornerPoint3;
 
-  for (var i = 0; i < points.length - 1; i++) {
+  for (var i = 0; i < points.length; i++) {
+    //WIP
+    if (points[i][2] == 'dot') {
+      segments[segments.length - 1].push(this.adjustPoint(points[i]).add(this.weight, this.weight * -1));
+      segments[segments.length - 1].push(this.adjustPoint(points[i]).add(this.weight * -1, this.weight * -1));
+      segments[segments.length - 1].push(this.adjustPoint(points[i]).add(this.weight * -1, this.weight));
+      segments[segments.length - 1].push(this.adjustPoint(points[i]).add(this.weight));
+      segments.push([]);
+      continue;
+    }
+
+    if (i >= points.length - 1)
+      break;
+
     var path = new Path({
       strokeColor: 'black',
       closed: true
