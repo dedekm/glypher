@@ -47,21 +47,27 @@ Generator.prototype.generate = function() {
     this.afterGenerateGlyph(glyph);
     this.glyphs[glyph.name] = glyph;
   }
-  if (this.type == 'brush') {
-    var accent = 'acute';
-    availableGlyphs = 'aeiouyAEIOUY';
-    for (i = 0; i < availableGlyphs.length; i++) {
-      this.beforeGenerateGlyph(availableGlyphs[i]);
+
+  var accent = 'acute';
+  availableGlyphs = 'aeiouyAEIOUY';
+  for (i = 0; i < availableGlyphs.length; i++) {
+    this.beforeGenerateGlyph(availableGlyphs[i]);
+    if (this.type == 'stroke')
+      glyph = this.generateGlyphWithAccent2(availableGlyphs[i], accent);
+    else
       glyph = this.generateGlyphWithAccent(availableGlyphs[i], accent);
-      this.afterGenerateGlyph(glyph);
-      this.glyphs[glyph.name] = glyph;
-    }
+    this.afterGenerateGlyph(glyph);
+    this.glyphs[glyph.name] = glyph;
+  }
     // FIXME: dcaron tcaron
     accent = 'caron';
     availableGlyphs = 'cenrszCDENRSTZ';
     for (i = 0; i < availableGlyphs.length; i++) {
       this.beforeGenerateGlyph(availableGlyphs[i]);
-      glyph = this.generateGlyphWithAccent(availableGlyphs[i], accent);
+      if (this.type == 'stroke')
+        glyph = this.generateGlyphWithAccent2(availableGlyphs[i], accent);
+      else
+        glyph = this.generateGlyphWithAccent(availableGlyphs[i], accent);
       this.afterGenerateGlyph(glyph);
       this.glyphs[glyph.name] = glyph;
     }
@@ -70,11 +76,13 @@ Generator.prototype.generate = function() {
     availableGlyphs = 'uU';
     for (i = 0; i < availableGlyphs.length; i++) {
       this.beforeGenerateGlyph(availableGlyphs[i]);
-      glyph = this.generateGlyphWithAccent(availableGlyphs[i], accent);
+      if (this.type == 'stroke')
+        glyph = this.generateGlyphWithAccent2(availableGlyphs[i], accent);
+      else
+        glyph = this.generateGlyphWithAccent(availableGlyphs[i], accent);
       this.afterGenerateGlyph(glyph);
       this.glyphs[glyph.name] = glyph;
     }
-  }
 };
 
 Generator.prototype.getGlyph = function(name) {
@@ -241,6 +249,7 @@ Generator.prototype.generateGlyph = function(name, points) {
 
 //WIP
 Generator.prototype.generateGlyph2 = function(name, points) {
+  points = points || this.alphabet.glyphs[name];
   var glyph = new glypher.Glyph(name, this.weight, this.contrast, this.proportion);
 
   var nextAngle,
@@ -354,6 +363,13 @@ Generator.prototype.generateGlyph2 = function(name, points) {
     if (point2.x + glyph.weight > glyph.width)
       glyph.width = point2.x + glyph.weight;
 
+    if (point2.y + glyph.contrast < glyph.height)
+      glyph.height = point2.y + glyph.contrast;
+
+    // FIXME: add last point
+    if (point2.y + glyph.contrast < glyph.height)
+      glyph.height = point2.y + glyph.contrast;
+
   }
   glyph.path = new Path(segments[0]);
   glyph.path.closePath();
@@ -400,6 +416,30 @@ Generator.prototype.generateGlyphWithAccent = function(name, accent) {
     glyph = this.generateGlyph(name);
 
   var accentGlyph = this.generateGlyph(accent);
+  // FIXME: fix this for italics
+  accentGlyph.path.position.x += (glyph.width - accentGlyph.width) / 2;
+
+  if (name[0] === name[0].toLowerCase()) {
+    accentGlyph.path.position.y += 90 + glyph.height;
+  }
+
+  glyph.path = glyph.path.unite(accentGlyph.path);
+  glyph.name = decodeHtml('&' + name + this.alphabet.nameMap[accent] + ';');
+  return glyph;
+};
+
+Generator.prototype.generateGlyphWithAccent2 = function(name, accent) {
+  var glyph;
+
+  if (accent.length > 1)
+    accent = decodeHtml('&' + accent + ';');
+
+  if (name == 'i')
+    glyph = this.generateGlyph2('ı');
+  else
+    glyph = this.generateGlyph2(name);
+
+  var accentGlyph = this.generateGlyph2(accent);
   // FIXME: fix this for italics
   accentGlyph.path.position.x += (glyph.width - accentGlyph.width) / 2;
 
