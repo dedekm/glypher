@@ -19,7 +19,16 @@ function Generator(options) {
 
   this.size = 10;
 
-  this.alphabet = options.alphabet || new glypher.Alphabet(options);
+  var alphabetOptions = {
+    type: this.type,
+    weight: this.weight,
+    contrast: this.contrast,
+    descender: this.descender,
+    proportion: this.proportion,
+    xheight: options.xheight || 7
+  };
+  
+  this.alphabet = options.alphabet || new glypher.Alphabet(alphabetOptions);
   this.glyphs = [];
   this.opentype = undefined;
 }

@@ -727,7 +727,7 @@ function Alphabet(options) {
   }
 
 
-  if (weight < 15)
+  if (weight < 15 || options.proportion <= 1)
     this.glyphs.G.push([8 - Math.round(weight / 10), xheight]);
 
   this.nameMap = {
