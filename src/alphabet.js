@@ -600,7 +600,31 @@ function Alphabet(options) {
       [11, xheight + (10 - xheight) / 3, 'e'],
       [0, xheight],
       [14, xheight]
-    ]
+    ],
+    '(': [
+      [5, 10],
+      [0, 7],
+      [0, 3],
+      [5, 0],
+    ],
+    ')': [
+      [0, 10],
+      [5, 7],
+      [5, 3],
+      [0, 0],
+    ],
+    '[': [
+      [5, 10],
+      [0, 10],
+      [0, 0],
+      [5, 0],
+    ],
+    ']': [
+      [0, 10],
+      [5, 10],
+      [5, 0],
+      [0, 0],
+    ],
   };
   if (options.type == 'stroke') {
     this.glyphs['.notdef'] = [
@@ -728,7 +752,7 @@ function Alphabet(options) {
 
 
   if (weight < 15 || options.proportion <= 1)
-    this.glyphs.G.push([8 - Math.round(weight / 10) + Math.ceil(options.proportion * 2), xheight]);
+    this.glyphs.G.push([8 - Math.round(weight / 10 * options.proportion), xheight]);
 
   this.nameMap = {
     'ı': 'dotlessi',
@@ -755,7 +779,11 @@ function Alphabet(options) {
     '?': 'question',
     '/': 'slash',
     '@': 'at',
-    '&': 'ampersand'
+    '&': 'ampersand',
+    '(': 'parenleft',
+    ')': 'parenright',
+    '[': 'bracketleft',
+    ']': 'bracketright',
   };
 }
 Alphabet.prototype.maxHeight = function() {
