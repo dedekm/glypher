@@ -16,10 +16,12 @@
   <script type="text/javascript">
     window.onload = function() {
       window.generator = new glypher.Generator({
+        type: 'stroke',
         height: 10,
         width: 5,
-        xheight: 7,
-        weight: 5
+        xheight: 8,
+        weight: 5,
+        descender: -5
       });
 
       generator.beforeGenerateGlyph = function () {
@@ -27,14 +29,17 @@
       }
       generator.generate();
 
-      generator.exportOpentype(true);
+      generator.exportOpentype({
+        familyName: 'GlypherRandomWidth',
+        styleName: 'Normal' + Math.round(Math.random() * 100)
+      });
 
       var baseline = 200,
         letterSpacing = 100,
         kerning = 20,
-        text = generator.alphabet.availableGlyphs();
+        text = 'GlypherJS';
 
-      for (var i = 1; i < text.length; i++) {
+      for (var i = 0; i < text.length; i++) {
         var glyph = generator.getGlyph(text[i]);
         glyph.draw(letterSpacing, baseline);
         letterSpacing += glyph.width + glyph.weight + kerning;
