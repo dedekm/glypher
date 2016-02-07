@@ -227,7 +227,8 @@ Generator.prototype.generateGlyph2 = function(name, points) {
     segments = [
       []
     ],
-    cornerPoint3;
+    cornerPoint3,
+    startPoint;
 
   for (var i = 0; i < points.length; i++) {
     //WIP
@@ -251,11 +252,17 @@ Generator.prototype.generateGlyph2 = function(name, points) {
     var point1 = this.adjustPoint(points[i]);
     var point2 = this.adjustPoint(points[i + 1]);
 
+    if (points[i + 1][2] == 'c') {
+      point2 = this.adjustPoint(points[startPoint - 1]);
+    } else {
+      point2 = this.adjustPoint(points[i + 1]);
+      startPoint = startPoint || i;
+    }
+
     drawHelpPoint(point1);
     drawHelpPoint(point2);
 
     var previousAngle = nextAngle;
-    angle = 0;
 
     var vector1 = point2.subtract(point1);
     if (points[i + 2]) {
