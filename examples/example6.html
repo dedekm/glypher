@@ -16,31 +16,29 @@
   <script type="text/javascript">
     window.onload = function() {
       window.generator = new glypher.Generator({
+        type: 'stroke',
         height: 10,
         width: 5,
-        xheight: 7,
-        weight: 6,
-        contrast: 3
+        xheight: 6.5,
+        weight: 6
       });
 
       generator.afterGenerateGlyph = function(glyph) {
-          var circles;
+        var circles;
         for (var i = 0; i < this.alphabet.glyphs[glyph.name].length; i++) {
           circles = [];
           var p1 = this.adjustPoint(this.alphabet.glyphs[glyph.name][i]);
 
-          circles.push(new Path.Circle(p1, 10));
-          glyph.path = glyph.path.unite(glyph.mergeSegments(circles));
+          circles.push(new Path.Circle(p1, 12));
+          glyph.path.addChild(glyph.mergeSegments(circles));
         }
       }
 
       generator.generate();
       console.log(generator);
 
-      // generator.mergeGlyphsWith(new Path.Circle([30,-30], 40),'abc');
-
       generator.exportOpentype({
-        familyName: 'GlypherChaos' + Math.round(Math.random() * 1000),
+        familyName: 'GlypherBalls',
         styleName: 'Medium',
         debug: true
       });
