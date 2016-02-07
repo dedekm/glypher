@@ -16,12 +16,15 @@
   <script type="text/javascript">
     window.onload = function() {
       window.generator = new glypher.Generator({
+        type: 'stroke',
         height: 10,
         width: 5,
-        xheight: 7
+        xheight: 7,
+        weight: 10
       });
+
       generator.generate();
-      console.log(generator);
+      // console.log(generator);
 
       generator.exportOpentype({
         familyName: 'GlypherStandart' + Math.round(Math.random() * 1000),

@@ -5,10 +5,11 @@ function Generator(options) {
   paper.setup(canvas);
 
   options = options || {};
+  this.type = options.type || 'brush';
   this.proportion = options.proportion || (options.height / options.width) || 1;
 
-  this.weight = options.weight || 20;
-  this.contrast = options.contrast || 5;
+  this.weight = options.weight || (this.type == 'brush' ? 20 : 5);
+  this.contrast = this.type == 'brush' ? (options.contrast || 5) : this.weight;
   this.descender = options.descender || -3;
   this.xshift = options.xshift || 0;
   this.yshift = options.yshift || 0;
@@ -30,7 +31,10 @@ Generator.prototype.generate = function() {
 
   for (var i = 0; i < availableGlyphs.length; i++) {
     this.beforeGenerateGlyph(availableGlyphs[i]);
-    glyph = this.generateGlyph(availableGlyphs[i]);
+    if (this.type == 'stroke')
+      glyph = this.generateGlyph2(availableGlyphs[i], this.alphabet.glyphs[availableGlyphs[i]]);
+    else
+      glyph = this.generateGlyph(availableGlyphs[i], this.alphabet.glyphs[availableGlyphs[i]]);
     this.afterGenerateGlyph(glyph);
     this.glyphs[glyph.name] = glyph;
   }
@@ -217,11 +221,162 @@ Generator.prototype.generateGlyph = function(name, points) {
   glyph.path = glyph.mergeSegments(segments);
   glyph.path.reduce();
 
-  if(this.smooth)
-    glyph.path.smooth({type: 'continuous'});
+  if (this.smooth)
+    glyph.path.smooth({
+      type: 'continuous'
+    });
 
   return glyph;
 };
+
+//WIP
+Generator.prototype.generateGlyph2 = function(name, points) {
+  var glyph = new glypher.Glyph(name, this.weight, this.contrast, this.proportion);
+
+  var nextAngle,
+    corner,
+    segments = [
+      []
+    ],
+    cornerPoint3,
+    startPoint;
+
+  for (var i = 0; i < points.length; i++) {
+    //WIP
+    if (points[i][2] == 'dot') {
+      segments[segments.length - 1].push(this.adjustPoint(points[i]).add(this.weight, this.weight * -1));
+      segments[segments.length - 1].push(this.adjustPoint(points[i]).add(this.weight * -1, this.weight * -1));
+      segments[segments.length - 1].push(this.adjustPoint(points[i]).add(this.weight * -1, this.weight));
+      segments[segments.length - 1].push(this.adjustPoint(points[i]).add(this.weight));
+      segments.push([]);
+      continue;
+    }
+
+    if (i >= points.length - 1)
+      break;
+
+    var point1 = this.adjustPoint(points[i]);
+    var point2 = this.adjustPoint(points[i + 1]);
+
+    if (points[i + 1][2] == 'c') {
+      point2 = this.adjustPoint(points[startPoint - 1]);
+    } else {
+      point2 = this.adjustPoint(points[i + 1]);
+      startPoint = startPoint || i;
+    }
+
+    var previousAngle = nextAngle;
+
+    var vector1 = point2.subtract(point1);
+    if (points[i + 2]) {
+      var vector2 = this.adjustPoint(points[i + 2]).subtract(point2);
+      nextAngle = vector1.rotate(180).getDirectedAngle(vector2);
+    }
+    var p1, p2, p3, p4;
+    if (points[i - 1] && points[i - 1][2] == 'e' || i === 0) {
+      p1 = point1.add(this.weight * -1, this.weight).rotate(vector1.angle + 90, point1);
+      p2 = point1.add(this.weight, this.weight).rotate(vector1.angle + 90, point1);
+    } else {
+      p1 = point1.add(this.weight, 0).rotate(vector1.angle - 90, point1);
+      p2 = point1.add(this.weight, 0).rotate(vector1.angle + 90, point1);
+    }
+
+    if (points[i + 1][2] == 'e' || i === points.length - 2) {
+      p3 = point2.add(this.weight * -1, this.weight).rotate(vector1.angle - 90, point2);
+      p4 = point2.add(this.weight, this.weight).rotate(vector1.angle - 90, point2);
+    } else {
+      p3 = point2.add(this.weight, 0).rotate(vector1.angle + 90, point2);
+      p4 = point2.add(this.weight, 0).rotate(vector1.angle - 90, point2);
+    }
+
+    var cornerPoint,
+      cornerPoint2;
+
+    if (points[i - 1] && points[i][2] != 'e' && points[i - 1][2] != 'e' && previousAngle) {
+      var previousVector = this.adjustPoint(points[i - 1]).subtract(point1);
+      if (previousAngle < 0) {
+        cornerPoint = p1;
+        // segments[segments.length - 1].push(makeCorner(cornerPoint2, cornerPoint, previousVector, vector1));
+        segments[segments.length - 1].splice(0, 0, makeCorner(cornerPoint3, p2, previousVector, vector1));
+        //for blunt edges
+        segments[segments.length - 1].push(cornerPoint2);
+        segments[segments.length - 1].push(cornerPoint);
+
+
+      } else {
+        cornerPoint = p2;
+        // segments[segments.length - 1].splice(0, 0, makeCorner(cornerPoint2, cornerPoint, previousVector, vector1));
+        segments[segments.length - 1].push(makeCorner(cornerPoint3, p1, previousVector, vector1));
+        //for blunt edges
+        segments[segments.length - 1].splice(0, 0, cornerPoint2);
+        segments[segments.length - 1].splice(0, 0, cornerPoint);
+
+
+      }
+    }
+
+    if (nextAngle) {
+
+      if (nextAngle < 0) {
+        cornerPoint2 = p4;
+        cornerPoint3 = p3;
+      } else {
+        cornerPoint2 = p3;
+        cornerPoint3 = p4;
+      }
+    }
+
+    if (points[i - 1] && points[i - 1][2] == 'e' || !previousAngle) {
+      segments[segments.length - 1].push(p1);
+      segments[segments.length - 1].splice(0, 0, p2);
+    }
+
+    if (points[i + 1][2] == 'e' || i == points.length - 2) {
+      segments[segments.length - 1].splice(0, 0, p3);
+      segments[segments.length - 1].push(p4);
+      segments.push([]);
+    }
+
+    if (point2.x + glyph.weight > glyph.width)
+      glyph.width = point2.x + glyph.weight;
+
+    // FIXME: add last point
+    if (point2.x + glyph.weight > glyph.width)
+      glyph.width = point2.x + glyph.weight;
+
+  }
+
+  glyph.path = new Group();
+  for (i = 0; i < segments.length; i++) {
+    if (segments[i].length) {
+      var child = new Path(segments[i]);
+      child.closed = true;
+      glyph.path.addChild(child);
+    }
+  }
+
+  return glyph;
+};
+
+function makeCorner(p1, p2, vector2, vector3) {
+  var vector1 = p2.subtract(p1);
+
+  var rad1 = vector2.rotate(180).getAngleInRadians(vector1);
+  var rad2 = vector3.getAngleInRadians(vector1);
+
+  var x = (vector1.length * Math.sin(rad1)) / Math.sin(rad2 + rad1);
+
+  // if (x > 30)
+  //   x = 30;
+
+  // if (x > 50)
+  //   x = 30;
+
+  var result = new Point(x, 0);
+  result = result.rotate(vector2.rotate(180).angle);
+  result = result.add(p1);
+  return result;
+}
 
 Generator.prototype.generateGlyphWithAccent = function(name, accent) {
   var glyph;
