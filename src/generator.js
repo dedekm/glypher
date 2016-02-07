@@ -355,13 +355,13 @@ Generator.prototype.generateGlyph2 = function(name, points) {
       glyph.width = point2.x + glyph.weight;
 
   }
-
-  glyph.path = new Group();
-  for (i = 0; i < segments.length; i++) {
+  glyph.path = new Path(segments[0]);
+  glyph.path.closePath();
+  for (i = 1; i < segments.length; i++) {
     if (segments[i].length) {
-      var child = new Path(segments[i]);
-      child.closed = true;
-      glyph.path.addChild(child);
+      var segment = new Path(segments[i]);
+      segment.closePath();
+      glyph.path = glyph.path.unite(segment);
     }
   }
 

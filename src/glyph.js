@@ -38,6 +38,7 @@ Glyph.prototype.draw = function(x, y, debug) {
   var path = this.path.clone();
   path.position = [x + path.position.x, y + path.position.y];
   path.fillColor = 'black';
+  path.selected = true;
 };
 
 exports.Glyph = Glyph;
