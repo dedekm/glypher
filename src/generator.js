@@ -27,7 +27,7 @@ function Generator(options) {
     proportion: this.proportion,
     xheight: options.xheight || 7
   };
-  
+
   this.alphabet = options.alphabet || new glypher.Alphabet(alphabetOptions);
   this.glyphs = [];
   this.opentype = undefined;
@@ -81,8 +81,8 @@ Generator.prototype.getGlyph = function(name) {
   if (this.glyphs[name]) {
     return this.glyphs[name];
   } else {
-    console.log('glyph ' + glyph.name + ' not defined');
-    return false;
+    console.log('glyph ' + name + ' not defined');
+    return this.glyphs['.notdef'];
   }
 };
 
