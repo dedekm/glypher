@@ -285,12 +285,22 @@ Generator.prototype.generateGlyph2 = function(name, points) {
       var previousVector = this.adjustPoint(points[i - 1]).subtract(point1);
       if (previousAngle < 0) {
         cornerPoint = p1;
-        segments[segments.length - 1].push(makeCorner(cornerPoint2, cornerPoint, previousVector, vector1));
+        // segments[segments.length - 1].push(makeCorner(cornerPoint2, cornerPoint, previousVector, vector1));
         segments[segments.length - 1].splice(0, 0, makeCorner(cornerPoint3, p2, previousVector, vector1));
+        //for blunt edges
+        segments[segments.length - 1].push(cornerPoint2);
+        segments[segments.length - 1].push(cornerPoint);
+
+
       } else {
         cornerPoint = p2;
-        segments[segments.length - 1].splice(0, 0, makeCorner(cornerPoint2, cornerPoint, previousVector, vector1));
+        // segments[segments.length - 1].splice(0, 0, makeCorner(cornerPoint2, cornerPoint, previousVector, vector1));
         segments[segments.length - 1].push(makeCorner(cornerPoint3, p1, previousVector, vector1));
+        //for blunt edges
+        segments[segments.length - 1].splice(0, 0, cornerPoint2);
+        segments[segments.length - 1].splice(0, 0, cornerPoint);
+
+
       }
     }
 
@@ -524,6 +534,7 @@ Glyph.prototype.draw = function(x, y, debug) {
   var path = this.path.clone();
   path.position = [x + path.position.x, y + path.position.y];
   path.fillColor = 'black';
+  path.selected = true;
 };
 
 function sign(x) {

@@ -5,11 +5,12 @@ function Alphabet(xheight, descender, aeheight) {
 
   this.glyphs = {
     '.notdef': [
-      [0, 0],
+      [0, 5],
       [0, 10],
       [10, 10],
       [10, 0],
-      [0, 0, 'c']
+      [0, 0],
+      [0, 5, 'c']
     ],
     a: [
       [0, xheight],
@@ -110,11 +111,12 @@ function Alphabet(xheight, descender, aeheight) {
       [10, 0]
     ],
     o: [
-      [0, 0],
+      [0, xheight/2],
       [0, xheight],
       [10, xheight],
       [10, 0],
-      [0, 0, 'c']
+      [0, 0],
+      [0, xheight/2, 'c']
     ],
     p: [
       [0, descender],
@@ -229,11 +231,12 @@ function Alphabet(xheight, descender, aeheight) {
       [10, 10],
       [8, xheight],
       [0, xheight, 'e'],
-      [0, 0],
+      [0, xheight/2],
       [0, xheight],
       [10, xheight],
       [10, 0],
-      [0, 0]
+      [0, 0],
+      [0, xheight/2, 'c'],
     ],
     C: [
       [10, 10],
@@ -242,13 +245,14 @@ function Alphabet(xheight, descender, aeheight) {
       [10, 0]
     ],
     D: [
-      [0, 0],
+      [0, 5],
       [0, 10],
       [7, 10],
       [10, xheight],
       [10, 10 - xheight],
       [7, 0],
-      [0, 0]
+      [0, 0],
+      [0, 5, 'c'],
     ],
     E: [
       [10, 0],
@@ -335,11 +339,12 @@ function Alphabet(xheight, descender, aeheight) {
       [10, 10]
     ],
     O: [
-      [0, 0],
+      [0, 5],
       [0, 10],
       [10, 10],
       [10, 0],
-      [0, 0, 'c']
+      [0, 0],
+      [0, 5, 'c']
     ],
     P: [
       [0, 0],
@@ -349,11 +354,12 @@ function Alphabet(xheight, descender, aeheight) {
       [0, xheight]
     ],
     Q: [
-      [0, 0],
+      [0, 5],
       [0, 10],
       [10, 10],
       [10, 0],
-      [0, 0, 'e'],
+      [0, 0],
+      [0, 5, 'e'],
       [8, 0],
       // 0 - contrast ???
       [8, descender * 0.75],
@@ -435,11 +441,12 @@ function Alphabet(xheight, descender, aeheight) {
       [10, 0]
     ],
     '0': [
-      [0, 0],
+      [0, 5],
       [0, 10],
       [10, 10],
       [10, 0],
-      [0, 0, 'c']
+      [0, 0],
+      [0, 5, 'c']
     ],
     '1': [
       [5, 0],
@@ -498,11 +505,12 @@ function Alphabet(xheight, descender, aeheight) {
       [10, 10],
       [10, xheight],
       [0, xheight, 'e'],
-      [0, 0],
+      [0, xheight/2],
       [0, xheight],
       [10, xheight],
       [10, 0],
-      [0, 0]
+      [0, 0],
+      [0, xheight/2, 'c']
     ],
     '9': [
       [0, 0],
