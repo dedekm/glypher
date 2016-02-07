@@ -541,9 +541,12 @@ Generator.prototype.exportOpentype = function(options) {
 };
 
 Generator.prototype.downloadOTF = function() {
-  if (this.font)
-    this.font.download();
-  else
+  if (this.font) {
+    if (window.requestFileSystem || window.webkitRequestFileSystem)
+      this.font.download();
+    else
+      console.log('Use Google Chrome');
+  } else
     console.log('use exportOpentype first');
 };
 
