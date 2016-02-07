@@ -677,14 +677,24 @@ function Alphabet(options) {
       [0, 0],
       [0, 5, 'c'],
     ];
-    this.glyphs.N = [
-      [0, 0],
-      [0, 10],
-      [2, 10],
-      [8, 0],
-      [10, 0],
-      [10, 10]
-    ];
+    // HACK: change glyph for condensed fonts
+    if (options.proportion < 1) {
+      this.glyphs.N = [
+        [0, 0],
+        [0, 10],
+        [2, 10],
+        [8, 0],
+        [10, 0],
+        [10, 10]
+      ];
+    } else {
+      this.glyphs.N = [
+        [0, 0],
+        [0, 10.5],
+        [10, -0.5],
+        [10, 10]
+      ];
+    }
     this.glyphs.O = [
       [0, 5],
       [0, 10],
