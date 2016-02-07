@@ -800,6 +800,20 @@ Alphabet.prototype.maxHeight = function() {
   return max;
 };
 
+Alphabet.prototype.maxWidth = function() {
+  var max = 0;
+  for (var key in this.glyphs) {
+    if (this.glyphs[key]) {
+      for (var i = 0; i < this.glyphs[key].length; i++) {
+        if (this.glyphs[key][i][0] > max)
+          max = this.glyphs[key][i][0];
+      }
+    }
+  }
+
+  return max;
+};
+
 Alphabet.prototype.availableGlyphs = function() {
   return Object.keys(this.glyphs);
 };

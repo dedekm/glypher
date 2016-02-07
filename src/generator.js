@@ -500,11 +500,10 @@ Generator.prototype.exportOpentype = function(options) {
       }));
     }
   }
-
   opentypeGlyphs.push(new opentype.Glyph({
     name: 'space',
     unicode: 32,
-    advanceWidth: 1000,
+    advanceWidth: this.size / this.proportion * 100,
     path: new opentype.Path()
   }));
 
