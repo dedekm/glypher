@@ -6,16 +6,16 @@ function Generator(options) {
   paper.setup(canvas);
 
   options = options || {};
+  this.type = options.type || 'brush';
   this.proportion = options.proportion || (options.height / options.width) || 1;
 
-  this.weight = options.weight || 5;
-  this.contrast = options.contrast || 5;
+  this.weight = options.weight || (this.type == 'brush' ? 20 : 5);
+  this.contrast = this.type == 'brush' ? (options.contrast || 5) : this.weight;
   this.descender = options.descender || -3;
   this.xshift = options.xshift || 0;
   this.yshift = options.yshift || 0;
   this.italic = options.italic || 0;
   this.segmentReduction = options.segmentReduction;
-
   this.size = 10;
 
   this.alphabet = options.alphabet || new Alphabet(options.xheight, this.descender);
@@ -29,19 +29,11 @@ Generator.prototype.generate = function() {
 
   for (var i = 0; i < availableGlyphs.length; i++) {
     this.beforeGenerateGlyph(availableGlyphs[i]);
-    var glyph = this.generateGlyph(availableGlyphs[i], this.alphabet.glyphs[availableGlyphs[i]]);
-    this.afterGenerateGlyph(glyph);
-    this.glyphs[glyph.name] = glyph;
-  }
-};
-
-Generator.prototype.generate2 = function() {
-  this.glyphs = {};
-  var availableGlyphs = this.alphabet.availableGlyphs();
-
-  for (var i = 0; i < availableGlyphs.length; i++) {
-    this.beforeGenerateGlyph(availableGlyphs[i]);
-    var glyph = this.generateGlyph2(availableGlyphs[i], this.alphabet.glyphs[availableGlyphs[i]]);
+    var glyph;
+    if(this.type == 'stroke')
+      glyph = this.generateGlyph2(availableGlyphs[i], this.alphabet.glyphs[availableGlyphs[i]]);
+    else
+      glyph = this.generateGlyph(availableGlyphs[i], this.alphabet.glyphs[availableGlyphs[i]]);
     this.afterGenerateGlyph(glyph);
     this.glyphs[glyph.name] = glyph;
   }
@@ -200,12 +192,12 @@ Generator.prototype.generateGlyph = function(name, points) {
 
     segments.push(path);
 
-    if (point2.x + glyph.weight > glyph.width)
-      glyph.width = point2.x + glyph.weight;
+    if (p2.x + glyph.weight > glyph.width)
+      glyph.width = p2.x + glyph.weight;
 
     // FIXME: add last point
-    if (point2.x + glyph.weight > glyph.width)
-      glyph.width = point2.x + glyph.weight;
+    if (p2.x + glyph.weight > glyph.width)
+      glyph.width = p2.x + glyph.weight;
 
     if (points[i + 1][2] == 'e' || points[i + 1][2] == 'c') {
       i++;
@@ -326,12 +318,12 @@ Generator.prototype.generateGlyph2 = function(name, points) {
       segments.push([]);
     }
 
-    if (p3.x + glyph.weight > glyph.width)
-      glyph.width = p3.x + glyph.weight;
+    if (point2.x + glyph.weight > glyph.width)
+      glyph.width = point2.x + glyph.weight;
 
     // FIXME: add last point
-    if (p3.x + glyph.weight > glyph.width)
-      glyph.width = p3.x + glyph.weight;
+    if (point2.x + glyph.weight > glyph.width)
+      glyph.width = point2.x + glyph.weight;
 
   }
 
@@ -534,7 +526,6 @@ Glyph.prototype.draw = function(x, y, debug) {
   var path = this.path.clone();
   path.position = [x + path.position.x, y + path.position.y];
   path.fillColor = 'black';
-  path.selected = true;
 };
 
 function sign(x) {

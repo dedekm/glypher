@@ -17,15 +17,17 @@
   <script type="text/javascript">
     window.onload = function() {
       window.generator = new Generator({
+        type: 'stroke',
         height: 10,
         width: 5,
-        xheight: 7
+        xheight: 7,
+        weight: 10
       });
 
       // var glyph = generator.generateGlyph2('a', generator.alphabet.glyphs['a']);
 
 
-      generator.generate2();
+      generator.generate();
       // console.log(generator);
 
       // generator.mergeGlyphsWith(new Path.Circle([30,-30], 40),'abc');
