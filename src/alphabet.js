@@ -543,6 +543,18 @@ function Alphabet(options) {
       [0, -2],
       [0, 1]
     ],
+    ':': [
+      [0, xheight],
+      [0, xheight - 1, 'e'],
+      [0, 0],
+      [0, 1]
+    ],
+    ';': [
+      [0, xheight],
+      [0, xheight - 1, 'e'],
+      [0, -2],
+      [0, 1]
+    ],
     '!': [
       [0, 0],
       [0, 1, 'e'],
@@ -561,23 +573,35 @@ function Alphabet(options) {
     ],
     //hyphen
     '‐': [
-      [0, xheight / 2],
-      [2, xheight / 2]
+      [0, 5],
+      [2, 5]
     ],
     //endash
     '–': [
-      [0, xheight / 2],
-      [10, xheight / 2]
+      [0, 5],
+      [10, 5]
     ],
     //emdash
     '—': [
-      [0, xheight / 2],
-      [20, xheight / 2]
+      [0, 5],
+      [20, 5]
+    ],
+    '+': [
+      [0, 5],
+      [4, 5, 'e'],
+      [2, 7],
+      [2, 3]
     ],
     //minus
     '-': [
-      [0, xheight / 2],
-      [2, xheight / 2]
+      [0, 5],
+      [2, 5]
+    ],
+    '=': [
+      [0, 4],
+      [2, 4, 'e'],
+      [0, 6],
+      [2, 6]
     ],
     '/': [
       [0, 0],
@@ -605,26 +629,54 @@ function Alphabet(options) {
       [5, 10],
       [0, 7],
       [0, 3],
-      [5, 0],
+      [5, 0]
     ],
     ')': [
       [0, 10],
       [5, 7],
       [5, 3],
-      [0, 0],
+      [0, 0]
     ],
     '[': [
       [5, 10],
       [0, 10],
       [0, 0],
-      [5, 0],
+      [5, 0]
     ],
     ']': [
       [0, 10],
       [5, 10],
       [5, 0],
-      [0, 0],
+      [0, 0]
     ],
+    '{': [
+      [5, 10],
+      [2, 9],
+      [2, 6.5],
+      [0, 5],
+      [2, 3.5],
+      [2, 1],
+      [5, 0]
+    ],
+    '}': [
+      [0, 10],
+      [3, 9],
+      [3, 6.5],
+      [5, 5],
+      [3, 3.5],
+      [3, 1],
+      [0, 0]
+    ],
+    '<': [
+      [10, xheight + 1],
+      [0, xheight / 2 + 1],
+      [10, 1]
+    ],
+    '>': [
+      [0, xheight + 1],
+      [10, xheight / 2 + 1],
+      [0, 1]
+    ]
   };
   if (options.type == 'stroke') {
     this.glyphs['.notdef'] = [
@@ -783,8 +835,11 @@ function Alphabet(options) {
     '–': 'endash',
     '—': 'emdash',
     '-': 'minus',
+    '+': 'plus',
     '.': 'period',
     ',': 'comma',
+    ':': 'colon',
+    ';': 'semicolon',
     '!': 'exclam',
     '?': 'question',
     '/': 'slash',
@@ -794,6 +849,11 @@ function Alphabet(options) {
     ')': 'parenright',
     '[': 'bracketleft',
     ']': 'bracketright',
+    '{': 'braceleft',
+    '}': 'braceright',
+    '<': 'less',
+    '=': 'equal',
+    '>': 'greater'
   };
 }
 Alphabet.prototype.maxHeight = function() {
