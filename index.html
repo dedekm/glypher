@@ -7,56 +7,49 @@
   <script type="text/javascript" src="bower_components/paper/dist/paper-full.min.js"></script>
   <script type="text/javascript" src="bower_components/opentype.js/dist/opentype.js"></script>
   <script type="text/javascript" src="dist/glypher.js"></script>
+  <style media="screen">
+    body {
+      text-align: center;
+      font-family: monospace;
+      font-size: 15px;
+    }
+    a {
+      color: black;
+    }
+  </style>
 </head>
 
 <body>
-  <canvas id="myCanvas" resize width="3000" height="400"></canvas>
-  <div id='glyphs'></div>
-  <button onclick="generator.downloadOTF()">Download Font</button>
+  <canvas id="myCanvas2" resize width="480" height="150"></canvas><br>
+  OTF generator javascript library version 0.0.1<br><br>
+  <a href="https://github.com/dedekm/glypher">source code</a>
   <script type="text/javascript">
+    var c = document.getElementById("myCanvas2");
+    var ctx = c.getContext("2d");
+
     window.onload = function() {
-      window.generator = new glypher.Generator({
-        height: 10,
-        width: 5,
-        xheight: 7
-      });
+      window.generate = function() {
+        window.generator = new glypher.Generator({
+          height: 10,
+          width: 5
+        });
 
-      generator.generate();
-      // console.log(generator);
+        generator.generate();
 
-      generator.exportOpentype({
-        familyName: 'GlypherStandart',
-        styleName: 'Medium',
-        debug: true
-      });
+        generator.exportOpentype({
+          familyName: 'GlypherStandart',
+          styleName: 'Normal'
+        });
 
-      var baseline = 200,
-        letterSpacing = 100,
-        kerning = 20,
-        text = 'GlypherNotAFont';
+        var buffer = generator.font.toArrayBuffer();
+        var font2 = opentype.parse(buffer);
 
-      for (var i = 0; i < text.length; i++) {
-        var glyph = generator.getGlyph(text[i]);
-        glyph.draw(letterSpacing, baseline);
-        letterSpacing += glyph.width + glyph.weight + kerning;
+        font2.draw(ctx, 'glypher', 10, 100, 72);
       }
-
-      //debugging
-      new Path.Line({
-        from: [0, baseline],
-        to: [3000, baseline],
-        strokeColor: 'blue'
-      });
-      new Path.Line({
-        from: [0, 100],
-        to: [3000, 100],
-        strokeColor: 'blue'
-      });
-
-      paper.view.draw();
+      window.generate();
     }
   </script>
-
+  <canvas id="myCanvas" resize width="1" height="1"></canvas>
 </body>
 
 </html>
