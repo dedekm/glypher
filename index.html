@@ -3,60 +3,130 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>Glypher</title>
-  <script type="text/javascript" src="bower_components/paper/dist/paper-full.min.js"></script>
-  <script type="text/javascript" src="bower_components/opentype.js/dist/opentype.js"></script>
-  <script type="text/javascript" src="dist/glypher.js"></script>
+  <title>Glypher with Plumin</title>
+  <script src="libs/plumin.js" charset="utf-8"></script>
+  <style media="screen">
+    textarea {
+      width: 100%;
+      height: 300px;
+      margin: 0;
+      padding: 20px;
+      border: 0;
+      border-radius: 0;
+      font-family: 'Demo', sans-serif;
+      font-size: 50px;
+      resize: none;
+    }
+
+    #download {
+      display: inline-block;
+      margin: 5px;
+      padding: 5px 7px;
+      text-decoration: none;
+      color: #FFE;
+      background: #FF725E;
+    }
+  </style>
 </head>
 
 <body>
-  <canvas id="myCanvas" resize width="3000" height="400"></canvas>
-  <div id='glyphs'></div>
-  <button onclick="generator.downloadOTF()">Download Font</button>
+  <textarea>A B C</textarea>
+  <a download="demo.otf" href="#" id="download">▽ Download</a>
+  <canvas id="canvas" width="1024" height="1024" style="display: none;"></canvas>
   <script type="text/javascript">
-    window.onload = function() {
-      window.generator = new glypher.Generator({
-        height: 10,
-        width: 5,
-        xheight: 7
+    (function(p) {
+      'use strict';
+
+      // Setup paper.js by providing a canvas element
+      p.setup(document.getElementById('canvas'));
+
+      var font = new p.Font({
+          familyName: 'Demo',
+          ascender: 800,
+          descender: -200
+        }),
+
+        // glyphs
+        A = new p.Glyph({
+          name: 'A',
+          unicode: 'A',
+          advanceWidth: 512
+        }),
+        B = new p.Glyph({
+          name: 'B',
+          unicode: 'B',
+          advanceWidth: 512
+        }),
+        C = new p.Glyph({
+          name: 'C',
+          unicode: 'C',
+          advanceWidth: 512
+        }),
+        shape,
+        counter;
+
+      // A contours
+      shape = new p.Path.RegularPolygon({
+        center: [256, 136],
+        sides: 3,
+        radius: 256
       });
-
-      generator.generate();
-      // console.log(generator);
-
-      generator.exportOpentype({
-        familyName: 'GlypherStandart',
-        styleName: 'Medium',
-        debug: true
+      counter = new p.Path.RegularPolygon({
+        center: [256, 61],
+        sides: 3,
+        radius: 256
       });
+      shape.rotate(180, [256, 136]);
+      counter.rotate(180, [256, 61]);
+      A.addContour(shape.subtract(counter));
+      A.scale(1, 2, [256, 0]);
 
-      var baseline = 200,
-        letterSpacing = 100,
-        kerning = 20,
-        text = 'GlypherNotAFont';
-
-      for (var i = 0; i < text.length; i++) {
-        var glyph = generator.getGlyph(text[i]);
-        glyph.draw(letterSpacing, baseline);
-        letterSpacing += glyph.width + glyph.weight + kerning;
-      }
-
-      //debugging
-      new Path.Line({
-        from: [0, baseline],
-        to: [3000, baseline],
-        strokeColor: 'blue'
+      // B contours
+      shape = new p.Path.Rectangle({
+        point: [0, 0],
+        size: [450, 450]
       });
-      new Path.Line({
-        from: [0, 100],
-        to: [3000, 100],
-        strokeColor: 'blue'
+      counter = new p.Path.Rectangle({
+        point: [40, 40],
+        size: [370, 370]
       });
+      B.addContour(shape.subtract(counter));
+      shape = new p.Path.Rectangle({
+        point: [0, 410],
+        size: [340, 340]
+      });
+      counter = new p.Path.Rectangle({
+        point: [40, 450],
+        size: [260, 260]
+      });
+      B.addContour(shape.subtract(counter));
 
-      paper.view.draw();
-    }
+      // C contours
+      shape = new p.Path.Ellipse({
+        point: [0, 0],
+        size: [520, 800]
+      });
+      counter = new p.Path.Ellipse({
+        point: [40, 40],
+        size: [440, 720]
+      });
+      shape = shape.subtract(counter);
+      counter = new p.Path.Rectangle({
+        point: [430, 180],
+        size: [100, 440]
+      });
+      C.addContour(shape.subtract(counter));
+
+      font.addGlyphs([A, B, C]);
+      font.updateOTCommands()
+        .addToFonts();
+
+      document.getElementById('download').onclick = function() {
+        font.download();
+      };
+
+    })(plumin.paper);
   </script>
-
 </body>
 
 </html>
