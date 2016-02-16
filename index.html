@@ -30,7 +30,7 @@
 </head>
 
 <body>
-  <textarea>A B C</textarea>
+  <textarea>A B C D</textarea>
   <a download="demo.otf" href="#" id="download">▽ Download</a>
   <canvas id="canvas" width="1024" height="1024" style="display: none;"></canvas>
   <script type="text/javascript">
@@ -60,6 +60,11 @@
         C = new p.Glyph({
           name: 'C',
           unicode: 'C',
+          advanceWidth: 512
+        }),
+        D = new p.Glyph({
+          name: 'D',
+          unicode: 'D',
           advanceWidth: 512
         }),
         shape,
@@ -117,7 +122,18 @@
       });
       C.addContour(shape.subtract(counter));
 
-      font.addGlyphs([A, B, C]);
+      // D contours
+      shape = new p.Path.Rectangle({
+        point: [0, 0],
+        size: [450, 800]
+      });
+      counter = new p.Path.Rectangle({
+        point: [40, 40],
+        size: [370, 730]
+      });
+      D.addContour(shape.subtract(counter));
+
+      font.addGlyphs([A, B, C, D]);
       font.updateOTCommands()
         .addToFonts();
 
