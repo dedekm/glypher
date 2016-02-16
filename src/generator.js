@@ -1,18 +1,18 @@
 function Generator(options) {
   options = options || {};
   this.type = options.type || 'brush';
-  this.proportion = options.proportion || (options.height / options.width) || 1;
+  this.proportion = options.proportion || (options.height / options.width) || 1.5;
 
-  this.weight = options.weight || (this.type == 'brush' ? 20 : 5);
-  this.contrast = this.type == 'brush' ? (options.contrast || 5) : this.weight;
-  this.descender = options.descender || -3;
+  this.weight = options.weight || (this.type == 'brush' ? 200 : 50);
+  this.contrast = this.type == 'brush' ? (options.contrast || 50) : this.weight;
+  this.descender = options.descender || -30;
   this.xshift = options.xshift || 0;
   this.yshift = options.yshift || 0;
   this.italic = options.italic || 0;
   this.segmentReduction = options.segmentReduction;
   this.smooth = options.smooth;
 
-  this.size = 100;
+  this.size = 80;
 
   var alphabetOptions = {
     type: this.type,
