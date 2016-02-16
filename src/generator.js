@@ -1,9 +1,4 @@
 function Generator(options) {
-  paper.install(window);
-  // FIXME:
-  var canvas = document.getElementById('myCanvas');
-  paper.setup(canvas);
-
   options = options || {};
   this.type = options.type || 'brush';
   this.proportion = options.proportion || (options.height / options.width) || 1;
@@ -17,7 +12,7 @@ function Generator(options) {
   this.segmentReduction = options.segmentReduction;
   this.smooth = options.smooth;
 
-  this.size = 10;
+  this.size = 100;
 
   var alphabetOptions = {
     type: this.type,
@@ -98,7 +93,6 @@ Generator.prototype.adjustPoint = function(point) {
   return new Point(point)
     .multiply([this.size / this.proportion, this.size - (this.contrast * 2 / this.size)])
     .add(this.weight, this.contrast)
-    .multiply(1, -1)
     .add(this.xshift, this.yshift);
 };
 

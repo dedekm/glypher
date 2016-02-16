@@ -5,6 +5,7 @@
   <meta charset="UTF-8">
   <title>Glypher with Plumin</title>
   <script src="libs/plumin.js" charset="utf-8"></script>
+  <script src="dist/glypher.js" charset="utf-8"></script>
   <style media="screen">
     textarea {
       width: 100%;
@@ -36,7 +37,7 @@
   <script type="text/javascript">
     (function(p) {
       'use strict';
-
+      p.install(window);
       // Setup paper.js by providing a canvas element
       p.setup(document.getElementById('canvas'));
 
@@ -65,6 +66,11 @@
         D = new p.Glyph({
           name: 'D',
           unicode: 'D',
+          advanceWidth: 512
+        }),
+        E = new p.Glyph({
+          name: 'E',
+          unicode: 'E',
           advanceWidth: 512
         }),
         shape,
@@ -133,7 +139,13 @@
       });
       D.addContour(shape.subtract(counter));
 
-      font.addGlyphs([A, B, C, D]);
+      var generator = new glypher.Generator();
+      var epath = generator.generateGlyph('E', new glypher.Alphabet({}).glyphs.E);
+      E.addContour(epath.path);
+      E.ot.advanceWidth = epath.width;
+
+
+      font.addGlyphs([A, B, C, D, E]);
       font.updateOTCommands()
         .addToFonts();
 
