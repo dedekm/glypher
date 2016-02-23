@@ -35,20 +35,14 @@
   <a download="demo.otf" href="#" id="download">▽ Download</a>
   <canvas id="canvas" width="1024" height="1024" style="display: none;"></canvas>
   <script type="text/javascript">
-    (function(p) {
-      'use strict';
-      p.install(window);
       // Setup paper.js by providing a canvas element
-      p.setup(document.getElementById('canvas'));
 
       var generator = new glypher.Generator();
       generator.generate();
 
       document.getElementById('download').onclick = function() {
-        generator.downloadOTF();
+        generator.download();
       };
-
-    })(plumin.paper);
   </script>
 </body>
 

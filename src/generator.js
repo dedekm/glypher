@@ -5,7 +5,7 @@ function Generator(options) {
 
   this.weight = options.weight || (this.type == 'brush' ? 200 : 50);
   this.contrast = this.type == 'brush' ? (options.contrast || 50) : this.weight;
-  this.descender = options.descender || -30;
+  this.descender = options.descender || -3;
   this.xshift = options.xshift || 0;
   this.yshift = options.yshift || 0;
   this.italic = options.italic || 0;
@@ -29,6 +29,9 @@ function Generator(options) {
 }
 
 Generator.prototype.generate = function() {
+  // FIXME: add canvas element
+  plumin.setup(document.getElementById('canvas'));
+
   this.font = new plumin.Font({
     familyName: 'Demo',
     ascender: 1000,
@@ -39,12 +42,12 @@ Generator.prototype.generate = function() {
     glyphs = [];
 
   for (var i = 0; i < availableGlyphs.length; i++) {
-    var path = this.generateGlyph(availableGlyphs[i], new glypher.Alphabet({}).glyphs[availableGlyphs[i]]);
+    var path = this.generateGlyph(availableGlyphs[i], this.alphabet.glyphs[availableGlyphs[i]]);
     var glyph = new plumin.Glyph({
       name: this.alphabet.nameMap[availableGlyphs[i]] || availableGlyphs[i],
       unicode: availableGlyphs[i],
       advanceWidth: path.width + 100
-    })
+    });
     glyph.addContour(path.path);
     glyphs.push(glyph);
   }
@@ -100,7 +103,7 @@ Generator.prototype.getGlyph = function(name) {
 };
 
 Generator.prototype.adjustPoint = function(point) {
-  return new Point(point)
+  return new plumin.Point(point)
     .multiply([this.size / this.proportion, this.size - (this.contrast * 2 / this.size)])
     .add(this.weight, this.contrast)
     .add(this.xshift, this.yshift);
@@ -108,7 +111,7 @@ Generator.prototype.adjustPoint = function(point) {
 
 Generator.prototype.drawDot = function(point, box) {
   var p1 = this.adjustPoint(point);
-  return new Path.Rectangle(p1.subtract(box), p1.add(box));
+  return new plumin.Path.Rectangle(p1.subtract(box), p1.add(box));
 };
 
 Generator.prototype.beforeGenerateGlyph = function(name) {
@@ -124,7 +127,7 @@ Generator.prototype.generateGlyph = function(name, points) {
   var glyph = new glypher.Glyph(name, this.weight, this.contrast, this.proportion);
 
   var segments = [];
-  var box = new Point(glyph.weight, glyph.contrast);
+  var box = new plumin.Point(glyph.weight, glyph.contrast);
   var startPoint;
 
   for (var i = 0; i < points.length; i++) {
@@ -137,7 +140,7 @@ Generator.prototype.generateGlyph = function(name, points) {
     if (i >= points.length - 1)
       break;
 
-    var path = new Path();
+    var path = new plumin.Path();
 
     var p1 = this.adjustPoint(points[i]);
     var p2 = this.adjustPoint(points[i + 1]);
@@ -375,11 +378,11 @@ Generator.prototype.generateGlyph2 = function(name, points) {
       glyph.height = point2.y + glyph.contrast;
 
   }
-  glyph.path = new Path(segments[0]);
+  glyph.path = new plumin.Path(segments[0]);
   glyph.path.closePath();
   for (i = 1; i < segments.length; i++) {
     if (segments[i].length) {
-      var segment = new Path(segments[i]);
+      var segment = new plumin.Path(segments[i]);
       segment.closePath();
       glyph.path = glyph.path.unite(segment);
     }
@@ -402,7 +405,7 @@ function makeCorner(p1, p2, vector2, vector3) {
   // if (x > 50)
   //   x = 30;
 
-  var result = new Point(x, 0);
+  var result = new plumin.Point(x, 0);
   result = result.rotate(vector2.rotate(180).angle);
   result = result.add(p1);
   return result;
@@ -592,7 +595,7 @@ Generator.prototype.exportOpentype = function(options) {
   }
 };
 
-Generator.prototype.downloadOTF = function() {
+Generator.prototype.download = function() {
   if (this.font)
       this.font.download();
   else
