@@ -31,7 +31,7 @@
 </head>
 
 <body>
-  <textarea>A B C D E a b c d e</textarea>
+  <textarea autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">Lorem ipsum</textarea>
   <a download="demo.otf" href="#" id="download">▽ Download</a>
   <canvas id="canvas" width="1024" height="1024" style="display: none;"></canvas>
   <script type="text/javascript">
@@ -41,33 +41,11 @@
       // Setup paper.js by providing a canvas element
       p.setup(document.getElementById('canvas'));
 
-      var font = new p.Font({
-          familyName: 'Demo',
-          ascender: 800,
-          descender: -200
-        });
-
       var generator = new glypher.Generator();
-      var someGlyphs = 'ABCDEFGabcde',
-        generatedGlyphs = [];
-      for (var i = 0; i < someGlyphs.length; i++) {
-        var path = generator.generateGlyph(someGlyphs[i], new glypher.Alphabet({}).glyphs[someGlyphs[i]]);
-        var glyph = new p.Glyph({
-          name: someGlyphs[i],
-          unicode: someGlyphs[i],
-          advanceWidth: path.width
-        })
-        glyph.addContour(path.path);
-        generatedGlyphs.push(glyph);
-      }
-
-
-      font.addGlyphs(generatedGlyphs);
-      font.updateOTCommands()
-        .addToFonts();
+      generator.generate();
 
       document.getElementById('download').onclick = function() {
-        font.download();
+        generator.downloadOTF();
       };
 
     })(plumin.paper);

@@ -29,19 +29,29 @@ function Generator(options) {
 }
 
 Generator.prototype.generate = function() {
-  this.glyphs = {};
+  this.font = new plumin.Font({
+    familyName: 'Demo',
+    ascender: 1000,
+    descender: -200
+  });
+
   var availableGlyphs = this.alphabet.availableGlyphs(),
-    glyph;
+    glyphs = [];
 
   for (var i = 0; i < availableGlyphs.length; i++) {
-    this.beforeGenerateGlyph(availableGlyphs[i]);
-    if (this.type == 'stroke')
-      glyph = this.generateGlyph2(availableGlyphs[i], this.alphabet.glyphs[availableGlyphs[i]]);
-    else
-      glyph = this.generateGlyph(availableGlyphs[i], this.alphabet.glyphs[availableGlyphs[i]]);
-    this.afterGenerateGlyph(glyph);
-    this.glyphs[glyph.name] = glyph;
+    var path = this.generateGlyph(availableGlyphs[i], new glypher.Alphabet({}).glyphs[availableGlyphs[i]]);
+    var glyph = new plumin.Glyph({
+      name: this.alphabet.nameMap[availableGlyphs[i]] || availableGlyphs[i],
+      unicode: availableGlyphs[i],
+      advanceWidth: path.width + 100
+    })
+    glyph.addContour(path.path);
+    glyphs.push(glyph);
   }
+
+  this.font.addGlyphs(glyphs);
+  this.font.updateOTCommands()
+    .addToFonts();
 
   // var accent = 'acute';
   // availableGlyphs = 'aeiouyAEIOUY';
@@ -583,13 +593,10 @@ Generator.prototype.exportOpentype = function(options) {
 };
 
 Generator.prototype.downloadOTF = function() {
-  if (this.font) {
-    if (window.requestFileSystem || window.webkitRequestFileSystem)
+  if (this.font)
       this.font.download();
-    else
-      console.log('Use Google Chrome');
-  } else
-    console.log('use exportOpentype first');
+  else
+    console.log('generate first');
 };
 
 function sign(x) {
