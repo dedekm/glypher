@@ -26,11 +26,16 @@ function Generator(options) {
   this.alphabet = options.alphabet || new glypher.Alphabet(alphabetOptions);
   this.glyphs = [];
   this.opentype = undefined;
+
+  // Setup paper.js by providing a canvas element
+  var canvas = document.createElement('canvas');
+  canvas.style.display = "none";
+  document.body.appendChild(canvas);
+  plumin.setup(canvas);
 }
 
 Generator.prototype.generate = function() {
-  // FIXME: add canvas element
-  plumin.setup(document.getElementById('canvas'));
+
 
   this.font = new plumin.Font({
     familyName: 'Demo',
