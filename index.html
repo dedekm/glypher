@@ -34,7 +34,9 @@
   <textarea autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">Lorem ipsum</textarea>
   <a href="#" id="download">Download font</a>
   <script type="text/javascript">
-      var generator = new glypher.Generator();
+      var generator = new glypher.Generator({
+        type: 'stroke'
+      });
       generator.generate();
 
       document.getElementById('download').onclick = function() {

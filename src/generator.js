@@ -35,8 +35,6 @@ function Generator(options) {
 }
 
 Generator.prototype.generate = function() {
-
-
   this.font = new plumin.Font({
     familyName: 'Demo',
     ascender: 1000,
@@ -44,10 +42,14 @@ Generator.prototype.generate = function() {
   });
 
   var availableGlyphs = this.alphabet.availableGlyphs(),
-    glyphs = [];
+    glyphs = [],
+    path;
 
   for (var i = 0; i < availableGlyphs.length; i++) {
-    var path = this.generateGlyph(availableGlyphs[i], this.alphabet.glyphs[availableGlyphs[i]]);
+    if (this.type == 'stroke')
+      path = this.generateGlyph2(availableGlyphs[i], this.alphabet.glyphs[availableGlyphs[i]]);
+    else
+      path = this.generateGlyph(availableGlyphs[i], this.alphabet.glyphs[availableGlyphs[i]]);
     var glyph = new plumin.Glyph({
       name: this.alphabet.nameMap[availableGlyphs[i]] || availableGlyphs[i],
       unicode: availableGlyphs[i],
@@ -602,7 +604,7 @@ Generator.prototype.exportOpentype = function(options) {
 
 Generator.prototype.download = function() {
   if (this.font)
-      this.font.download();
+    this.font.download();
   else
     console.log('generate first');
 };
