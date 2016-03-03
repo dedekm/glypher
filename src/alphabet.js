@@ -488,11 +488,17 @@ function Alphabet(options) {
       [0, xheight]
     ],
     '4': [
-      [0, 10],
-      [0, xheight],
-      [10, xheight, 'e'],
+      // [0, 10],
+      // [0, xheight],
+      // [10, xheight, 'e'],
+      // [10, 10],
+      // [10, 0]
+      [0, 0],
+      [10, 0],
       [10, 10],
-      [10, 0]
+      [0, 10, 'e'],
+      [10, xheight],
+      [0, xheight]
     ],
     '5': [
       [0, 0],
@@ -711,7 +717,7 @@ function Alphabet(options) {
       [0, 10],
       [10, 10],
       [8, xheight],
-      [0, xheight, 'e'],
+      [0, xheight],
       [0, xheight / 2],
       [0, xheight],
       [10, xheight],

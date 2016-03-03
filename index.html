@@ -36,13 +36,13 @@
   <canvas id="debug" width="600" height="300"></canvas>
   <script type="text/javascript">
       var generator = new glypher.Generator({
-        type: 'brush'
+        type: 'stroke'
       });
       generator.generate();
 
       plumin.paper.setup('debug');
       generator.weight = 50;
-      generator.generateGlyph2('B', generator.alphabet.glyphs.B).draw(20,200);
+      generator.generateGlyph2('g', generator.alphabet.glyphs.g).draw(20,200);
 
       document.getElementById('download').onclick = function() {
         generator.download();

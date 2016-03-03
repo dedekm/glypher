@@ -41,7 +41,8 @@ Generator.prototype.generate = function() {
     descender: -200
   });
 
-  var availableGlyphs = this.alphabet.availableGlyphs(),
+  var availableGlyphs = 'abcdefg',
+  // var availableGlyphs = this.alphabet.availableGlyphs(),
     glyphs = [],
     path;
 
@@ -269,18 +270,18 @@ Generator.prototype.generateGlyph2 = function(name, points) {
   var nextAngle,
     corner,
     segments = [
-      []
     ],
+    paths = [],
     cornerPoint3,
     startPoint;
 
   for (var i = 0; i < points.length; i++) {
     //WIP
     if (points[i][2] == 'dot') {
-      segments[segments.length - 1].push(this.adjustPoint(points[i]).add(this.weight, this.weight * -1));
-      segments[segments.length - 1].push(this.adjustPoint(points[i]).add(this.weight * -1, this.weight * -1));
-      segments[segments.length - 1].push(this.adjustPoint(points[i]).add(this.weight * -1, this.weight));
-      segments[segments.length - 1].push(this.adjustPoint(points[i]).add(this.weight));
+      segments.push(this.adjustPoint(points[i]).add(this.weight, this.weight * -1));
+      segments.push(this.adjustPoint(points[i]).add(this.weight * -1, this.weight * -1));
+      segments.push(this.adjustPoint(points[i]).add(this.weight * -1, this.weight));
+      segments.push(this.adjustPoint(points[i]).add(this.weight));
       segments.push([]);
       continue;
     }
@@ -299,6 +300,7 @@ Generator.prototype.generateGlyph2 = function(name, points) {
     }
 
     var previousAngle = nextAngle;
+    var helpPath = new plumin.Path();
 
     var vector1 = point2.subtract(point1);
     if (points[i + 2]) {
@@ -329,22 +331,28 @@ Generator.prototype.generateGlyph2 = function(name, points) {
       var previousVector = this.adjustPoint(points[i - 1]).subtract(point1);
       if (previousAngle < 0) {
         cornerPoint = p1;
-        // segments[segments.length - 1].push(makeCorner(cornerPoint2, cornerPoint, previousVector, vector1));
-        segments[segments.length - 1].splice(0, 0, makeCorner(cornerPoint3, p2, previousVector, vector1));
+        // segments.push(makeCorner(cornerPoint2, cornerPoint, previousVector, vector1));
+        segments.splice(0, 0, makeCorner(cornerPoint3, p2, previousVector, vector1));
         //for blunt edges
-        segments[segments.length - 1].push(cornerPoint2);
-        segments[segments.length - 1].push(cornerPoint);
+        segments.push(cornerPoint2);
+        segments.push(cornerPoint);
 
 
       } else {
         cornerPoint = p2;
-        // segments[segments.length - 1].splice(0, 0, makeCorner(cornerPoint2, cornerPoint, previousVector, vector1));
-        segments[segments.length - 1].push(makeCorner(cornerPoint3, p1, previousVector, vector1));
+        // segments.splice(0, 0, makeCorner(cornerPoint2, cornerPoint, previousVector, vector1));
+        segments.push(makeCorner(cornerPoint3, p1, previousVector, vector1));
         //for blunt edges
-        segments[segments.length - 1].splice(0, 0, cornerPoint2);
-        segments[segments.length - 1].splice(0, 0, cornerPoint);
+        segments.splice(0, 0, cornerPoint2);
+        segments.splice(0, 0, cornerPoint);
 
       }
+
+      helpPath = new plumin.Path(segments);
+      paths.push(helpPath);
+      var helpPoint = segments[0]
+      segments = segments.slice(-1);
+      segments.splice(0, 0, helpPoint);
     }
 
     if (nextAngle) {
@@ -359,14 +367,17 @@ Generator.prototype.generateGlyph2 = function(name, points) {
     }
 
     if (points[i - 1] && points[i - 1][2] == 'e' || !previousAngle) {
-      segments[segments.length - 1].push(p1);
-      segments[segments.length - 1].splice(0, 0, p2);
+      segments.push(p1);
+      segments.splice(0, 0, p2);
     }
 
     if (points[i + 1][2] == 'e' || i == points.length - 2) {
-      segments[segments.length - 1].splice(0, 0, p3);
-      segments[segments.length - 1].push(p4);
-      segments.push([]);
+      segments.splice(0, 0, p3);
+      segments.push(p4);
+      helpPath = new plumin.Path(segments);
+      paths.push(helpPath);
+      segments = segments.slice(-1);
+      segments.splice(0, 0, cornerPoint);
     }
 
     if (point2.x + glyph.weight > glyph.width)
@@ -384,16 +395,16 @@ Generator.prototype.generateGlyph2 = function(name, points) {
       glyph.height = point2.y + glyph.contrast;
 
   }
-  glyph.path = new plumin.Path(segments[0]);
+  glyph.path = paths[0];
   glyph.path.closePath();
-  for (i = 1; i < segments.length; i++) {
-    if (segments[i].length) {
-      var segment = new plumin.Path(segments[i]);
+  for (i = 1; i < paths.length; i++) {
+    if (paths[i].length) {
+      var segment = paths[i];
       segment.closePath();
       glyph.path = glyph.path.unite(segment);
     }
   }
-
+  console.log(name);
   return glyph;
 };
 
