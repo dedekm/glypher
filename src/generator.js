@@ -41,8 +41,7 @@ Generator.prototype.generate = function() {
     descender: -200
   });
 
-  var availableGlyphs = 'abcdefg',
-  // var availableGlyphs = this.alphabet.availableGlyphs(),
+  var availableGlyphs = this.alphabet.availableGlyphs(),
     glyphs = [],
     path;
 
@@ -325,7 +324,8 @@ Generator.prototype.generateGlyph2 = function(name, points) {
     }
 
     var cornerPoint,
-      cornerPoint2;
+      cornerPoint2,
+      helpPoint;
 
     if (points[i - 1] && points[i][2] != 'e' && points[i - 1][2] != 'e' && previousAngle) {
       var previousVector = this.adjustPoint(points[i - 1]).subtract(point1);
@@ -350,7 +350,7 @@ Generator.prototype.generateGlyph2 = function(name, points) {
 
       helpPath = new plumin.Path(segments);
       paths.push(helpPath);
-      var helpPoint = segments[0]
+      helpPoint = segments[0];
       segments = segments.slice(-1);
       segments.splice(0, 0, helpPoint);
     }
@@ -376,8 +376,7 @@ Generator.prototype.generateGlyph2 = function(name, points) {
       segments.push(p4);
       helpPath = new plumin.Path(segments);
       paths.push(helpPath);
-      segments = segments.slice(-1);
-      segments.splice(0, 0, cornerPoint);
+      segments = [];
     }
 
     if (point2.x + glyph.weight > glyph.width)
@@ -404,7 +403,6 @@ Generator.prototype.generateGlyph2 = function(name, points) {
       glyph.path = glyph.path.unite(segment);
     }
   }
-  console.log(name);
   return glyph;
 };
 
