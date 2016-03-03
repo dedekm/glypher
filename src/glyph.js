@@ -20,25 +20,22 @@ Glyph.prototype.mergeSegments = function(segments) {
 };
 
 //DEBUG
-Glyph.prototype.draw = function(x, y, debug) {
-  //debugging
-  if (debug) {
-    new Path.Circle({
-      center: [x, y],
-      radius: 3,
-      strokeColor: 'blue'
-    });
-    new Path.Circle({
-      center: [x + this.width, y],
-      radius: 3,
-      strokeColor: 'blue'
-    });
-  }
-
-  var path = this.path.clone();
-  path.position = [x + path.position.x, y + path.position.y];
+Glyph.prototype.draw = function(x, y) {
+  var path = this.path.clone().scale(0.1, -0.1);
+  path.position = [x + path.position.x * 0.1 , y - path.position.y * 0.1];
   path.fillColor = 'black';
   path.selected = true;
+
+  new plumin.paper.Path.Circle({
+    center: [x, y],
+    radius: 3,
+    strokeColor: 'red'
+  });
+  new plumin.paper.Path.Circle({
+    center: [x + this.width * 0.1, y],
+    radius: 3,
+    strokeColor: 'red'
+  });
 };
 
 exports.Glyph = Glyph;
