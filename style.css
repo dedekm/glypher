@@ -1,0 +1,25 @@
+* {
+  font-family: monospace;
+}
+
+body {
+    padding: 10px;
+}
+
+textarea {
+  width: 70%;
+  height: 300px;
+  padding: 10px;
+  border: 1px solid black;
+  font-family: 'Demo', sans-serif;
+  font-size: 50px;
+  resize: none;
+}
+
+#download {
+  display: table;
+  padding: 5px 7px;
+  text-decoration: none;
+  color: #FFE;
+  background: #181818;
+}
