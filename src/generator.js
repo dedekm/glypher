@@ -46,6 +46,7 @@ Generator.prototype.generate = function() {
     path;
 
   for (var i = 0; i < availableGlyphs.length; i++) {
+    this.beforeGenerateGlyph(availableGlyphs[i]);
     if (this.type == 'stroke')
       path = this.generateGlyph2(availableGlyphs[i], this.alphabet.glyphs[availableGlyphs[i]]);
     else
