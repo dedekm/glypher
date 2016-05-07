@@ -4,6 +4,7 @@
 
 body {
     padding: 10px;
+    text-align: center;
 }
 
 h1, h2, textarea {
@@ -30,7 +31,8 @@ textarea {
 }
 
 #download {
-  display: table;
+  display: inline-block;
+  margin-top: 10px;
   padding: 5px 7px;
   text-decoration: none;
   color: #FFE;
