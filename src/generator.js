@@ -46,18 +46,21 @@ Generator.prototype.generate = function() {
     path;
 
   for (var i = 0; i < availableGlyphs.length; i++) {
-    this.beforeGenerateGlyph(availableGlyphs[i]);
-    if (this.type == 'stroke')
-      path = this.generateGlyph2(availableGlyphs[i], this.alphabet.glyphs[availableGlyphs[i]]);
-    else
-      path = this.generateGlyph(availableGlyphs[i], this.alphabet.glyphs[availableGlyphs[i]]);
-    var glyph = new plumin.Glyph({
-      name: this.alphabet.nameMap[availableGlyphs[i]] || availableGlyphs[i],
-      unicode: availableGlyphs[i],
-      advanceWidth: path.width + 100
-    });
-    glyph.addContour(path.path);
-    glyphs.push(glyph);
+    // FIXME: .notdef collide with '.'
+    if(availableGlyphs[i] != '.notdef'){
+      this.beforeGenerateGlyph(availableGlyphs[i]);
+      if (this.type == 'stroke')
+        path = this.generateGlyph2(availableGlyphs[i], this.alphabet.glyphs[availableGlyphs[i]]);
+      else
+        path = this.generateGlyph(availableGlyphs[i], this.alphabet.glyphs[availableGlyphs[i]]);
+      var glyph = new plumin.Glyph({
+        name: this.alphabet.nameMap[availableGlyphs[i]] || availableGlyphs[i],
+        unicode: availableGlyphs[i],
+        advanceWidth: path.width + 100
+      });
+      glyph.addContour(path.path);
+      glyphs.push(glyph);
+    }
   }
 
   this.font.addGlyphs(glyphs);

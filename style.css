@@ -6,12 +6,25 @@ body {
     padding: 10px;
 }
 
+h1, h2, textarea {
+  font-family: 'Demo', sans-serif;
+}
+
+h1, h2 {
+  font-weight: normal;
+}
+
+h1{
+  font-size: 70px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
 textarea {
   width: 70%;
   height: 300px;
   padding: 10px;
   border: 1px solid black;
-  font-family: 'Demo', sans-serif;
   font-size: 50px;
   resize: none;
 }
