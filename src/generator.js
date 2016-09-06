@@ -114,10 +114,12 @@ Generator.prototype.getGlyph = function(name) {
 };
 
 Generator.prototype.adjustPoint = function(point) {
-  return new plumin.Point(point)
-    .multiply([this.size / this.proportion, this.size - (this.contrast * 2 / this.size)])
-    .add(this.weight, this.contrast)
-    .add(this.xshift, this.yshift);
+  var p = new plumin.Point(point)
+        .multiply([this.size / this.proportion, this.size - (this.contrast * 2 / this.size)])
+        .add(this.weight, this.contrast)
+        .add(this.xshift, this.yshift);
+    p = p.add(p.y * this.italic, 0);
+    return p;
 };
 
 Generator.prototype.drawDot = function(point, box) {
@@ -179,23 +181,23 @@ Generator.prototype.generateGlyph = function(name, points) {
     var b;
     if (i !== 0 && points[i - 1][2] !== 'e' || vector.angle % 90 === 0) {
       b = p1.add(box.multiply([x * -1, y]));
-      b = b.add(b.y * -1 * this.italic, 0);
+      // b = b.add(b.y * -1 * this.italic, 0);
       path.add(b);
     }
 
     b = p1.add(box.multiply([x * -1, y * -1]));
-    b = b.add(b.y * -1 * this.italic, 0);
+    // b = b.add(b.y * -1 * this.italic, 0);
     // if (i === 0 || points[i - 1][2] === 'e' && vector.angle % 90 !== 0)
     //   b = b.add(-20, 0);
     path.add(b);
 
     b = p1.add(box.multiply([x, y * -1]));
-    b = b.add(b.y * -1 * this.italic, 0);
+    // b = b.add(b.y * -1 * this.italic, 0);
     path.add(b);
 
     if (i + 1 !== points.length - 1 && points[i + 1][2] !== 'e' || vector.angle % 90 === 0) {
       b = p2.add(box.multiply([x, y * -1]));
-      b = b.add(b.y * -1 * this.italic, 0);
+      // b = b.add(b.y * -1 * this.italic, 0);
       path.add(b);
     }
 
@@ -209,7 +211,7 @@ Generator.prototype.generateGlyph = function(name, points) {
     path.add(b);
 
     b = p2.add(box.multiply([x * -1, y]));
-    b = b.add(b.y * -1 * this.italic, 0);
+    // b = b.add(b.y * -1 * this.italic, 0);
     path.add(b);
 
 
@@ -383,15 +385,15 @@ Generator.prototype.generateGlyph2 = function(name, points) {
       segments = [];
     }
 
-    if (point2.x + glyph.weight > glyph.width)
-      glyph.width = point2.x + glyph.weight;
+    if (point1.x + glyph.weight > glyph.width)
+      glyph.width = point1.x + glyph.weight;
 
     // FIXME: add last point
     if (point2.x + glyph.weight > glyph.width)
       glyph.width = point2.x + glyph.weight;
 
-    if (point2.y + glyph.contrast < glyph.height)
-      glyph.height = point2.y + glyph.contrast;
+    if (point1.y + glyph.contrast < glyph.height)
+      glyph.height = point1.y + glyph.contrast;
 
     // FIXME: add last point
     if (point2.y + glyph.contrast < glyph.height)
