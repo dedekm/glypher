@@ -337,19 +337,23 @@ Generator.prototype.generateGlyph2 = function(name, points) {
       var previousVector = this.adjustPoint(points[i - 1]).subtract(point1);
       if (previousAngle < 0) {
         cornerPoint = p1;
-        // segments.push(makeCorner(cornerPoint2, cornerPoint, previousVector, vector1));
         segments.splice(0, 0, makeCorner(cornerPoint3, p2, previousVector, vector1));
-        //for blunt edges
         segments.push(cornerPoint2);
+        
+        //for sharp edges
+        segments.push(makeCorner(cornerPoint2, cornerPoint, previousVector, vector1));
+        
         segments.push(cornerPoint);
 
 
       } else {
         cornerPoint = p2;
-        // segments.splice(0, 0, makeCorner(cornerPoint2, cornerPoint, previousVector, vector1));
         segments.push(makeCorner(cornerPoint3, p1, previousVector, vector1));
-        //for blunt edges
         segments.splice(0, 0, cornerPoint2);
+        
+        //for sharp edges
+        segments.splice(0, 0, makeCorner(cornerPoint2, cornerPoint, previousVector, vector1));
+        
         segments.splice(0, 0, cornerPoint);
 
       }
@@ -419,12 +423,6 @@ function makeCorner(p1, p2, vector2, vector3) {
   var rad2 = vector3.getAngleInRadians(vector1);
 
   var x = (vector1.length * Math.sin(rad1)) / Math.sin(rad2 + rad1);
-
-  // if (x > 30)
-  //   x = 30;
-
-  // if (x > 50)
-  //   x = 30;
 
   var result = new plumin.Point(x, 0);
   result = result.rotate(vector2.rotate(180).angle);
