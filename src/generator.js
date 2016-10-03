@@ -11,6 +11,7 @@ function Generator(options) {
   this.italic = options.italic || 0;
   this.segmentReduction = options.segmentReduction;
   this.smooth = options.smooth;
+  this.edges = options.edges || false;
 
   this.size = 80;
 
@@ -358,7 +359,8 @@ Generator.prototype.generateGlyph2 = function(name, points) {
         segments.push(cornerPoint2);
         
         //for sharp edges
-        segments.push(makeCorner(cornerPoint2, cornerPoint, previousVector, vector1));
+        if(this.edges)
+          segments.push(makeCorner(cornerPoint2, cornerPoint, previousVector, vector1));
         
         segments.push(cornerPoint);
 
@@ -369,7 +371,8 @@ Generator.prototype.generateGlyph2 = function(name, points) {
         segments.splice(0, 0, cornerPoint2);
         
         //for sharp edges
-        segments.splice(0, 0, makeCorner(cornerPoint2, cornerPoint, previousVector, vector1));
+        if(this.edges)
+          segments.splice(0, 0, makeCorner(cornerPoint2, cornerPoint, previousVector, vector1));
         
         segments.splice(0, 0, cornerPoint);
 
