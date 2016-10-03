@@ -63,45 +63,62 @@ Generator.prototype.generate = function() {
     }
   }
 
+  var accent = 'acute';
+  availableGlyphs = 'aeiouyAEIOUY';
+  for (i = 0; i < availableGlyphs.length; i++) {
+    this.beforeGenerateGlyph(availableGlyphs[i]);
+    if (this.type == 'stroke')
+      path = this.generateGlyphWithAccent2(availableGlyphs[i], accent);
+    else
+      path = this.generateGlyphWithAccent(availableGlyphs[i], accent);
+      
+    glyph = new plumin.Glyph({
+      name: path.name,
+      unicode:  path.name,
+      advanceWidth: path.width + 100
+    });
+    glyph.addContour(path.path);
+    glyphs.push(glyph);
+  }
+    
+    // FIXME: dcaron tcaron
+    accent = 'caron';
+    availableGlyphs = 'cenrszCDENRSTZ';
+    for (i = 0; i < availableGlyphs.length; i++) {
+      this.beforeGenerateGlyph(availableGlyphs[i]);
+      if (this.type == 'stroke')
+        path = this.generateGlyphWithAccent2(availableGlyphs[i], accent);
+      else
+        path = this.generateGlyphWithAccent(availableGlyphs[i], accent);
+      glyph = new plumin.Glyph({
+        name: path.name,
+        unicode:  path.name,
+        advanceWidth: path.width + 100
+      });
+      glyph.addContour(path.path);
+      glyphs.push(glyph);
+    }
+  
+    accent = 'ring';
+    availableGlyphs = 'uU';
+    for (i = 0; i < availableGlyphs.length; i++) {
+      this.beforeGenerateGlyph(availableGlyphs[i]);
+      if (this.type == 'stroke')
+        path = this.generateGlyphWithAccent2(availableGlyphs[i], accent);
+      else
+        path = this.generateGlyphWithAccent(availableGlyphs[i], accent);
+      glyph = new plumin.Glyph({
+        name: path.name,
+        unicode:  path.name,
+        advanceWidth: path.width + 100
+      });
+      glyph.addContour(path.path);
+      glyphs.push(glyph);
+    }
+  
   this.font.addGlyphs(glyphs);
   this.font.updateOTCommands()
     .addToFonts();
-
-  // var accent = 'acute';
-  // availableGlyphs = 'aeiouyAEIOUY';
-  // for (i = 0; i < availableGlyphs.length; i++) {
-  //   this.beforeGenerateGlyph(availableGlyphs[i]);
-  //   if (this.type == 'stroke')
-  //     glyph = this.generateGlyphWithAccent2(availableGlyphs[i], accent);
-  //   else
-  //     glyph = this.generateGlyphWithAccent(availableGlyphs[i], accent);
-  //   this.afterGenerateGlyph(glyph);
-  //   this.glyphs[glyph.name] = glyph;
-  // }
-  //   // FIXME: dcaron tcaron
-  //   accent = 'caron';
-  //   availableGlyphs = 'cenrszCDENRSTZ';
-  //   for (i = 0; i < availableGlyphs.length; i++) {
-  //     this.beforeGenerateGlyph(availableGlyphs[i]);
-  //     if (this.type == 'stroke')
-  //       glyph = this.generateGlyphWithAccent2(availableGlyphs[i], accent);
-  //     else
-  //       glyph = this.generateGlyphWithAccent(availableGlyphs[i], accent);
-  //     this.afterGenerateGlyph(glyph);
-  //     this.glyphs[glyph.name] = glyph;
-  //   }
-  //
-  //   accent = 'ring';
-  //   availableGlyphs = 'uU';
-  //   for (i = 0; i < availableGlyphs.length; i++) {
-  //     this.beforeGenerateGlyph(availableGlyphs[i]);
-  //     if (this.type == 'stroke')
-  //       glyph = this.generateGlyphWithAccent2(availableGlyphs[i], accent);
-  //     else
-  //       glyph = this.generateGlyphWithAccent(availableGlyphs[i], accent);
-  //     this.afterGenerateGlyph(glyph);
-  //     this.glyphs[glyph.name] = glyph;
-  //   }
 };
 
 Generator.prototype.getGlyph = function(name) {
@@ -396,12 +413,12 @@ Generator.prototype.generateGlyph2 = function(name, points) {
     if (point2.x + glyph.weight > glyph.width)
       glyph.width = point2.x + glyph.weight;
 
-    if (point1.y + glyph.contrast < glyph.height)
-      glyph.height = point1.y + glyph.contrast;
+    if (point1.y + glyph.weight > glyph.height)
+      glyph.height = point1.y + glyph.weight;
 
     // FIXME: add last point
-    if (point2.y + glyph.contrast < glyph.height)
-      glyph.height = point2.y + glyph.contrast;
+    if (point2.y + glyph.weight > glyph.height)
+      glyph.height = point2.y + glyph.weight;
 
   }
   glyph.path = paths[0];
@@ -468,9 +485,10 @@ Generator.prototype.generateGlyphWithAccent2 = function(name, accent) {
   var accentGlyph = this.generateGlyph2(accent);
   // FIXME: fix this for italics
   accentGlyph.path.position.x += (glyph.width - accentGlyph.width) / 2;
-
+  
+  // FIXME
   if (name[0] === name[0].toLowerCase()) {
-    accentGlyph.path.position.y += 90 + glyph.height;
+    accentGlyph.path.position.y = 180 + glyph.height;
   }
 
   glyph.path = glyph.path.unite(accentGlyph.path);
