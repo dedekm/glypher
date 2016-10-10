@@ -1,61 +1,36 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 
 <head>
   <meta charset="UTF-8">
-  <title>Glypher</title>
-  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/paper.js/0.9.25/paper-core.min.js"></script>
-  <script type="text/javascript" src="dist/opentype.min.js"></script>
-  <script type="text/javascript" src="dist/glypher.js"></script>
-  <style media="screen">
-    body {
-      text-align: center;
-      font-family: monospace;
-      font-size: 15px;
-    }
-
-    a {
-      color: black;
-    }
-  </style>
+  <title>Glypher with Plumin</title>
+  <script src="libs/plumin.js" charset="utf-8"></script>
+  <script src="dist/glypher.js" charset="utf-8"></script>
+  <link rel="stylesheet" href="style.css" media="screen" charset="utf-8">
 </head>
 
 <body>
-  <canvas id="myCanvas2" resize width="480" height="150"></canvas>
-  <br> OTF generator javascript library version 0.0.1
-  <br>
-  <br>
-  <img src="http://yoursmiles.org/tsmile/banana/t0216.gif" alt="ohyes" />
-  <br>
-  <br>
-  <a href="https://github.com/dedekm/glypher">source code</a>
+  <h1>Glypher.js</h1>
+  <h2>Javascript library that allows to create OTF font generators easily!</h2>
+  <textarea autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">Lorem ipsum</textarea>
+  <div>
+    <a href="#" id="download">Download font</a>
+  </div>
+  <!-- <canvas id="debug" width="600" height="300"></canvas> -->
   <script type="text/javascript">
-    var c = document.getElementById("myCanvas2");
-    var ctx = c.getContext("2d");
+      var generator = new glypher.Generator({
+        type: 'stroke'
+      });
+      generator.generate();
 
-    window.onload = function() {
-      window.generate = function() {
-        window.generator = new glypher.Generator({
-          height: 10,
-          width: 5
-        });
+      // plumin.paper.setup('debug');
+      // generator.weight = 50;
+      // generator.generateGlyph2('.', generator.alphabet.glyphs['.']).draw(20,200);
 
-        generator.generate();
-
-        generator.exportOpentype({
-          familyName: 'GlypherStandart',
-          styleName: 'Normal'
-        });
-
-        var buffer = generator.font.toArrayBuffer();
-        var font2 = opentype.parse(buffer);
-
-        font2.draw(ctx, 'glypher', 10, 100, 72);
-      }
-      window.generate();
-    }
+      document.getElementById('download').onclick = function() {
+        generator.download();
+      };
   </script>
-  <canvas id="myCanvas" resize width="1" height="1"></canvas>
 </body>
 
 </html>

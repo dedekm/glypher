@@ -1,5 +1,5 @@
 function Alphabet(options) {
-  xheight = options.xheight || 5;
+  xheight = options.xheight || 7;
   descender = options.descender || -3;
   aeheight = options.aeheight || xheight / 2;
   // FIXME
@@ -612,8 +612,8 @@ function Alphabet(options) {
       [10, xheight],
       [0, xheight],
       [0, 0],
-      [15 + Math.round(weight / 4), 0],
-      [15 + Math.round(weight / 4), 10],
+      [15 + Math.round(weight / 40), 0],
+      [15 + Math.round(weight / 40), 10],
       [0, 10],
     ],
     '&': [
@@ -813,8 +813,8 @@ function Alphabet(options) {
   }
 
 
-  if (weight < 15 || options.proportion <= 1)
-    this.glyphs.G.push([8 - Math.round(weight / 10 * options.proportion), xheight]);
+  // if (weight < 15 || options.proportion <= 1)
+  //   this.glyphs.G.push([8 - Math.round(weight / 10 * options.proportion), xheight]);
 
   this.nameMap = {
     'ı': 'dotlessi',
